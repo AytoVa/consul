@@ -6,19 +6,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.editorConfig = function( config )
 {
 
-  config.forcePasteAsPlainText = true;
-
-  config.filebrowserBrowseUrl = ava_default_url + "/ckeditor/attachment_files";
-  config.filebrowserFlashBrowseUrl = ava_default_url + "/ckeditor/attachment_files";
-  config.filebrowserFlashUploadUrl = ava_default_url + "/ckeditor/attachment_files";
   config.filebrowserImageBrowseLinkUrl = ava_default_url + "/ckeditor/pictures";
   config.filebrowserImageBrowseUrl = ava_default_url + "/ckeditor/pictures";
-  config.filebrowserImageUploadUrl = ava_default_url + "/ckeditor/pictures";
-  config.filebrowserUploadUrl = ava_default_url + "/ckeditor/attachment_files";
+  config.filebrowserImageUploadUrl = ava_default_url + "/ckeditor/pictures?";
   config.filebrowserUploadMethod = "form";
 
   config.allowedContent = true;
   config.format_tags = "p;h2;h3";
+
+  config.removePlugins = "balloonpanel,balloontoolbar,copyformatting,scayt,wsc";
 
   // Rails CSRF token
   config.filebrowserParams = function(){
