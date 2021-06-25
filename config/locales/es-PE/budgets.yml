@@ -3,8 +3,6 @@ es-PE:
     ballots:
       show:
         title: Mis votos
-        amount_spent: Coste total
-        remaining: "Te quedan <span>%{amount}</span> para invertir"
         no_balloted_group_yet: "Todavía no has votado proyectos de este grupo, ¡vota!"
         remove: Quitar voto
         zero: Todavía no has votado ninguna propuesta de inversión.
@@ -36,12 +34,8 @@ es-PE:
       section_header:
         icon_alt: Icono de Presupuestos participativos
         title: Presupuestos participativos
-        all_phases: Ver todas las fases
       all_phases: Fases de los presupuestos participativos
       map: Proyectos localizables geográficamente
-      investment_proyects: Ver lista completa de proyectos de inversión
-      unfeasible_investment_proyects: Ver lista de proyectos de inversión inviables
-      not_selected_investment_proyects: Ver lista de proyectos de inversión no seleccionados para la votación final
       finished_budgets: Presupuestos participativos terminados
       see_results: Ver resultados
       milestones: Seguimiento
@@ -64,17 +58,12 @@ es-PE:
           title: Buscar
         sidebar:
           my_ballot: Mis votos
-          voted_info: Puedes %{link} en cualquier momento hasta el cierre de esta fase. No hace falta que gastes todo el dinero disponible.
-          voted_info_link: cambiar tus votos
           change_ballot: "Si cambias de opinión puedes borrar tus votos en %{check_ballot} y volver a empezar."
           check_ballot_link: "revisar mis votos"
           zero: Todavía no has votado ninguna propuesta de inversión en este ámbito del presupuesto.
           verified_only: "Para crear una nueva propuesta de inversión %{verify}."
           create: "Crear nuevo proyecto"
           not_logged_in: "Para crear una nueva propuesta de inversión debes %{sign_in} o %{sign_up}."
-          by_feasibility: Por viabilidad
-          feasible: Ver los proyectos viables
-          unfeasible: Ver los proyectos inviables
         orders:
           random: Aleatorias
           confidence_score: Mejor valorados
@@ -103,20 +92,11 @@ es-PE:
           other: "%{count} apoyos"
         give_support: Apoyar
       header:
-        check_ballot: Revisar mis votos
+        check_ballot: "Revisar mis votos"
         change_ballot: "Si cambias de opinión puedes borrar tus votos en %{check_ballot} y volver a empezar."
         check_ballot_link: "revisar mis votos"
         price: "Esta partida tiene un presupuesto de"
-    progress_bar:
-      assigned: "Has asignado: "
-      available: "Presupuesto disponible: "
     show:
-      group: Grupo
-      phase: Fase actual
-      unfeasible_title: Propuestas inviables
-      unfeasible: Ver las propuestas inviables
-      unselected_title: Propuestas no seleccionadas para la votación final
-      unselected: Ver las propuestas no seleccionadas para la votación final
       see_results: Ver resultados
     results:
       link: Resultados

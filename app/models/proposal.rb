@@ -19,6 +19,7 @@ class Proposal < ApplicationRecord
   include Relationable
   include Milestoneable
   include Randomizable
+  include SDG::Relatable
 
   acts_as_votable
   acts_as_paranoid column: :hidden_at
@@ -232,7 +233,7 @@ class Proposal < ApplicationRecord
   end
 
   def users_to_notify
-    (voters + followers).uniq - [author]
+    followers - [author]
   end
 
   def self.proposals_orders(user)

@@ -99,11 +99,6 @@ ru:
       tags_placeholder: "Введите метки, которые вы бы хотели использовать, разделенные запятыми (',')"
     index:
       featured_debates: Особенные
-      filter_topic:
-        one: " с темой '%{topic}'"
-        few: " с темой '%{topic}'"
-        many: " с темой '%{topic}'"
-        other: " с темой '%{topic}'"
       orders:
         confidence_score: наивысший рейтинг
         created_at: самые свежие
@@ -180,6 +175,8 @@ ru:
     budget/investment: Инвестиция
     budget/group: Бюджетная группа
     budget/heading: Заголовок бюджета
+    legislation/process: процесс
+    legislation/question: вопрос
     poll/shift: Смена
     poll/question/answer: Ответ
     user: Аккаунт
@@ -188,10 +185,14 @@ ru:
     document: Документ
     topic: Тема
     image: Изображение
+    site_customization/content_block: блок содержимого
+    site_customization/page: страница
   geozones:
     none: Весь город
   layouts:
     application:
+      chrome: Google Chrome
+      firefox: Firefox
       ie: Мы обнаружили, что вы используете Internet Explorer. Для лучшей работы с сайтом, мы рекомендуем вам использовать %{firefox} или %{chrome}.
       ie_title: Этот сайт не оптимизирован для вашего браузера
     dashboard:
@@ -203,7 +204,7 @@ ru:
         active_resources: Активные ресурсы
         community: Участники в вашем сообществе
         show_proposal: Показать предложение
-        preview_proposal: Предпросмотр предложения
+        preview_proposal: Предварительный просмотр предложения
         current_goal: Текущая цель
         supports:
           zero: Нет поддержек
@@ -215,7 +216,9 @@ ru:
       accessibility: Доступность
       conditions: Положения и условия пользования
       consul: Приложение CONSUL
+      consul_url: https://github.com/consul/consul
       contact_us: Для технической поддержки используйте
+      copyright: CONSUL, %{year}
       description: Этот портал использует %{consul}, являющийся %{open_source}.
       open_source: открытым программным обеспечением
       participation_text: Решайте каким сделать город, в котором вы хотите жить.
@@ -228,7 +231,6 @@ ru:
       collaborative_legislation: Процесс законотворчества
       debates: Обсуждения проблем
       locale: "Язык:"
-      logo: CONSUL логотип
       management: Управление
       moderation: Модерирование
       valuation: Оценка
@@ -236,21 +238,18 @@ ru:
       help: Помощь
       my_account_link: Мой аккаунт
       my_activity_link: Моя активность
-      open: открыто
       open_gov: Открытое правительство
       proposals: Заявки
       poll_questions: Голосования
       budgets: Партисипаторное бюджетирование
       notification_item:
         new_notifications:
+          zero: "У вас нет новых уведомлений"
           one: У вас есть новое уведомление
           few: У вас есть %{count} новых уведомлений
           many: У вас есть %{count} новых уведомлений
           other: У вас есть %{count} новых уведомлений
         notifications: Уведомления
-        no_notifications: "У вас нет новых уведомлений"
-    admin:
-      watch_form_message: "У вас есть не сохраненные изменения. Вы подтверждаете, что хотите покинуть страницу?"
   notifications:
     index:
       empty_notifications: У вас нет новых уведомлений.
@@ -286,17 +285,18 @@ ru:
     facebook:
       sign_in: Войти при помощи Facebook
       sign_up: Зарегистрироваться при помощи Facebook
+      name: Facebook
     finish_signup:
       title: "Дополнительная информация"
       username_warning: "Вследствие изменений в способе нашего взаимодействия с социальными сетями, есть вероятность, что ваше имя пользователя теперь показывается как 'уже используется'. Если это ваш случай, пожалуйста выберите другое имя пользователя."
     google_oauth2:
       sign_in: Войти при помощи Google
       sign_up: Зарегистрироваться при помощи Google
+      name: Google
     twitter:
       sign_in: Войти при помощи Twitter
       sign_up: Зарегистрироваться при помощи Twitter
-    info_sign_in: "Войти при помощи:"
-    info_sign_up: "Зарегистрироваться при помощи:"
+      name: Twitter
     or_fill: "Или заполните следующую форму:"
   proposals:
     create:
@@ -343,11 +343,6 @@ ru:
       map_skip_checkbox: "Это предложение не имеет конкретного места на карте, или я о нем не знаю."
     index:
       featured_proposals: Особенные
-      filter_topic:
-        one: " с темой '%{topic}'"
-        few: " с темой '%{topic}'"
-        many: " с темой '%{topic}'"
-        other: " с темой '%{topic}'"
       orders:
         confidence_score: наивысший рейтинг
         created_at: наиболее свежие
@@ -541,7 +536,7 @@ ru:
       latest_comments: Свежие сообщения
     messages:
       send_notification: Отправить сообщения тем, кто поддержал предложение
-      previous_notifications: Просмотреть уведомления о предпросмотре
+      previous_notifications: Просмотреть уведомления о предварительном просмотре
     polls:
       index:
         title: Голосования
@@ -581,7 +576,7 @@ ru:
         remove_answer: Убрать ответ
     poster:
       index:
-        title: Предпросмотр анонса
+        title: Предварительный просмотр анонса
         poster_title: "Не продолжать просмотр,"
         poster_subtitle: "создать резервную копию! ;)"
         proposal_code: "Код предложения: %{code}"
@@ -589,16 +584,16 @@ ru:
       new:
         title: Анонс вашего предложения
       options:
-        preview: Предпросмотр
+        preview: Предварительный просмотр
         download: Скачать
     mailing:
       index:
-        title: Предпросмотр e-mail
+        title: Предварительный просмотр e-mail
       new:
         title: Модель e-mail для распространения
       mailing_options:
         send: Отправить на %{address}
-        preview: Предпросмотр
+        preview: Предварительный просмотр
       create:
         sent: E-mail отправлено
     mailer:
@@ -716,7 +711,6 @@ ru:
     follow: "Подписаться"
     following: "Подписан"
     follow_entity: "Подписаться на %{entity}"
-    hide: Скрыть
     print:
       print_button: Распечатать эту информацию
     search: Поиск
@@ -751,6 +745,7 @@ ru:
       districts: "Районы"
       districts_list: "Список районов"
       categories: "Категории"
+    target_blank: " (ссылка откроется в новом окне)"
     you_are_in: "Вы находитесь в"
     unflag: Снять флаг
     unfollow_entity: "Отписаться от %{entity}"
@@ -770,6 +765,16 @@ ru:
       title: Рекомендации
       see_more: Смотреть больше рекомендация
       hide: Скрыть рекомендации
+    translations:
+      select_language_prompt: Выбрать язык
+      remove_language: Удалить язык
+      add_language: Добавить язык
+  social:
+    facebook: "%{org} Facebook"
+    twitter: "%{org} Twitter"
+    youtube: "%{org} YouTube"
+    telegram: "%{org} Telegram"
+    instagram: "%{org} Instagram"
   stats:
     index:
       visits: посещения
@@ -787,6 +792,11 @@ ru:
     manage:
       all: "У вас нет разрешения на выполнение действия '%{action}' по %{subject}."
   users:
+    login_to_comment: "Чтобы оставить комментарий, вы должны %{signin} или %{signup}."
+    login_to_continue: "Вы должны %{signin} или %{signup}, чтобы продолжить."
+    signin: "войти"
+    signup: "зарегистрироваться"
+    verify_account: "подтвердите ваш аккаунт"
     direct_messages:
       new:
         direct_messages_bloqued: "Этот пользователь решил не получать прямых сообщений"
@@ -864,9 +874,10 @@ ru:
         debates: "Самые активные дебаты"
         proposals: "Самые активные предложения"
         processes: "Открытые процессы"
-      see_all_debates: Просмотреть все дебаты
-      see_all_proposals: Просмотреть все предложения
-      see_all_processes: Просмотреть все процессы
+      see_all:
+        debates: Просмотреть все дебаты
+        proposals: Просмотреть все предложения
+        processes: Просмотреть все процессы
       process_label: Процесс
       see_process: Просмотреть процесс
     cards:
@@ -947,3 +958,7 @@ ru:
       surveys: Опросы
     poll:
       take_part: Принять участие от %{from} до %{to}
+  remote_translations:
+    create:
+      enqueue_remote_translation: Перевод был успешно запрошен.
+    button: Перевести страницу

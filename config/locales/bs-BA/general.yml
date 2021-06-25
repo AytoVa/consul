@@ -91,10 +91,6 @@ bs:
       tags_placeholder: "Unesite tagove koje želite koristiti, razdvojene zarezima (,)"
     index:
       featured_debates: Glavne debate
-      filter_topic:
-        one: " sa temom %{topic}"
-        few: " sa temom %{topic}"
-        other: " sa temom %{topic}"
       orders:
         confidence_score: sa najvišim ocjenama
         created_at: najnovije
@@ -222,7 +218,6 @@ bs:
       collaborative_legislation: Legislativna saradnja
       debates: Debate
       locale: "Jezik:"
-      logo: CONSUL logotip
       management: Menadžment
       moderation: Moderiranje
       valuation: Procjena
@@ -230,20 +225,17 @@ bs:
       help: Pomoć
       my_account_link: Moj nalog
       my_activity_link: Moje aktivnosti
-      open: otvoreno
       open_gov: Otvorena vlada
       proposals: Prijedlozi
       poll_questions: Glasanje
       budgets: Participativno budžetiranje
       notification_item:
         new_notifications:
+          zero: "Nemate novih obavijesti"
           one: Imate jednu novu obavijest
           few: Imate %{count} nove/novih obavijesti
           other: Imate %{count} nove/novih obavijesti
         notifications: Obavijesti
-        no_notifications: "Nemate novih obavijesti"
-    admin:
-      watch_form_message: "Niste spasili izmjene. Ipak napuštate stranicu?"
   notifications:
     index:
       empty_notifications: Nemate novih obavijesti.
@@ -288,8 +280,6 @@ bs:
       sign_in: Prijava preko Twittera
       sign_up: Otvori nalog preko Twittera
       name: Twitter
-    info_sign_in: "Prijavi se preko:"
-    info_sign_up: "Otvori nalog preko:"
     or_fill: "Ili ispuni ovaj formular:"
   proposals:
     create:
@@ -336,10 +326,6 @@ bs:
       map_skip_checkbox: "Prijedlog nema konkretnu lokaciju, ili je ja ne vidim."
     index:
       featured_proposals: Glavni prijedlozi
-      filter_topic:
-        one: " sa temom %{topic}"
-        few: " sa temom %{topic}"
-        other: " sa temom %{topic}"
       orders:
         confidence_score: sa najvišim ocjenama
         created_at: najnovije
@@ -685,7 +671,6 @@ bs:
     follow: "Prati"
     following: "Praćenje"
     follow_entity: "Prati %{entity}"
-    hide: Sakrij
     print:
       print_button: Printaj
     search: Traži
@@ -740,7 +725,6 @@ bs:
     facebook: "%{org} Facebook"
     twitter: "%{org} Twitter"
     youtube: "%{org} YouTube"
-    whatsapp: WhatsApp
     telegram: "%{org} Telegram"
     instagram: "%{org} Instagram"
   stats:
@@ -836,9 +820,10 @@ bs:
         debates: "Najaktivnije debate"
         proposals: "Najaktivniji prijedlozi"
         processes: "Otvoreni procesi"
-      see_all_debates: Vidi sve debate
-      see_all_proposals: Vidi sve prijedloge
-      see_all_processes: Vidi sve procese
+      see_all:
+        debates: Vidi sve debate
+        proposals: Vidi sve prijedloge
+        processes: Vidi sve procese
       process_label: Proces
       see_process: Vidi proces
     cards:

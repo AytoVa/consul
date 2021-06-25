@@ -83,8 +83,6 @@ zh-TW:
       tags_placeholder: "輸入您要用的標籤，以逗號分隔 (',')"
     index:
       featured_debates: 特色
-      filter_topic:
-        other: " 主題'%{topic}'"
       orders:
         confidence_score: 最高評分
         created_at: 最新
@@ -193,7 +191,6 @@ zh-TW:
       collaborative_legislation: 立法進程
       debates: 辯論
       locale: "語言："
-      logo: CONSUL 商標
       management: 管理
       moderation: 審核
       valuation: 評估
@@ -201,18 +198,15 @@ zh-TW:
       help: 說明
       my_account_link: 我的帳戶
       my_activity_link: 我的活動
-      open: 開
       open_gov: 開放政府
       proposals: 建議
       poll_questions: 投票中
       budgets: 參與性預算編制
       notification_item:
         new_notifications:
+          zero: "您沒有新通知"
           other: 您有%{count} 個新通知
         notifications: 通知
-        no_notifications: "您沒有新通知"
-    admin:
-      watch_form_message: "您有未儲存的更改。 你是否確認要離開此頁面？"
   notifications:
     index:
       empty_notifications: 您沒有新通知。
@@ -251,8 +245,6 @@ zh-TW:
       sign_in: 用Twitter登錄
       sign_up: 用Twitter登記
       name: Twitter
-    info_sign_in: "登錄用："
-    info_sign_up: "登記用："
     or_fill: "或填寫以下表格："
   proposals:
     create:
@@ -289,8 +281,6 @@ zh-TW:
       map_skip_checkbox: "這個建議沒有具體的位置，或我沒有注意到。"
     index:
       featured_proposals: 特色
-      filter_topic:
-        other: " 主題'%{topic}'"
       orders:
         confidence_score: 最高評分
         created_at: 最新
@@ -489,7 +479,6 @@ zh-TW:
     follow: "跟隨"
     following: "跟隨中"
     follow_entity: "跟隨%{entity}"
-    hide: 隱藏
     print:
       print_button: 打印此資訊
     search: 搜尋
@@ -538,7 +527,6 @@ zh-TW:
     facebook: "%{org} Facebook"
     twitter: "%{org} Twitter"
     youtube: "%{org} YouTube"
-    whatsapp: WhatsApp
     telegram: "%{org} Telegram"
     instagram: "%{org} Instagram"
   stats:
@@ -615,9 +603,10 @@ zh-TW:
         debates: "最活躍的辯論"
         proposals: "最活躍的建議"
         processes: "開啟進程"
-      see_all_debates: 查看所有辯論
-      see_all_proposals: 查看所有建議
-      see_all_processes: 查看所有進程
+      see_all:
+        debates: 查看所有辯論
+        proposals: 查看所有建議
+        processes: 查看所有進程
       process_label: 進程
       see_process: 查看進程
     cards:

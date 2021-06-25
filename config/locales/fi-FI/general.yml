@@ -124,10 +124,8 @@ fi:
       administration: Järjestelmänvalvonta
       available_locales: Saatavilla olevat kielet
       locale: "Kieli:"
-      logo: CONSUL logo
       help: Apua
       my_account_link: Tilini
-      open: avaa
       proposals: Ehdotukset
       poll_questions: Äänestys
       notification_item:
@@ -159,8 +157,6 @@ fi:
       sign_in: Kirjaudu sisään käyttäen Twitteriä
       sign_up: Rekisteröidy käyttäen Twitteriä
       name: Twitter
-    info_sign_in: "Kirjaudu sisään käyttäen:"
-    info_sign_up: "Rekisteröidy käyttäen:"
     or_fill: "Tai täytä alla oleva kaavake:"
   proposals:
     create:
@@ -282,7 +278,6 @@ fi:
     check_none: Ei mitään
     follow: "Seuraa"
     follow_entity: "Seuraa %{entity}"
-    hide: Piilota
     search: Etsi
     show: Näytä
     suggest:
@@ -324,8 +319,9 @@ fi:
     disagree: En hyväksy
   welcome:
     feed:
-      see_all_proposals: Näytä kaikki ehdotukset
-      see_all_processes: Näytä kaikki prosessit
+      see_all:
+        proposals: Näytä kaikki ehdotukset
+        processes: Näytä kaikki prosessit
       process_label: Prosessi
       see_process: Näytä prosessit
     recommended:

@@ -87,9 +87,6 @@ val:
       tags_placeholder: "Escriu les etiquetes que desitges separades per una coma (',')"
     index:
       featured_debates: Destacades
-      filter_topic:
-        one: " amb el tema '%{topic}'"
-        other: " amb el tema '%{topic}'"
       orders:
         confidence_score: més avalades
         created_at: noves
@@ -199,7 +196,6 @@ val:
       collaborative_legislation: Processos legislatius
       debates: Debats
       locale: "Idioma:"
-      logo: Logo de CONSUL
       management: Gestió
       moderation: Moderació
       valuation: Avaluació
@@ -207,19 +203,16 @@ val:
       help: Ajuda
       my_account_link: El meu compte
       my_activity_link: La meua activitat
-      open: obert
       open_gov: Govern obert
       proposals: Propostes
       poll_questions: Votacions
       budgets: Pressupostos participatius
       notification_item:
         new_notifications:
+          zero: "No tens noves notificacions"
           one: Tens una nova notificació
           other: Tens %{count} notificacions
         notifications: Notificacions
-        no_notifications: "No tens noves notificacions"
-    admin:
-      watch_form_message: "Has realitzat canvis que no han sigut guardats. Segur que vols abandonar la pàgina?"
   notifications:
     index:
       empty_notifications: No tens noves notificacions.
@@ -261,8 +254,6 @@ val:
       sign_in: Entra amb Twitter
       sign_up: Regístrat amb Twitter
       name: Twitter
-    info_sign_in: "Entra amb:"
-    info_sign_up: "Regístrat amb:"
     or_fill: "O ompli el següent formulari:"
   proposals:
     create:
@@ -301,9 +292,6 @@ val:
       map_skip_checkbox: "Esta proposta no te una ubicació concreta o no la coneixem."
     index:
       featured_proposals: Destacar
-      filter_topic:
-        one: " amb el tema '%{topic}'"
-        other: " amb el tema '%{topic}'"
       orders:
         confidence_score: millor valorats
         created_at: nous
@@ -506,7 +494,6 @@ val:
     follow: "Seguir"
     following: "Seguint"
     follow_entity: "Seguir %{entity}"
-    hide: Ocultar
     print:
       print_button: Imprimir esta informació
     search: Cercar
@@ -558,7 +545,6 @@ val:
     facebook: "Facebook de %{org}"
     twitter: "Twitter de %{org}"
     youtube: "YouTube de %{org}"
-    whatsapp: WhatsApp
     telegram: "Telegram de %{org}"
     instagram: "Instagram de %{org}"
   stats:
@@ -640,9 +626,10 @@ val:
         debates: "Debats més actius"
         proposals: "Propostes més actives"
         processes: "Processos actius"
-      see_all_debates: Veure tots els debats
-      see_all_proposals: Veure totes les propostes
-      see_all_processes: Veure tots els processos
+      see_all:
+        debates: Veure tots els debats
+        proposals: Veure totes les propostes
+        processes: Veure tots els processos
       process_label: Proces
       see_process: Veure procés
     cards:

@@ -119,13 +119,6 @@ ar:
       tags_placeholder: "ادخل العلامات التي ترغب في استخدامها، مفصولة بفواصل (',')"
     index:
       featured_debates: مميز
-      filter_topic:
-        zero: " حول موضوع '%{topic}'"
-        one: " حول موضوع '%{topic}'"
-        two: " حول موضوع '%{topic}'"
-        few: " حول موضوع '%{topic}'"
-        many: " حول موضوع '%{topic}'"
-        other: " حول موضوع '%{topic}'"
       orders:
         confidence_score: اعلى تقييم
         created_at: أحدث
@@ -259,7 +252,6 @@ ar:
       collaborative_legislation: العمليات التشريعية
       debates: النقاشات
       locale: "لغة:"
-      logo: شعار CONSUL
       management: الإدارة
       moderation: الإشراف
       valuation: التقييم
@@ -267,13 +259,13 @@ ar:
       help: المساعدة
       my_account_link: حسابي
       my_activity_link: نشاطي
-      open: فتح
       open_gov: حكومة مفتوحة
       proposals: إقتراحات
       poll_questions: التصويت
       budgets: الميزانية التشاركية
       notification_item:
         new_notifications:
+          zero: "لا يوجد إشعارات جديدة"
           zero: لديك %{count} إشعارات الجديدة
           one: لديك إشعار جديد
           two: لديك %{count} إشعارات الجديدة
@@ -281,9 +273,6 @@ ar:
           many: لديك %{count} إشعارات الجديدة
           other: لديك %{count} إشعارات الجديدة
         notifications: إشعارات
-        no_notifications: "لا يوجد إشعارات جديدة"
-    admin:
-      watch_form_message: "لم يتم حفظ التغيرات ، هل أنت متأكد من مغادرة الصفحة وتجاهل التغيرات ؟"
   notifications:
     index:
       empty_notifications: لا يوجد إشعارات جديدة.
@@ -337,8 +326,6 @@ ar:
       sign_in: تسجيل الدخول باستخدام Twitter
       sign_up: تسجيل باستخدام Twitter
       name: Twitter
-    info_sign_in: "تسجيل الدخول باستخدام:"
-    info_sign_up: "تسجيل الدخول باستخدام:"
     or_fill: "أو املأ النموذج التالي:"
   proposals:
     create:
@@ -385,13 +372,6 @@ ar:
       map_skip_checkbox: "هذا المقترح لا يملك موقع ملموس أو لست على دراية به."
     index:
       featured_proposals: مميز
-      filter_topic:
-        zero: " حول موضوع '%{topic}'"
-        one: " حول موضوع '%{topic}'"
-        two: " حول موضوع '%{topic}'"
-        few: " حول موضوع '%{topic}'"
-        many: " حول موضوع '%{topic}'"
-        other: " حول موضوع '%{topic}'"
       orders:
         confidence_score: اعلى تقييم
         created_at: أحدث
@@ -776,7 +756,6 @@ ar:
     follow: "تابع"
     following: "التالية"
     follow_entity: "تابع %{entity}"
-    hide: إخفاء
     print:
       print_button: طباعة هذه المعلومات
     search: بحث
@@ -844,7 +823,6 @@ ar:
     facebook: "%{org} Facebook"
     twitter: "%{org} Twitter"
     youtube: "%{org} YouTube"
-    whatsapp: واتساب
     telegram: "%{org} Telegram"
     instagram: "%{org} Instagram"
   stats:
@@ -958,9 +936,10 @@ ar:
         debates: "المناقشات الأكثر نشاطا"
         proposals: "المقترحات الأكثر نشاطا"
         processes: "إجراءات مفتوحة"
-      see_all_debates: انظر جميع الحوارات
-      see_all_proposals: انظر جميع المقترحات
-      see_all_processes: انظر جميع المقترحات
+      see_all:
+        debates: انظر جميع الحوارات
+        proposals: انظر جميع المقترحات
+        processes: انظر جميع المقترحات
       process_label: عملية
       see_process: انظر الإجرائية
     cards:

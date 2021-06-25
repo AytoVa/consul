@@ -46,13 +46,13 @@ Rails.application.routes.draw do
     draw :poll
     draw :proposal
     draw :related_content
+    draw :sdg
+    draw :sdg_management
     draw :tag
     draw :user
     draw :valuation
     draw :verification
-    draw :consultation
-    draw :restriction
-    draw :external_user
+
     root "welcome#index"
     get "/welcome", to: "welcome#welcome"
     get "/consul.json", to: "installation#details"

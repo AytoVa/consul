@@ -1,11 +1,10 @@
-# Use Ruby 2.3.8 as base image
-FROM ruby:2.3.8
+FROM ruby:2.6.7
 
 ENV DEBIAN_FRONTEND noninteractive
 
 # Install essential Linux packages
 RUN apt-get update -qq
-RUN apt-get install -y build-essential libpq-dev postgresql-client nodejs imagemagick sudo libxss1 libappindicator1 libindicator7 unzip memcached
+RUN apt-get install -y build-essential libpq-dev postgresql-client nodejs imagemagick sudo libxss1 libappindicator1 libindicator7 unzip memcached cmake pkg-config shared-mime-info
 
 # Files created inside the container repect the ownership
 RUN adduser --shell /bin/bash --disabled-password --gecos "" consul \
@@ -41,14 +40,8 @@ RUN gem install bundler
 # Finish establishing our Ruby environment
 RUN bundle install --full-index
 
-# Install Chromium and ChromeDriver for E2E integration tests
+# Install Chromium for E2E integration tests
 RUN apt-get update -qq && apt-get install -y chromium
-RUN wget -N http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN chmod +x chromedriver
-RUN mv -f chromedriver /usr/local/share/chromedriver
-RUN ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-RUN ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
 
 # Copy the Rails application into place
 COPY . .

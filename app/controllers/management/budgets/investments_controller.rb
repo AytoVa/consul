@@ -1,10 +1,13 @@
 class Management::Budgets::InvestmentsController < Management::BaseController
-  include FeatureFlags
   include CommentableActions
   include FlagActions
   include RandomSeed
   include Translatable
   include ImageAttributes
+  include DocumentAttributes
+  include MapLocationAttributes
+  include FeatureFlags
+  feature_flag :budgets
 
   before_action :load_budget
 
@@ -57,18 +60,13 @@ class Management::Budgets::InvestmentsController < Management::BaseController
     def load_investment_votes(investments)
       @investment_votes = managed_user ? managed_user.budget_investment_votes(investments) : {}
     end
-
-    ##def investment_params
-    ##  attributes = [:external_url, :heading_id, :tag_list, :organization_name, :location, :skip_map]
-    ##  params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
-    ##end
     
     def investment_params
       attributes = [:external_url, :heading_id, :tag_list,
                     :organization_name, :location, :skip_map,
                     image_attributes: image_attributes,
-                    documents_attributes: [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy],
-                    map_location_attributes: [:latitude, :longitude, :zoom]]
+                    documents_attributes: document_attributes,
+                    map_location_attributes: map_location_attributes]
       params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
     end
     

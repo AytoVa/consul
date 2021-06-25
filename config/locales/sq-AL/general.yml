@@ -87,9 +87,6 @@ sq:
       tags_placeholder: "Futni etiketimet që dëshironi të përdorni, të ndara me presje (',')"
     index:
       featured_debates: Karakteristika
-      filter_topic:
-        one: " me tema '%{topic}'"
-        other: " me tema '%{topic}'"
       orders:
         confidence_score: më të vlerësuarat
         created_at: më të rejat
@@ -199,7 +196,6 @@ sq:
       collaborative_legislation: "\nProceset e legjislacionit"
       debates: Debate
       locale: "Gjuha:"
-      logo: Logoja
       management: Menaxhimi
       moderation: Moderim
       valuation: Vlerësim
@@ -207,19 +203,16 @@ sq:
       help: Ndihmë
       my_account_link: Llogaria ime
       my_activity_link: Aktivitetet e mia
-      open: hapur
       open_gov: Qeveri e hapur
       proposals: Propozime
       poll_questions: Votim
       budgets: Buxhetet  pjesëmarrës
       notification_item:
         new_notifications:
+          zero: "Ju nuk keni njoftime të reja"
           one: Ju keni një njoftim të ri
           other: Ju keni %{count} njoftim të reja
         notifications: Njoftimet
-        no_notifications: "Ju nuk keni njoftime të reja"
-    admin:
-      watch_form_message: "Ju keni ndryshime të paruajtura. A konfirmoni të dilni nga faqja?"
   notifications:
     index:
       empty_notifications: Ju nuk keni njoftime të reja
@@ -261,8 +254,6 @@ sq:
       sign_in: Identifikohu me Twitter
       sign_up: Regjistrohuni me Twitter
       name: Twitter
-    info_sign_in: "Identifikohu me:"
-    info_sign_up: "Regjistrohuni me:"
     or_fill: "Ose plotësoni formularin e mëposhtëm:"
   proposals:
     create:
@@ -301,9 +292,6 @@ sq:
       map_skip_checkbox: "Ky propozim nuk ka një vend konkret ose nuk jam i vetëdijshëm për të."
     index:
       featured_proposals: Karakteristika
-      filter_topic:
-        one: " me tema '%{topic}'"
-        other: " me tema '%{topic}'"
       orders:
         confidence_score: më të vlerësuarat
         created_at: më të rejat
@@ -506,7 +494,6 @@ sq:
     follow: "Ndiq"
     following: "Duke ndjekur"
     follow_entity: "Ndiq %{entity}"
-    hide: Fsheh
     print:
       print_button: Printoni këtë informacion
     search: Kërko
@@ -558,7 +545,6 @@ sq:
     facebook: "Facebook %{org}"
     twitter: "Twitter %{org}"
     youtube: "YouTube %{org}"
-    whatsapp: WhatsApp
     telegram: "Telegram %{org}"
     instagram: " Instagram %{org}"
   stats:
@@ -640,9 +626,10 @@ sq:
         debates: "Debatet më aktive"
         proposals: "Propozimet më aktive"
         processes: "\nProceset e hapura"
-      see_all_debates: Shihni të gjitha debated
-      see_all_proposals: Shiko të gjitha propozimet
-      see_all_processes: Shiko të gjitha proceset
+      see_all:
+        debates: Shihni të gjitha debated
+        proposals: Shiko të gjitha propozimet
+        processes: Shiko të gjitha proceset
       process_label: Proçes
       see_process: Shihni procesin
     cards:

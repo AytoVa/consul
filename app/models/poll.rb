@@ -5,9 +5,11 @@ class Poll < ApplicationRecord
   acts_as_paranoid column: :hidden_at
   include ActsAsParanoidAliases
   include Notifiable
+  include Searchable
   include Sluggable
   include StatsVersionable
   include Reportable
+  include SDG::Relatable
 
   translates :name,        touch: true
   translates :summary,     touch: true
@@ -99,8 +101,8 @@ class Poll < ApplicationRecord
   def self.answerable_by(user)
     return none if user.nil? || user.unverified?
 
-    current.joins('LEFT JOIN "geozones_polls" ON "geozones_polls"."poll_id" = "polls"."id"')
-           .where("geozone_restricted = ? OR geozones_polls.geozone_id = ?", false, user.geozone_id)
+    current.left_joins(:geozones)
+      .where("geozone_restricted = ? OR geozones.id = ?", false, user.geozone_id)
   end
 
   def self.votable_by(user)
@@ -173,5 +175,21 @@ class Poll < ApplicationRecord
 
   def budget_poll?
     budget.present?
+  end
+
+  def searchable_translations_definitions
+    {
+      name        => "A",
+      summary     => "C",
+      description => "D"
+    }
+  end
+
+  def searchable_values
+    searchable_globalized_values
+  end
+
+  def self.search(terms)
+    pg_search(terms)
   end
 end

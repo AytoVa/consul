@@ -12,7 +12,6 @@ module Abilities
       can :read, Comment
 
       can :hide, Comment, hidden_at: nil
-      cannot :hide, Comment, user_id: user.id
 
       can :ignore_flag, Comment, ignored_flag_at: nil, hidden_at: nil
       cannot :ignore_flag, Comment, user_id: user.id
@@ -30,13 +29,11 @@ module Abilities
       cannot :moderate, Debate, author_id: user.id
 
       can :hide, Proposal, hidden_at: nil
-      cannot :hide, Proposal, author_id: user.id
 
       can :ignore_flag, Proposal, ignored_flag_at: nil, hidden_at: nil
       cannot :ignore_flag, Proposal, author_id: user.id
 
       can :moderate, Proposal
-      cannot :moderate, Proposal, author_id: user.id
 
       can :hide, Legislation::Proposal, hidden_at: nil
       cannot :hide, Legislation::Proposal, author_id: user.id

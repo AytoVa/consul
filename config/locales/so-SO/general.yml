@@ -87,9 +87,6 @@ so:
       tags_placeholder: "Geli taagyada ad jeceshahay inaad isticmasho, kana kaxay qooyska(', ')"
     index:
       featured_debates: Soobandhigiid/ Muqaal
-      filter_topic:
-        one: " mawduuc%{topic}"
-        other: " mawduuc%{topic}"
       orders:
         confidence_score: ugu sareeya
         created_at: ugu cusub
@@ -199,7 +196,6 @@ so:
       collaborative_legislation: Nidaamka Sharciga
       debates: Doodo
       locale: "Luqad:"
-      logo: Logada qunsuliyada
       management: Maraynta
       moderation: Dhexdhexaadinta
       valuation: Qimeyn
@@ -207,19 +203,16 @@ so:
       help: Caawin
       my_account_link: Xisaabteyda
       my_activity_link: Hawlgalkayga
-      open: fur
       open_gov: Dawlad furan
       proposals: Sojeedino
       poll_questions: Codeynta
       budgets: Misaaniyada kaqayb qadashada
       notification_item:
         new_notifications:
+          zero: "Ma haysatid wargelin cusub"
           one: Waxaad heysataa ogeysiis cusub
           other: Waxaad heysataa%{count} ogeysiis cusub
         notifications: Ogaysiisyo
-        no_notifications: "Ma haysatid wargelin cusub"
-    admin:
-      watch_form_message: "Waxaad leedahay isbedel aan la badbaadin. Ma xaqiijinaysaa inaad ka tagto bogga?"
   notifications:
     index:
       empty_notifications: Ma haysatid wargelin cusub,.
@@ -261,8 +254,6 @@ so:
       sign_in: Ku soo gal tuwiter
       sign_up: Iska diwangeli tuwitaar
       name: Tuwiitar
-    info_sign_in: "Ku saxiix:"
-    info_sign_up: "Isku qor:"
     or_fill: "Ama buuxi foomka soo socda:"
   proposals:
     create:
@@ -301,9 +292,6 @@ so:
       map_skip_checkbox: "Soo jeedintaas ma laha meel la taaban karo ama aanan ogeyn."
     index:
       featured_proposals: Soobandhigiid/ Muqaal
-      filter_topic:
-        one: " mawduuc '%{topic}"
-        other: " mawduuc '%{topic}"
       orders:
         confidence_score: ugu sareeya
         created_at: ugu cusub
@@ -506,7 +494,6 @@ so:
     follow: "Raac"
     following: "Kuxiga"
     follow_entity: "Raac%{entity}"
-    hide: Qarin
     print:
       print_button: Daabac xogtan
     search: Raadin
@@ -558,7 +545,6 @@ so:
     facebook: "%{org} faysbuug"
     twitter: "%{org} tuwiitar"
     youtube: "%{org} yotuyuub"
-    whatsapp: Wat isaaab
     telegram: "%{org} telegaraam"
     instagram: "%{org} istigraam"
   stats:
@@ -640,9 +626,10 @@ so:
         debates: "Inta badan doodaha firfircoon"
         proposals: "Talooyinka ugu firfircoon"
         processes: "Gedisocodka furaan"
-      see_all_debates: Arag dhaman doodaha
-      see_all_proposals: Arag dhaman sojedimaha
-      see_all_processes: Arag dhaman gedis socodyada
+      see_all:
+        debates: Arag dhaman doodaha
+        proposals: Arag dhaman sojedimaha
+        processes: Arag dhaman gedis socodyada
       process_label: Geedisocoodka
       see_process: Arag gedi socodka
     cards:

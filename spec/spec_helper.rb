@@ -1,5 +1,4 @@
 require "factory_bot_rails"
-require "database_cleaner"
 require "email_spec"
 require "devise"
 require "knapsack_pro"
@@ -9,12 +8,13 @@ Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
 Dir["./spec/shared/**/*.rb"].sort.each  { |f| require f }
 
 RSpec.configure do |config|
-  config.use_transactional_fixtures = false
+  config.use_transactional_fixtures = true
 
   config.filter_run :focus
   config.run_all_when_everything_filtered = true
   config.include RequestSpecHelper, type: :request
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
   config.include FactoryBot::Syntax::Methods
   config.include(EmailSpec::Helpers)
   config.include(EmailSpec::Matchers)
@@ -22,49 +22,25 @@ RSpec.configure do |config|
   config.include(ActiveSupport::Testing::TimeHelpers)
 
   config.before(:suite) do
-    DatabaseCleaner.clean_with :truncation
-  end
-
-  config.before(:suite) do
-    if config.use_transactional_fixtures?
-      raise(<<-MSG)
-        Delete line `config.use_transactional_fixtures = true` from rails_helper.rb
-        (or set it to false) to prevent uncommitted transactions being used in
-        JavaScript-dependent specs.
-
-        During testing, the app-under-test that the browser driver connects to
-        uses a different database connection to the database connection used by
-        the spec. The app's database connection would not be able to access
-        uncommitted transaction data setup over the spec's database connection.
-      MSG
-    end
-
-    DatabaseCleaner.clean_with(:truncation)
+    Rails.application.load_seed
   end
 
   config.before do |example|
-    DatabaseCleaner.strategy = :transaction
     I18n.locale = :en
-    Globalize.locale = nil
     Globalize.set_fallbacks_to_all_available_locales
-    load Rails.root.join("db", "seeds.rb").to_s
     Setting["feature.user.skip_verification"] = nil
   end
 
-  config.before(:each, type: :feature) do
-    # :rack_test driver's Rack app under test shares database connection
-    # with the specs, so continue to use transaction strategy for speed.
-    driver_shares_db_connection_with_specs = Capybara.current_driver == :rack_test
+  config.around(:each, :race_condition) do |example|
+    self.use_transactional_tests = false
+    example.run
+    self.use_transactional_tests = true
 
-    unless driver_shares_db_connection_with_specs
-      # Driver is probably for an external browser with an app
-      # under test that does *not* share a database connection with the
-      # specs, so use truncation strategy.
-      DatabaseCleaner.strategy = :truncation
-    end
+    DatabaseCleaner.clean_with(:truncation)
+    Rails.application.load_seed
   end
 
-  config.before(:each, type: :feature) do
+  config.before(:each, type: :system) do
     Capybara::Webmock.start
   end
 
@@ -76,22 +52,42 @@ RSpec.configure do |config|
     page.driver.reset!
   end
 
-  config.before do
-    DatabaseCleaner.start
+  config.before(:each, type: :system) do |example|
+    driven_by :headless_chrome
   end
 
-  config.append_after do
-    DatabaseCleaner.clean
+  config.before(:each, type: :system, no_js: true) do
+    driven_by :rack_test
   end
 
-  config.before(:each, type: :feature) do
+  config.before(:each, type: :system) do
     Bullet.start_request
     allow(InvisibleCaptcha).to receive(:timestamp_threshold).and_return(0)
   end
 
-  config.after(:each, type: :feature) do
+  config.after(:each, type: :system) do
     Bullet.perform_out_of_channel_notifications if Bullet.notification?
     Bullet.end_request
+  end
+
+  config.before(:each, :admin, type: :system) do
+    login_as(create(:administrator).user)
+  end
+
+  config.before(:each, :admin, type: :controller) do
+    sign_in(create(:administrator).user)
+  end
+
+  config.before(:each, :show_exceptions) do
+    config = Rails.application.env_config
+
+    allow(Rails.application).to receive(:env_config) do
+      config.merge(
+        "action_dispatch.show_exceptions" => true,
+        "action_dispatch.show_detailed_exceptions" => false,
+        "consider_all_requests_local" => false
+      )
+    end
   end
 
   config.before(:each, :delay_jobs) do
@@ -102,12 +98,22 @@ RSpec.configure do |config|
     Delayed::Worker.delay_jobs = false
   end
 
-  config.before(:each, :with_frozen_time) do
-    travel_to Time.current # TODO: use `freeze_time` after migrating to Rails 5.2.
+  config.before(:each, :small_window) do
+    @window_size = Capybara.current_window.size
+    Capybara.current_window.resize_to(639, 479)
   end
 
-  config.after(:each, :with_frozen_time) do
-    travel_back
+  config.after(:each, :small_window) do
+    Capybara.current_window.resize_to(*@window_size)
+  end
+
+  config.before(:each, :remote_translations) do
+    allow(RemoteTranslations::Microsoft::AvailableLocales)
+      .to receive(:available_locales).and_return(I18n.available_locales.map(&:to_s))
+  end
+
+  config.around(:each, :with_frozen_time) do |example|
+    freeze_time { example.run }
   end
 
   config.before(:each, :application_zone_west_of_system_zone) do
@@ -126,6 +132,38 @@ RSpec.configure do |config|
     application_zone = ActiveSupport::TimeZone.new("Madrid")
 
     allow(Time).to receive(:zone).and_return(application_zone)
+  end
+
+  config.before(:each, :remote_census) do |example|
+    allow_any_instance_of(RemoteCensusApi).to receive(:end_point_defined?).and_return(true)
+    Setting["feature.remote_census"] = true
+    Setting["remote_census.request.method_name"] = "verify_residence"
+    Setting["remote_census.request.structure"] = '{ "request":
+      {
+        "document_type": "null",
+        "document_number": "nil",
+        "date_of_birth": "null",
+        "postal_code": "nil"
+      }
+    }'
+
+    Setting["remote_census.request.document_type"] = "request.document_type"
+    Setting["remote_census.request.document_number"] = "request.document_number"
+    Setting["remote_census.request.date_of_birth"] = "request.date_of_birth"
+    Setting["remote_census.request.postal_code"] = "request.postal_code"
+    Setting["remote_census.response.date_of_birth"] = "response.data.date_of_birth"
+    Setting["remote_census.response.postal_code"] = "response.data.postal_code"
+    Setting["remote_census.response.district"] = "response.data.district_code"
+    Setting["remote_census.response.gender"] = "response.data.gender"
+    Setting["remote_census.response.name"] = "response.data.name"
+    Setting["remote_census.response.surname"] = "response.data.surname"
+    Setting["remote_census.response.valid"] = "response.data.document_number"
+
+    savon.mock!
+  end
+
+  config.after(:each, :remote_census) do
+    savon.unmock!
   end
 
   # Allows RSpec to persist some state between runs in order to support
@@ -162,5 +200,5 @@ RSpec.configure do |config|
   config.expect_with(:rspec) { |c| c.syntax = :expect }
 end
 
-# Parallel build helper configuration for travis
+# Parallel build helper configuration for CI
 KnapsackPro::Adapters::RSpecAdapter.bind

@@ -3,8 +3,6 @@ ar:
     ballots:
       show:
         title: الاقتراح الخاص بك
-        amount_spent: المبلغ المنفق
-        remaining: "لا يزال لديك <span>%{amount}</span> للاستثمار."
         no_balloted_group_yet: "انت لم تقم بالتصويت على هذه المجموعة بعد، اذهب للتصويت!"
         remove: ازالة التصويت
         voted_info_2: "ولكن يمكنك تغيير تصويتك في أي وقت إلى أن يتم إغلاق هذه المرحلة."
@@ -42,12 +40,8 @@ ar:
         icon_alt: رمز الميزانيات المشاركة
         title: الميزانيات المشاركة
         help: ساعد في ميزانيات المشاركة
-        all_phases: انظر الى جميع المراحل
       all_phases: مرحلة الميزانية الاستثمارية
       map: مقتراحات استثمارات الميزانية محددة جغرافيا
-      investment_proyects: قائمة بجميع المشاريع الاستثمارية
-      unfeasible_investment_proyects: قائمة بجميع المشاريع الاستثمارية الغير مجدية
-      not_selected_investment_proyects: قائمة بالمشاريع الاستثمارية الغير محددة للاقرتاح
       finished_budgets: ميزانيات المشاركة النهائية
       see_results: رؤية النتائج
       section_footer:
@@ -75,17 +69,12 @@ ar:
           title: بحث
         sidebar:
           my_ballot: قرعتي
-          voted_info: يمكنك %{link} في اي وقت حتى اغلاف هذه المرحلة. لا داعي لانفاق جميع الاموال المتاحة.
-          voted_info_link: غيير الصوت الخاص بك
           change_ballot: "اذا تريد تغيير رايك تسطيع ازالة التصويت الخاص بك في %{check_ballot} و البدء مرة اخرى."
           check_ballot_link: "تحقق من قرعتي"
           zero: انت لم تصوت على اي مشروع استثماري في هذه المحموعة.
           verified_only: "لانشاء ميزانية استثمار جديدة %{verify}."
           create: "انشاء ميزانية استثمار"
           not_logged_in: "لانشاء ميزانية استثمار جديدة يجب عليك %{sign_in} او %{sign_up}."
-          by_feasibility: حسب الجدوى
-          feasible: مشاريع مجدية
-          unfeasible: مشاريع غير مجدية
         orders:
           random: عشوائي
           confidence_score: اعلى تقييم
@@ -129,20 +118,11 @@ ar:
           other: "%{count} دعم"
         give_support: دعم
       header:
-        check_ballot: تحقق من قرعتي
+        check_ballot: "تحقق من قرعتي"
         change_ballot: "اذا تريد تغير رايك تستطيع ازالة تصويتك في %{check_ballot} والبدء مرة اخرى."
         check_ballot_link: "تحقق من قرعتي"
         price: "هذا البند لديه ميزانية بقدر"
-    progress_bar:
-      assigned: "لقد قمت بتعيين: "
-      available: "الميزانية المتاحة: "
     show:
-      group: مجموعة
-      phase: المرحلة الفعلية
-      unfeasible_title: الإستثمارات غير مجدية
-      unfeasible: انظر الى الاستثمارات الغير مجدية
-      unselected_title: الإستثمارات غير محددة لمرحلة الإقتراع
-      unselected: انظر للاستثمارات الغير محددة لمرحلة الاقتراع
       see_results: رؤية النتائج
     results:
       link: النتائج

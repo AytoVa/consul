@@ -3,8 +3,12 @@ it:
     ballots:
       show:
         title: Il tuo voto
-        amount_spent: Importo speso
-        remaining: "Hai ancora <span>%{amount}</span> da investire."
+        amount_available:
+          knapsack: "Hai ancora <span>%{count}</span> da investire."
+        amount_spent:
+          knapsack: "Importo speso <span>%{count}</span>"
+        amount_limit:
+          knapsack: "%{count}"
         no_balloted_group_yet: "Non hai ancora votato in questo gruppo, vota!"
         remove: Rimuovere il voto
         voted:
@@ -48,12 +52,8 @@ it:
         icon_alt: Icona dei bilanci partecipativi
         title: Bilanci partecipativi
         help: Aiuto con i bilanci partecipativi
-        all_phases: Vedi tutte le fasi
       all_phases: Fasi dell'investimento di bilancio
       map: Proposte di investimenti di bilancio geograficamente localizzate
-      investment_proyects: Elenco di tutti i progetti di investimento
-      unfeasible_investment_proyects: Elenco di tutti i progetti di investimento irrealizzabili
-      not_selected_investment_proyects: Elenco di tutti i progetti di investimento non selezionati per la fase di voto finale
       finished_budgets: Bilanci partecipativi conclusi
       see_results: Vedi risultati
       section_footer:
@@ -81,17 +81,19 @@ it:
           title: Ricercare
         sidebar:
           my_ballot: I miei voti
-          voted_info: È possibile %{link} in qualsiasi momento fino alla fine di questa fase. Non è necessario spendere tutti i fondi disponibili.
-          voted_info_link: cambiare il tuo voto
+          voted_info:
+            knapsack:
+              one: "<strong>Hai votato una proposta con un costo di %{amount_spent}</strong>"
+              other: "<strong>Hai votato %{count} proposte con un costo di %{amount_spent}</strong>"
+          change_vote_info:
+            knapsack: "Puoi %{link} quando vuoi fino alla chiusura di questa fase. Non c'è bisogno di spendere tutte le monete disponibili."
+          change_vote_link: "cambia il tuo voto"
           change_ballot: "Se cambi idea è possibile cancellare il tuo voto in %{check_ballot} e ricominciare da capo."
           check_ballot_link: "controllare il mio voto"
           zero: Non hai ancora votato nessun progetto di investimento in questo gruppo.
           verified_only: "Per creare un nuovo budget d'investimento %{verify}."
           create: "Crea un investimento di bilancio"
           not_logged_in: "Per creare un nuovo investimento di bilancio è necessario %{sign_in} o %{sign_up}."
-          by_feasibility: Per fattibilità
-          feasible: Progetti realizzabili
-          unfeasible: Progetti non realizzabili
         orders:
           random: casuale
           confidence_score: più apprezzati
@@ -124,20 +126,11 @@ it:
           other: "%{count} sostegni"
         give_support: Sostieni
       header:
-        check_ballot: Controlla il mio voto
+        check_ballot: "Controlla il mio voto"
         change_ballot: "Se cambi idea è possibile cancellare il tuo voto in %{check_ballot} e ricominciare da capo."
         check_ballot_link: "controlla il mio voto"
         price: "Questa sezione dispone di un budget di"
-    progress_bar:
-      assigned: "Sono stati assegnati: "
-      available: "Budget disponibile: "
     show:
-      group: Gruppo
-      phase: Fase attuale
-      unfeasible_title: Progetti di investimento irrealizzabili
-      unfeasible: Mostra gli investimenti irrealizzabili
-      unselected_title: Investimenti che non sono stati selezionati per la fase di voto
-      unselected: Mostra gli investimenti non selezionati per la fase di voto
       see_results: Vedi risultati
     results:
       link: Risultati

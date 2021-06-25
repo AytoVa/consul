@@ -87,9 +87,6 @@ it:
       tags_placeholder: "Inserisci i tag che desideri utilizzare, separati da virgole (',')"
     index:
       featured_debates: In primo piano
-      filter_topic:
-        one: " con argomento '%{topic}'"
-        other: " con argomento '%{topic}'"
       orders:
         confidence_score: più apprezzati
         created_at: più recenti
@@ -199,7 +196,6 @@ it:
       collaborative_legislation: Procedimenti legislativi
       debates: Dibattiti
       locale: "Lingua:"
-      logo: CONSUL logo
       management: Gestione
       moderation: Moderare
       valuation: Valutazione
@@ -207,19 +203,16 @@ it:
       help: Aiuto
       my_account_link: Il mio account
       my_activity_link: La mia attività
-      open: aprire
       open_gov: Governo aperto
       proposals: Proposte
       poll_questions: Voto
       budgets: Bilancio partecipativo
       notification_item:
         new_notifications:
+          zero: "Non hai nuove notifiche"
           one: Hai una nuova notifica
           other: Hai %{count} nuove notifiche
         notifications: Notifiche
-        no_notifications: "Non hai nuove notifiche"
-    admin:
-      watch_form_message: "Non sono state salvate le modifiche. Confermate per uscire dalla pagina?"
   notifications:
     index:
       empty_notifications: Non hai nuove notifiche.
@@ -261,8 +254,6 @@ it:
       sign_in: Accedi con Twitter
       sign_up: Registrati con Twitter
       name: Twitter
-    info_sign_in: "Accedi con:"
-    info_sign_up: "Registrati con:"
     or_fill: "Oppure compila il seguente modulo:"
   proposals:
     create:
@@ -299,9 +290,6 @@ it:
       map_skip_checkbox: "Questo investimento non ha una precisa collocazione geografica ovvero io non ne sono a conoscenza."
     index:
       featured_proposals: In primo piano
-      filter_topic:
-        one: " con argomento '%{topic}'"
-        other: " con argomento '%{topic}'"
       orders:
         confidence_score: più apprezzati
         created_at: più recenti
@@ -556,7 +544,6 @@ it:
     follow: "Segui"
     following: "Seguendo"
     follow_entity: "Segui %{entity}"
-    hide: Nascondi
     print:
       print_button: Stampare questa informazione
     search: Ricercare
@@ -608,7 +595,6 @@ it:
     facebook: "Facebook di %{org}"
     twitter: "Twitter di %{org}"
     youtube: "YouTube di %{org}"
-    whatsapp: WhatsApp
     telegram: "Telegram di %{org}"
     instagram: "Instagram di %{org}"
   stats:
@@ -690,9 +676,10 @@ it:
         debates: "Dibattiti più attivi"
         proposals: "Proposte più attive"
         processes: "Procedimenti aperti"
-      see_all_debates: Vedi tutti i dibattiti
-      see_all_proposals: Vedi tutte le proposte
-      see_all_processes: Vedi tutti i procedimenti
+      see_all:
+        debates: Vedi tutti i dibattiti
+        proposals: Vedi tutte le proposte
+        processes: Vedi tutti i procedimenti
       process_label: Procedimento
       see_process: Vedi procedimento
     cards:

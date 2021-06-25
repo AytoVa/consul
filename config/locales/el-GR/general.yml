@@ -95,9 +95,6 @@ el:
       tags_placeholder: "Εισαγάγετε τις ετικέτες που θα θέλατε να χρησιμοποιήσετε, διαχωρισμένες με κόμματα (',')"
     index:
       featured_debates: Προτεινόμενα
-      filter_topic:
-        one: " με θέμα '%{topic}'"
-        other: " με θέμα '%{topic}'"
       orders:
         confidence_score: υψηλότερα βαθμολογημένα
         created_at: νεότερα
@@ -223,7 +220,6 @@ el:
       collaborative_legislation: Συνεργατική νομοθεσία
       debates: Συζητήσεις
       locale: "Γλώσσα:"
-      logo: Λογότυπο CONSUL
       management: Διαχείριση
       moderation: Συντονισμός
       valuation: Αξιολόγηση
@@ -231,19 +227,16 @@ el:
       help: Βοήθεια
       my_account_link: Ο λογαριασμός μου
       my_activity_link: Το περιεχόμενό μου
-      open: ανοιχτό
       open_gov: Ανοικτή διακυβέρνηση
       proposals: Προτάσεις
       poll_questions: Ψηφοφορία
       budgets: Συμμετοχικός προϋπολογισμός
       notification_item:
         new_notifications:
+          zero: "Δεν έχετε νέες ειδοποιήσεις"
           one: Έχετε μια νέα ειδοποίηση
           other: Έχετε %{count} νέες ειδοποιήσεις
         notifications: Ειδοποιήσεις
-        no_notifications: "Δεν έχετε νέες ειδοποιήσεις"
-    admin:
-      watch_form_message: "Έχετε μη αποθηκευμένες αλλαγές. Επιβεβαιώνετε οτι επιθυμείτε να φύγετε από τη σελίδα;"
   notifications:
     index:
       empty_notifications: Δεν έχετε νέες ειδοποιήσεις.
@@ -285,8 +278,6 @@ el:
       sign_in: Σύνδεση μέσω Twitter
       sign_up: Εγγραφή μέσω Twitter
       name: Twitter
-    info_sign_in: "Σύνδεση με:"
-    info_sign_up: "Εγγραφή με:"
     or_fill: "Ή συμπληρώστε την παρακάτω φόρμα:"
   proposals:
     create:
@@ -333,9 +324,6 @@ el:
       map_skip_checkbox: "Η πρόταση αυτή δεν έχει μια συγκεκριμένη τοποθεσία ή δεν έχω επίγνωση για αυτήν."
     index:
       featured_proposals: Προτεινόμενα
-      filter_topic:
-        one: " με θέμα '%{topic}'"
-        other: " με θέμα '%{topic}'"
       orders:
         confidence_score: υψηλότερη βαθμολογία
         created_at: νεότερα
@@ -688,7 +676,6 @@ el:
     follow: "Ακολούθησε"
     following: "Ακολουθείτε"
     follow_entity: "Ακολούθησε %{entity}"
-    hide: Απόκρυψη
     print:
       print_button: Εκτύπωση αυτών των πληροφοριών
     search: Αναζήτηση
@@ -740,7 +727,6 @@ el:
     facebook: "%{org} Facebook"
     twitter: "%{org} Twitter"
     youtube: "%{org} YouTube"
-    whatsapp: WhatsApp
     telegram: "%{org} Telegram"
     instagram: "%{org} Instagram"
   stats:
@@ -830,9 +816,10 @@ el:
         debates: "Πιο ενεργές συζητήσεις"
         proposals: "Πιο ενεργές προτάσεις"
         processes: "Ανοικτές διαδικασίες"
-      see_all_debates: Προβολή όλων των συζητήσεων
-      see_all_proposals: Προβολή όλων των προτάσεων
-      see_all_processes: Προβολή όλων των διαδικασιών
+      see_all:
+        debates: Προβολή όλων των συζητήσεων
+        proposals: Προβολή όλων των προτάσεων
+        processes: Προβολή όλων των διαδικασιών
       process_label: Διαδικασία
       see_process: Προβολή διαδικασίας
     cards:

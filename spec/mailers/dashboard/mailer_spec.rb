@@ -11,6 +11,8 @@ describe Dashboard::Mailer do
 
   before do
     Setting["feature.dashboard.notification_emails"] = true
+    Setting["mailer_from_name"] = "CONSUL"
+    Setting["mailer_from_address"] = "noreply@consul.dev"
   end
 
   describe "#forward" do
@@ -165,6 +167,7 @@ describe Dashboard::Mailer do
     end
 
     it "sends emails if new actions detected when creating a proposal" do
+      Setting["org_name"] = "CONSUL"
       action.update!(published_proposal: false)
       resource.update!(published_proposal: false)
       proposal.save!
@@ -182,7 +185,7 @@ describe Dashboard::Mailer do
       expect(email).to have_body_text("When you are ready publish your citizen proposal from this")
       expect(email).to have_link "link", href: proposal_dashboard_url(proposal)
       expect(email).to have_body_text("We know that creating a proposal with a hook and getting "\
-                                      "the necessary support can seem complicated. But dont "\
+                                      "the necessary support can seem complicated. But don't "\
                                       "worry because we are going to help you!")
       expect(email).to have_body_text("You have a tool that will be your new best ally: "\
                                       "The Citizen Proposals panel.")
@@ -238,7 +241,7 @@ describe Dashboard::Mailer do
       expect(email).to deliver_from("CONSUL <noreply@consul.dev>")
       expect(email).to deliver_to(proposal.author)
       expect(email).to have_subject("Your citizen proposal is already "\
-                                    "published Dont stop spreading!")
+                                    "published. Don't stop spreading!")
       expect(email).to have_body_text("Congratulations #{proposal.author.name}! Your proposal "\
                                       "#{proposal.title} has been created successfully.")
       expect(email).to have_body_text("And now, go for your first 100 supports!")

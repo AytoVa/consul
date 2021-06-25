@@ -1,5 +1,7 @@
-require "database_cleaner"
-DatabaseCleaner.clean_with :truncation
+unless Rails.env.test?
+  require "database_cleaner"
+  DatabaseCleaner.clean_with :truncation
+end
 @logger = Logger.new(STDOUT)
 @logger.formatter = proc do |_severity, _datetime, _progname, msg|
                       msg unless @avoid_log
@@ -41,5 +43,6 @@ require_relative "dev_seeds/admin_notifications"
 require_relative "dev_seeds/legislation_proposals"
 require_relative "dev_seeds/milestones"
 require_relative "dev_seeds/pages"
+require_relative "dev_seeds/sdg"
 
 log "All dev seeds created successfuly 👍"

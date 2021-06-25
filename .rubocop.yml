@@ -15,6 +15,7 @@ Bundler/DuplicatedGem:
 
 Bundler/OrderedGems:
   Enabled: true
+  ConsiderPunctuation: true
 
 Capybara/CurrentPathExpectation:
   Enabled: true
@@ -25,7 +26,16 @@ Capybara/FeatureMethods:
     - scenario
     - xscenario
 
+Capybara/VisibilityMatcher:
+  Enabled: true
+
 FactoryBot/AttributeDefinedStatically:
+  Enabled: true
+
+FactoryBot/FactoryClassName:
+  Enabled: true
+
+Layout/AssignmentIndentation:
   Enabled: true
 
 Layout/EmptyLineAfterGuardClause:
@@ -58,20 +68,24 @@ Layout/EndOfLine:
 Layout/ExtraSpacing:
   Enabled: true
 
-Layout/IndentAssignment:
-  Enabled: true
-
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Enabled: true
 
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
+Layout/IndentationStyle:
+  Enabled: true
+
 Layout/IndentationWidth:
   Enabled: true
 
-Layout/LeadingBlankLines:
+Layout/LeadingEmptyLines:
   Enabled: true
+
+Layout/LineLength:
+  Max: 110
+  Severity: refactor
 
 Layout/MultilineBlockLayout:
   Enabled: true
@@ -95,6 +109,9 @@ Layout/SpaceAroundBlockParameters:
   Enabled: true
 
 Layout/SpaceAroundEqualsInParameterDefault:
+  Enabled: true
+
+Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
 Layout/SpaceAroundOperators:
@@ -146,10 +163,7 @@ Layout/SpaceInsideReferenceBrackets:
 Layout/SpaceInsideStringInterpolation:
   Enabled: true
 
-Layout/Tab:
-  Enabled: true
-
-Layout/TrailingBlankLines:
+Layout/TrailingEmptyLines:
   Enabled: true
 
 Layout/TrailingWhitespace:
@@ -158,7 +172,13 @@ Layout/TrailingWhitespace:
 Lint/AmbiguousRegexpLiteral:
   Enabled: true
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: true
+
 Lint/DuplicateMethods:
+  Enabled: true
+
+Lint/EmptyFile:
   Enabled: true
 
 Lint/LiteralAsCondition:
@@ -167,26 +187,22 @@ Lint/LiteralAsCondition:
 Lint/ParenthesesAsGroupedExpression:
   Enabled: true
 
+Lint/RedundantStringCoercion:
+  Enabled: true
+
 Lint/SafeNavigationChain:
   Enabled: true
 
 Lint/ShadowingOuterLocalVariable:
   Enabled: true
 
-Lint/StringConversionInInterpolation:
-  Enabled: true
-
 Lint/UselessAssignment:
   Enabled: true
 
-Metrics/LineLength:
-  Max: 110
-  Severity: refactor
-
-Performance/CompareWithBlock:
+Lint/Void:
   Enabled: true
 
-Performance/Detect:
+Performance/CompareWithBlock:
   Enabled: true
 
 Performance/DoubleStartEndWith:
@@ -196,15 +212,6 @@ Performance/EndWith:
   Enabled: true
 
 Performance/StartWith:
-  Enabled: true
-
-Rails/ActionFilter:
-  Enabled: true
-
-Rails/ApplicationJob:
-  Enabled: true
-
-Rails/ApplicationRecord:
   Enabled: true
 
 Rails/CreateTableWithTimestamps:
@@ -218,7 +225,10 @@ Rails/Date:
 
 Rails/DynamicFindBy:
   Enabled: true
-  Severity: refactor
+  Whitelist:
+    - find_by_slug_or_id
+    - find_by_slug_or_id!
+    - find_by_manager_login
 
 Rails/EnumUniqueness:
   Enabled: true
@@ -240,9 +250,6 @@ Rails/HasAndBelongsToMany:
 Rails/HasManyOrHasOneDependent:
   Enabled: true
   Severity: refactor
-
-Rails/HttpPositionalArguments:
-  Enabled: true
 
 Rails/InverseOf:
   Enabled: true
@@ -293,6 +300,13 @@ Rails/SkipsModelValidations:
 Rails/TimeZone:
   Enabled: true
 
+Rails/UniqBeforePluck:
+  Enabled: true
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: true
+  Severity: refactor
+
 Rails/UnknownEnv:
   Enabled: true
   Environments:
@@ -311,6 +325,9 @@ RSpec/AroundBlock:
 RSpec/BeforeAfterAll:
   Enabled: true
 
+RSpec/ContextMethod:
+  Enabled: true
+
 RSpec/DescribedClass:
   Enabled: true
   EnforcedStyle: explicit
@@ -319,6 +336,12 @@ RSpec/EmptyExampleGroup:
   Enabled: true
   Exclude:
     - spec/factories/**/*
+
+RSpec/EmptyHook:
+  Enabled: true
+
+RSpec/EmptyLineAfterExample:
+  Enabled: true
 
 RSpec/EmptyLineAfterExampleGroup:
   Enabled: true
@@ -337,7 +360,6 @@ RSpec/HookArgument:
 RSpec/InstanceVariable:
   Enabled: true
   Exclude:
-    - spec/controllers/concerns/has_filters_spec.rb
     - spec/controllers/concerns/has_orders_spec.rb
 
 RSpec/LetBeforeExamples:
@@ -353,6 +375,12 @@ RSpec/OverwritingSetup:
   Enabled: true
 
 RSpec/RepeatedExample:
+  Enabled: true
+
+RSpec/RepeatedExampleGroupBody:
+  Enabled: true
+
+RSpec/RepeatedExampleGroupDescription:
   Enabled: true
 
 RSpec/ScatteredLet:
@@ -373,7 +401,13 @@ Security/JSONLoad:
 Security/YAMLLoad:
   Enabled: true
 
+Style/AccessorGrouping:
+  Enabled: true
+
 Style/AndOr:
+  Enabled: true
+
+Style/ArrayCoercion:
   Enabled: true
 
 Style/BlockDelimiters:
@@ -410,6 +444,9 @@ Style/PercentLiteralDelimiters:
   Enabled: true
 
 Style/Proc:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
   Enabled: true
 
 Style/RedundantFreeze:

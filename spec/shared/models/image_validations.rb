@@ -1,9 +1,7 @@
 shared_examples "image validations" do |imageable_factory|
-  include ImagesHelper
   include ImageablesHelper
 
   let!(:image)                  { build(:image, imageable_factory.to_sym) }
-  let!(:imageable)              { image.imageable }
   let!(:acceptedcontenttypes)   { imageable_accepted_content_types }
 
   it "is valid" do

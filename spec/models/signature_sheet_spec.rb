@@ -38,18 +38,56 @@ describe SignatureSheet do
   end
 
   describe "#name" do
-    it "returns name for proposal signature sheets" do
-      proposal = create(:proposal)
-      signature_sheet.signable = proposal
+    context "when title is nil" do
+      it "returns name for proposal signature sheets" do
+        proposal = create(:proposal)
+        signature_sheet.signable = proposal
 
-      expect(signature_sheet.name).to eq("Citizen proposal #{proposal.id}")
+        expect(signature_sheet.name).to eq("Citizen proposal #{proposal.id}")
+      end
+
+      it "returns name for budget investment signature sheets" do
+        budget_investment = create(:budget_investment)
+        signature_sheet.signable = budget_investment
+
+        expect(signature_sheet.name).to eq("Investment #{budget_investment.id}")
+      end
     end
 
-    it "returns name for budget investment signature sheets" do
-      budget_investment = create(:budget_investment)
-      signature_sheet.signable = budget_investment
+    context "when title is not nil" do
+      let(:signature_sheet) { build(:signature_sheet, :with_title) }
 
-      expect(signature_sheet.name).to eq("Investment #{budget_investment.id}")
+      it "returns name for proposal signature sheets" do
+        proposal = create(:proposal)
+        signature_sheet.signable = proposal
+
+        expect(signature_sheet.name).to eq("Citizen proposal #{proposal.id}: #{signature_sheet.title}")
+      end
+
+      it "returns name for budget investment signature sheets" do
+        budget_investment = create(:budget_investment)
+        signature_sheet.signable = budget_investment
+
+        expect(signature_sheet.name).to eq("Investment #{budget_investment.id}: #{signature_sheet.title}")
+      end
+    end
+
+    context "when title is an empty string" do
+      let(:signature_sheet) { build(:signature_sheet, title: "") }
+
+      it "returns name for proposal signature sheets" do
+        proposal = create(:proposal)
+        signature_sheet.signable = proposal
+
+        expect(signature_sheet.name).to eq("Citizen proposal #{proposal.id}")
+      end
+
+      it "returns name for budget investment signature sheets" do
+        budget_investment = create(:budget_investment)
+        signature_sheet.signable = budget_investment
+
+        expect(signature_sheet.name).to eq("Investment #{budget_investment.id}")
+      end
     end
   end
 
@@ -74,14 +112,15 @@ describe SignatureSheet do
       expect(signature_sheet.processed).to eq(true)
     end
 
-    context "with remote census active" do
-      before do
-        Setting["feature.remote_census"] = true
-      end
-
+    context "with remote census active", :remote_census do
       it "creates signatures for each group with document_number" do
+        Setting["remote_census.request.date_of_birth"] = nil
+        Setting["remote_census.request.postal_code"] = nil
+
         required_fields_to_verify = "123A; 456B"
         signature_sheet = create(:signature_sheet, required_fields_to_verify: required_fields_to_verify)
+
+        %w[123A 456B].each { mock_valid_remote_census_response }
         signature_sheet.verify_signatures
 
         expect(Signature.count).to eq(2)
@@ -94,10 +133,12 @@ describe SignatureSheet do
       end
 
       it "creates signatures for each group with document_number and date_of_birth" do
-        Setting["remote_census.request.date_of_birth"] = "some.value"
+        Setting["remote_census.request.postal_code"] = nil
 
         required_fields_to_verify = "123A, 01/01/1980; 456B, 01/02/1980"
         signature_sheet = create(:signature_sheet, required_fields_to_verify: required_fields_to_verify)
+
+        %w[123A 456B].each { mock_valid_remote_census_response }
         signature_sheet.verify_signatures
 
         expect(Signature.count).to eq(2)
@@ -107,15 +148,15 @@ describe SignatureSheet do
         expect(Signature.last.document_number).to eq("456B")
         expect(Signature.last.date_of_birth).to eq(Date.parse("01/02/1980"))
         expect(Signature.last.postal_code).to eq(nil)
-
-        Setting["remote_census.request.date_of_birth"] = nil
       end
 
       it "creates signatures for each group with document_number and postal_code" do
-        Setting["remote_census.request.postal_code"] = "some.value"
+        Setting["remote_census.request.date_of_birth"] = nil
 
         required_fields_to_verify = "123A, 28001; 456B, 28002"
         signature_sheet = create(:signature_sheet, required_fields_to_verify: required_fields_to_verify)
+
+        %w[123A 456B].each { mock_valid_remote_census_response }
         signature_sheet.verify_signatures
 
         expect(Signature.count).to eq(2)
@@ -125,16 +166,13 @@ describe SignatureSheet do
         expect(Signature.last.document_number).to eq("456B")
         expect(Signature.last.date_of_birth).to eq(nil)
         expect(Signature.last.postal_code).to eq("28002")
-
-        Setting["remote_census.request.postal_code"] = nil
       end
 
       it "creates signatures for each group with document_number, postal_code and date_of_birth" do
-        Setting["remote_census.request.date_of_birth"] = "some.value"
-        Setting["remote_census.request.postal_code"] = "some.value"
-
         required_fields_to_verify = "123A, 01/01/1980, 28001; 456B, 01/02/1980, 28002"
         signature_sheet = create(:signature_sheet, required_fields_to_verify: required_fields_to_verify)
+
+        %w[123A 456B].each { mock_valid_remote_census_response }
         signature_sheet.verify_signatures
 
         expect(Signature.count).to eq(2)
@@ -144,9 +182,6 @@ describe SignatureSheet do
         expect(Signature.last.document_number).to eq("456B")
         expect(Signature.last.date_of_birth).to eq(Date.parse("01/02/1980"))
         expect(Signature.last.postal_code).to eq("28002")
-
-        Setting["remote_census.request.date_of_birth"] = nil
-        Setting["remote_census.request.postal_code"] = nil
       end
     end
   end

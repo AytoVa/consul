@@ -1,5 +1,6 @@
 class Admin::Poll::Questions::AnswersController < Admin::Poll::BaseController
   include Translatable
+  include DocumentAttributes
 
   before_action :load_answer, only: [:show, :edit, :update, :documents]
 
@@ -44,15 +45,14 @@ class Admin::Poll::Questions::AnswersController < Admin::Poll::BaseController
 
   def order_answers
     ::Poll::Question::Answer.order_answers(params[:ordered_list])
-    render nothing: true
+    head :ok
   end
 
   private
 
     def answer_params
-      documents_attributes = [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy]
       attributes = [:title, :description, :given_order, :question_id,
-        documents_attributes: documents_attributes]
+        documents_attributes: document_attributes]
 
       params.require(:poll_question_answer).permit(
         *attributes, translation_params(Poll::Question::Answer)

@@ -5,14 +5,17 @@ module Budgets
     include FlagActions
     include RandomSeed
     include ImageAttributes
+    include DocumentAttributes
+    include MapLocationAttributes
     include Translatable
+    include InvestmentFilters
 
     PER_PAGE = 10
 
     before_action :authenticate_user!, except: [:index, :show, :json_data]
     before_action :load_budget, except: :json_data
 
-    load_and_authorize_resource :budget, except: :json_data
+    authorize_resource :budget, except: :json_data
     load_and_authorize_resource :investment, through: :budget, class: "Budget::Investment",
                                 except: :json_data
 
@@ -20,7 +23,7 @@ module Budgets
     before_action :load_heading, only: [:index, :show]
     before_action :set_random_seed, only: :index
     before_action :load_categories, only: [:index, :new, :create, :edit, :update]
-    before_action :set_default_budget_filter, only: :index
+    before_action :set_default_investment_filter, only: :index
     before_action :set_view, only: :index
     before_action :load_content_blocks, only: :index
 
@@ -31,8 +34,7 @@ module Budgets
     has_orders %w[most_voted newest oldest], only: :show
     has_orders ->(c) { c.instance_variable_get(:@budget).investments_orders }, only: :index
 
-    valid_filters = %w[not_unfeasible feasible unfeasible unselected selected winners]
-    has_filters valid_filters, only: [:index, :show, :suggest]
+    has_filters investment_filters, only: [:index, :show, :suggest]
 
     invisible_captcha only: [:create, :update], honeypot: :subtitle, scope: :budget_investment
 
@@ -166,11 +168,11 @@ module Budgets
       end
 
       def investment_params
-        attributes = [:heading_id, :tag_list,
-                      :organization_name, :location, :terms_of_service, :skip_map,
+        attributes = [:heading_id, :tag_list, :organization_name, :location,
+                      :terms_of_service, :skip_map, :related_sdg_list,
                       image_attributes: image_attributes,
-                      documents_attributes: [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy],
-                      map_location_attributes: [:latitude, :longitude, :zoom]]
+                      documents_attributes: document_attributes,
+                      map_location_attributes: map_location_attributes]
         params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
       end
 
@@ -182,7 +184,7 @@ module Budgets
       def load_heading
         if params[:heading_id].present?
           @heading = @budget.headings.find_by_slug_or_id! params[:heading_id]
-          @assigned_heading = @ballot&.heading_for_group(@heading&.group)
+          @assigned_heading = @ballot&.heading_for_group(@heading.group)
           load_map
         end
       end

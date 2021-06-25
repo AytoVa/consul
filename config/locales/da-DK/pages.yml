@@ -13,11 +13,12 @@ da:
         budgets: "Deltagerbudgetter"
         polls: "Afstemninger"
         other: "Andre oplysninger af interesse"
-        processes: "Processer"
+        processes: "Borgerdialog"
       debates:
         title: "Debatforum"
         description: "I sektionen %{link} kan du præsentere og dele din mening vedrørende emner relateret til din by. Det er også stedet, hvor idéer genereres og gennem de øvrige sektioner %{org} kan lede til konkrete handlinger fra kommunens side."
         link: "borgerdebat"
+        feature: "Du kan åbne debatter, kommentere og evaluere dem ved at erklære dig <strong>Enig</strong> eller <strong>Uenig</strong>. Gå til debatforum %{link}."
         feature_link: "registrer i %{org}"
         image_alt: "Knapper til at rangere debatindlæg"
         figcaption: '"Enig" og "Uenig" knapper til at rangere debatindlæggene.'
@@ -26,11 +27,13 @@ da:
         description: "I sektion %{link} kan du oprette forslag, som Aarhus Byråd kan føre ud i livet. Forslagene kræver opbakning, og hvis de opnår tilstrækkelig støtte, videreføres de til en offentlig afstemning. De forslag, der opnår flest stemmer og er mulige at gennemføre bliver derefter til virkelighed."
         link: "borgerforslag"
         image_alt: "Knap til at støtte op om et forslag"
+        figcaption: 'Knap til at "Støtte" et forslag.'
       budgets:
         title: "Deltagerbudget"
         description: "Sektionen %{link} hjælper borgerne med at have direkte indflydelse på, hvad det kommunale budget skal bruges på."
         link: "deltagerbudgetter"
         image_alt: "Deltagerbudgettets forskellige faser"
+        figcaption: 'Deltagerbudgetternes "Støtte"- og "Afstemnings"-faser.'
       polls:
         title: "Afstemninger"
         description: "Sektionen %{link} aktiveres hver gang et forslag opnår 1 % støtte og dermed skal stemmes om, eller når Byrådet selv fremsætter et anliggende, som borgerne skal være med til at beslutte."
@@ -38,9 +41,11 @@ da:
         feature_1: "For at deltage i afstemningen skal du gå til %{link} og bekræfte din konto."
         feature_1_link: "registrer med %{org_name}"
       processes:
-        title: "Processer"
-        description: "I sektionen %{link} deltager borgerne i udarbejdelsen og ændringer af bestemmelser, der har indflydelse på byen, og de kan tilkendegive deres mening vedrørende kommunalpolitik, der tidligere har været til debat."
-        link: "processer"
+        title: "Borgerdialog"
+        description: "I %{link} deltager borgerne i udarbejdelsen af kommunale politikker eller handlingsplaner. Det kan være igennem debat, udvikling af forslag eller kommentering af udkast til tekster."
+        link: "Borgerdialoger"
+        feature: "For at deltage skal du gå til %{link} og bekræfte din konto."
+        feature_link: "registrer med %{org_name}"
       faq:
         title: "Tekniske problemer?"
         description: "Læs de ofte stillede spørgsmål og find svar på dine egne."
@@ -51,6 +56,7 @@ da:
       other:
         title: "Andre oplysninger af interesse"
         how_to_use: "Anvend %{org_name} i din by"
+        sdg: "Verdensmål hjælp"
       how_to_use:
         text: |-
           Anvend portalen i din kommune eller hjælp os med at forbedre den. Det er en gratis software.
@@ -99,7 +105,7 @@ da:
               page_column: Deltagerbudgetter
             - 
               key_column: 5
-              page_column: Lovgivningsprocesser
+              page_column: Borgerdialger
         browser_table:
           description: "Afhængig af styresystem og den anvendte browser vil tastkombinationen se ud som følgende:"
           caption: Tastkombinationen afhængig af styresystem og browser
@@ -154,6 +160,7 @@ da:
               description_column: Mindre tekststørrelse
       compatibility:
         title: Kompatibilitet med standarder og visuelt design
+        description: 'Alle sider på websitet retter sig efter <strong> Accessibility Guidelines</strong> eller General Principles of Accessible Design fastslået af Arbejdsgruppen <abbr title="Web Accessibility Initiative" lang="en">WAI</abbr> tilhørende W3C.'
     titles:
       help: "Hvad er %{org}? - Borgerdeltagelse"
     verify:

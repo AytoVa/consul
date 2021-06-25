@@ -9,8 +9,24 @@ es:
     ballots:
       show:
         title: Mis votos
-        amount_spent: Coste total
-        remaining: "Te quedan <span>%{amount}</span> para invertir"
+        amount_progress: "%{amount_spent} / %{amount_limit}"
+        amount_available:
+          knapsack: "Todavía disponible <span>%{count}</span>"
+          approval:
+            zero: "Te quedan <span>%{count}</span> votos disponibles"
+            one: "Te queda <span>%{count}</span> voto disponible"
+            other: "Te quedan <span>%{count}</span> votos disponibles"
+        amount_spent:
+          knapsack: "Has asignado <span>%{count}</span>"
+          approval:
+            zero: "Votos: <span>%{count}</span>"
+            one: "Votos: <span>%{count}</span>"
+            other: "Votos: <span>%{count}</span>"
+        amount_limit:
+          knapsack: "Presupuesto total <span>%{count}</span>"
+          approval:
+            one: "Puedes votar <span>1</span> proyecto"
+            other: "Puedes votar hasta <span>%{count}</span> proyectos"
         no_balloted_group_yet: "Todavía no has votado proyectos de este grupo, ¡vota!"
         remove: Quitar voto
         voted:
@@ -27,6 +43,7 @@ es:
         not_enough_money: "Ya has asignado el presupuesto disponible.<br><small>Recuerda que puedes %{change_ballot} en cualquier momento</small>"
         no_ballots_allowed: El periodo de votación está cerrado.
         different_heading_assigned: "Ya has votado proyectos de otra partida: %{heading_link}"
+        not_enough_available_votes: "No tienes más votos disponibles"
         change_ballot: cambiar tus votos
         casted_offline: Ya has participado presencialmente
     groups:
@@ -54,12 +71,11 @@ es:
         icon_alt: Icono de Presupuestos participativos
         title: Presupuestos participativos
         help: Ayuda sobre presupuestos participativos
-        all_phases: Ver todas las fases
       all_phases: Fases de los presupuestos participativos
+      next_phase: Fase siguiente
+      prev_phase: Fase anterior
+      current_phase: Fase actual
       map: Proyectos localizables geográficamente
-      investment_proyects: Ver lista completa de proyectos de gasto
-      unfeasible_investment_proyects: Ver lista de proyectos de gasto inviables
-      not_selected_investment_proyects: Ver lista de proyectos de gasto no seleccionados para la votación final
       finished_budgets: Presupuestos participativos terminados
       see_results: Ver resultados
       section_footer:
@@ -90,23 +106,32 @@ es:
           other: " que contienen <strong>'%{search_term}'</strong>"
         sidebar:
           my_ballot: Mis votos
-          voted:
+          voted_info:
+            knapsack:
             one: "<strong>Has votado un proyecto por un valor de %{amount_spent}</strong>"
             other: "<strong>Has votado %{count} proyectos por un valor de %{amount_spent}</strong>"
-          voted_info: Puedes %{link} en cualquier momento hasta el cierre de esta fase. No hace falta que gastes todo el dinero disponible.
-          locked_internet_info: Solo puede votar de forma presencial.
-          voted_info_link: cambiar tus votos
+            approval:
+              one: "<strong>Has votado un proyecto</strong>"
+              other: "<strong>Has votado %{count} proyectos</strong>"
+          change_vote_info:
+            knapsack: "Puedes %{link} en cualquier momento hasta el %{phase_end_date}. No hace falta que gastes todo el dinero disponible."
+            approval: "Puedes %{link} en cualquier momento hasta el %{phase_end_date}."
+          change_vote_link: "cambiar tus votos"
           different_heading_assigned: "Ya apoyaste proyectos de otra sección del presupuesto: %{heading_link}"
           change_ballot: "Si cambias de opinión puedes borrar tus votos en %{check_ballot} y volver a empezar."
           check_ballot_link: "revisar y confirmar mis votos"
           zero: Todavía no has votado ningún proyecto de gasto en este ámbito del presupuesto.
           verified_only: "Para crear un nuevo proyecto de gasto %{verify}."
           create: "Crear proyecto de gasto"
-          not_logged_in: "Para crear un nuevo proyecto de gasto debes %{sign_in}."
+          not_logged_in: "Para crear un nuevo proyecto de gasto debes %{sign_in} o %{sign_up}."
           ballot_not_logged_in: "Para votar debes %{sign_in}."
-          by_feasibility: Por viabilidad
-          feasible: Ver los proyectos viables
-          unfeasible: Ver los proyectos inviables
+        filter: "Filtrando proyectos"
+        filters:
+          not_unfeasible: "No inviables"
+          selected: "Seleccionados"
+          unfeasible: "Inviables"
+          unselected: "No seleccionados"
+          winners: "Ganadores"
         orders:
           random: Aleatorios
           confidence_score: Mejor valorados
@@ -152,17 +177,8 @@ es:
         different_heading_assigned: "Ya apoyaste proyectos de otra sección del presupuesto: %{heading_link}"
         change_ballot: "Si cambias de opinión puedes borrar tus votos en %{check_ballot} y volver a empezar."
         check_ballot_link: "revisar y confirmar mis votos"
-        price: "Esta partida tiene un presupuesto de"
-    progress_bar:
-      assigned: "Has asignado: "
-      available: "Presupuesto disponible: "
+        price: "Presupuesto total"
     show:
-      group: Grupo
-      phase: Fase actual
-      unfeasible_title: Proyectos de gasto inviables
-      unfeasible: Ver los proyectos inviables
-      unselected_title: Proyectos no seleccionados para la votación final
-      unselected: Ver los proyectos no seleccionados para la votación final
       see_results: Ver resultados
     results:
       link: Resultados

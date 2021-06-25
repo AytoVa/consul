@@ -97,11 +97,22 @@ class Legislation::ProcessesController < Legislation::BaseController
     @phase = :milestones
   end
 
+  def summary
+    @phase = :summary
+    @proposals = @process.proposals.selected
+    @comments = @process.draft_versions.published.last&.best_comments || Comment.none
+
+    respond_to do |format|
+      format.html
+      format.xlsx { render xlsx: "summary", filename: "summary-#{Date.current}.xlsx" }
+    end
+  end
+
   def proposals
     set_process
     @phase = :proposals_phase
 
-    @proposals = ::Legislation::Proposal.where(process: @process)
+    @proposals = ::Legislation::Proposal.where(process: @process).filter_by(params[:advanced_search])
     @proposals = @proposals.search(params[:search]) if params[:search].present?
 
     @current_filter = "winners" if params[:filter].blank? && @proposals.winners.any?

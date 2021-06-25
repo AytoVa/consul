@@ -4,7 +4,6 @@ class DebatesController < ApplicationController
   include FlagActions
   include Translatable
 
-  before_action :parse_tag_filter, only: :index
   before_action :authenticate_user!, except: [:index, :show, :map]
   before_action :set_view, only: :index
   before_action :debates_recommendations, only: :index, if: :current_user
@@ -56,7 +55,7 @@ class DebatesController < ApplicationController
   private
 
     def debate_params
-      attributes = [:tag_list, :terms_of_service]
+      attributes = [:tag_list, :terms_of_service, :related_sdg_list]
       params.require(:debate).permit(attributes, translation_params(Debate))
     end
 
