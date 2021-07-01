@@ -2,6 +2,9 @@
 //
 // 01. Source Sans Pro (https://www.google.com/fonts/specimen/Source+Sans+Pro)
 // 02. Lato (https://www.google.com/fonts/specimen/Lato)
+// 03. Oswald (https://fonts.google.com/specimen/Oswald)
+// 04. Nunito
+// 05. OpenSans
 //
 
 // 01. Source Sans Pro
@@ -94,7 +97,38 @@
   font-style: normal;
 }
 
-// 03. Nunito
+// 03. Oswald
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+@font-face {
+  font-family: "Oswald";
+  src: font-url("oswald/oswald-light.ttf") format("truetype");
+  font-weight: lighter;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: font-url("oswald/oswald-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: font-url("oswald/oswald-bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: font-url("oswald/oswald-medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+// 04. Nunito
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 @font-face {
@@ -117,7 +151,7 @@
   src: local('Nunito Black'), local('Nunito-Black'), font-url('Nunito-Black.ttf') format('truetype');
 }
 
-// 04. OpenSans
+// 05. OpenSans
 // ----------------
 /* open-sans-300 - latin */
 @font-face {
