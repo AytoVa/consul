@@ -1,19 +1,19 @@
 require_dependency Rails.root.join("app", "models", "verification", "residence").to_s
 
 class Verification::Residence
-  validate :postal_code_in_valladolid
-  validate :residence_in_valladolid
+  validate :local_postal_code
+  validate :local_residence
   validate :document_number_and_document_type
 
-  def postal_code_in_valladolid
+  def local_postal_code
     errors.add(:postal_code, I18n.t("verification.residence.new.error_not_allowed_postal_code")) unless valid_postal_code?
   end
 
-  def residence_in_valladolid
+  def local_residence
     return if errors.any?
 
     unless residency_valid?
-      errors.add(:residence_in_valladolid, false)
+      errors.add(:local_residence, false)
       store_failed_attempt
       Lock.increase_tries(user)
     end

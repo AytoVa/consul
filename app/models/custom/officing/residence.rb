@@ -1,14 +1,14 @@
 require_dependency Rails.root.join("app", "models", "officing", "residence").to_s
 
 class Officing::Residence
-  validate :residence_in_valladolid
+  validate :local_residence
 
-  def residence_in_valladolid
+  def local_residence
     return if errors.any?
 
     unless residency_valid?
       store_failed_census_call
-      errors.add(:residence_in_valladolid, false)
+      errors.add(:local_residence, false)
     end
   end
 end
