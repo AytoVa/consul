@@ -42,9 +42,6 @@ class Admin::BudgetInvestmentsController < Admin::BaseController
 
   def update
     authorize! :admin_update, @investment
-
-    respond_to do |format|
-      format.html do
     if @investment.update(budget_investment_params)
       redirect_to admin_budget_budget_investment_path(@budget,
                                                       @investment,
@@ -58,16 +55,13 @@ class Admin::BudgetInvestmentsController < Admin::BaseController
     end
   end
 
-      format.json do
-        @investment.update!(budget_investment_params)
-      end
-    end
-  end
-
   def toggle_selection
     authorize! :toggle_selection, @investment
     @investment.toggle :selected
     @investment.save!
+	  if @investment.selected
+		  @investment.send_selected_email
+	  end
     load_investments
   end
 
@@ -96,7 +90,8 @@ class Admin::BudgetInvestmentsController < Admin::BaseController
     def budget_investment_params
       attributes = [:external_url, :heading_id, :administrator_id, :tag_list,
                     :valuation_tag_list, :incompatible, :visible_to_valuators, :selected,
-                    :milestone_tag_list, :organization_name, :location, :skip_map,
+                    :milestone_tag_list,
+                    :organization_name, :location, :skip_map,
                     image_attributes: image_attributes,
                     documents_attributes: [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy],
                     map_location_attributes: [:latitude, :longitude, :zoom], valuator_ids: [], valuator_group_ids: []]

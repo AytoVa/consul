@@ -7,11 +7,15 @@ class Admin::BudgetsController < Admin::BaseController
 
   has_filters %w[all open finished], only: :index
 
-  before_action :load_budget, except: [:index, :new, :create]
+  before_action :load_budget, except: [:index, :new, :create, :index_physical_votes]
   before_action :load_staff, only: [:new, :create, :edit, :update, :show]
-  load_and_authorize_resource
+  #load_and_authorize_resource
+  has_filters %w[open finished], only: [:index, :index_physical_votes]
 
   def index
+    @budgets = Budget.send(@current_filter).order(created_at: :desc).page(params[:page])
+  end
+  def index_physical_votes
     @budgets = Budget.send(@current_filter).order(created_at: :desc).page(params[:page])
   end
 
