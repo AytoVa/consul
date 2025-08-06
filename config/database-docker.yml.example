@@ -1,28 +1,42 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  #host: localhost
-  host: database #<--the name of the db in the docker-compose
-  pool: 5
-  port: 5432
-  username: postgres
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "database") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", "5432") %>
+  username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "postgres") %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", "5") %>
+  timeout: 5000
+  # Rails 5.0.7.2 with PostgreSQL 9.5.21 compatibility settings
+  prepared_statements: false
 
 development: &development
   <<: *default
-  database: consul_development
+  database: <%= ENV.fetch("POSTGRES_DB", "consul_development") %>
+  # Enable query logging in development
+  min_messages: warning
+
+# Test database configuration
+test:
+  <<: *default
+  database: consul_test
+  # Faster test runs
+  pool: 1
+  timeout: 1000
 
 # The staging, preproduction and production dbs are only needed
 # for running rake assets:precompile locally before deploying
 staging:
   <<: *development
+  database: consul_staging
 
 preproduction:
   <<: *development
+  database: consul_preproduction
 
 production:
-  <<: *development
-
-test:
   <<: *default
-  database: consul_test
+  database: consul_production
+  # Production specific optimizations
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", "25") %>
+  timeout: 10000

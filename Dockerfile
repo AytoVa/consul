@@ -1,59 +1,98 @@
-# Use Ruby 2.3.8 as base image
-FROM ruby:2.3.8
+# Use Ruby 2.4.9 as base image for Rails 5.0.7.2 compatibility
+FROM ruby:2.4.9
 
-ENV DEBIAN_FRONTEND noninteractive
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    RAILS_ROOT=/var/www/consul \
+    RAILS_ENV=development \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_JOBS=4 \
+    BUNDLE_RETRY=3
 
-# Install essential Linux packages
-RUN apt-get update -qq
-RUN apt-get install -y build-essential libpq-dev postgresql-client nodejs imagemagick sudo libxss1 libappindicator1 libindicator7 unzip memcached
+# Fix Debian Buster repository issues by using archive repositories
+RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list && \
+    echo "Acquire::Check-Valid-Until false;" > /etc/apt/apt.conf.d/99no-check-valid-until
 
-# Files created inside the container repect the ownership
-RUN adduser --shell /bin/bash --disabled-password --gecos "" consul \
-  && adduser consul sudo \
-  && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+# Install essential Linux packages in a single layer
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+      build-essential \
+      libpq-dev \
+      postgresql-client \
+      nodejs \
+      imagemagick \
+      sudo \
+      libxss1 \
+      libappindicator1 \
+      libindicator7 \
+      unzip \
+      memcached \
+      git \
+      curl \
+      wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN echo 'Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bundle/bin"' > /etc/sudoers.d/secure_path
-RUN chmod 0440 /etc/sudoers.d/secure_path
+# Install specific Bundler version 2.1.4
+RUN gem install bundler -v 2.1.4
 
-COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Create consul user with proper permissions
+RUN adduser --shell /bin/bash --disabled-password --gecos "" consul && \
+    adduser consul sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-# Define where our application will live inside the image
-ENV RAILS_ROOT /var/www/consul
+# Set secure path for sudo
+RUN echo 'Defaults secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/bundle/bin"' > /etc/sudoers.d/secure_path && \
+    chmod 0440 /etc/sudoers.d/secure_path
 
-# Create application home. App server will need the pids dir so just create everything in one shot
-RUN mkdir -p $RAILS_ROOT/tmp/pids
+# Create application directories
+RUN mkdir -p $RAILS_ROOT/tmp/pids $RAILS_ROOT/tmp/sockets $RAILS_ROOT/log
 
-# Set our working directory inside the image
+# Set working directory
 WORKDIR $RAILS_ROOT
 
-# Use the Gemfiles as Docker cache markers. Always bundle before copying app src.
-# (the src likely changed and we don't want to invalidate Docker's cache too early)
-# http://ilikestuffblog.com/2014/01/06/how-to-skip-bundle-install-when-deploying-a-rails-app-to-docker/
-COPY Gemfile Gemfile
+# Copy Gemfiles and local gems for dependency caching
+COPY Gemfile Gemfile_custom ./
+COPY omniauth-ldap ./omniauth-ldap
+COPY omniauth-codigo ./omniauth-codigo
 
-COPY Gemfile.lock Gemfile.lock
-
-COPY Gemfile_custom Gemfile_custom
-
-# Prevent bundler warnings; ensure that the bundler version executed is >= that which created Gemfile.lock
-RUN gem install bundler
-
-# Finish establishing our Ruby environment
-RUN bundle install --full-index
+# Install gems with bundler 2.1.4 (update to handle Rails version change and mimemagic issue)
+RUN bundle install --jobs $BUNDLE_JOBS --retry $BUNDLE_RETRY
 
 # Install Chromium and ChromeDriver for E2E integration tests
-RUN apt-get update -qq && apt-get install -y chromium
-RUN wget -N http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
-RUN chmod +x chromedriver
-RUN mv -f chromedriver /usr/local/share/chromedriver
-RUN ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver
-RUN ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends chromium && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy the Rails application into place
+# Install ChromeDriver compatible with Rails 5.0
+RUN wget -N http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip && \
+    chmod +x chromedriver && \
+    mv chromedriver /usr/local/share/chromedriver && \
+    ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver && \
+    ln -s /usr/local/share/chromedriver /usr/bin/chromedriver && \
+    rm chromedriver_linux64.zip
+
+# Copy entrypoint script
+COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Copy the Rails application
 COPY . .
 
-# Define the script we want run once the container boots
-# Use the "exec" form of CMD so our script shuts down gracefully on SIGTERM (i.e. `docker stop`)
-# CMD [ "config/containers/app_cmd.sh" ]
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+# Re-run bundle install to ensure git sources are properly checked out
+RUN bundle install --jobs $BUNDLE_JOBS --retry $BUNDLE_RETRY
+
+# Set proper ownership
+RUN chown -R consul:consul $RAILS_ROOT
+
+# Expose port 3000 for Puma
+EXPOSE 3000
+
+# Use entrypoint script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# Default command for Puma server
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

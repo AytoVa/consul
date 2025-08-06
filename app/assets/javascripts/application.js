@@ -96,7 +96,7 @@
 //= require custom
 //= require tag_autocomplete
 //= require polls_admin
-//= require leaflet
+//= require leaflet/src/Leaflet
 //= require map
 //= require polls
 //= require sortable

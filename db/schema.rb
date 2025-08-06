@@ -14,8 +14,8 @@ ActiveRecord::Schema.define(version: 20200713184213) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_trgm"
   enable_extension "unaccent"
+  enable_extension "pg_trgm"
 
   create_table "active_poll_translations", force: :cascade do |t|
     t.integer  "active_poll_id", null: false
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20200713184213) do
   create_table "activities", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "action"
-    t.integer  "actionable_id"
     t.string   "actionable_type"
+    t.integer  "actionable_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["actionable_id", "actionable_type"], name: "index_activities_on_actionable_id_and_actionable_type", using: :btree
@@ -517,10 +517,10 @@ ActiveRecord::Schema.define(version: 20200713184213) do
     t.string   "visit_id"
     t.datetime "hidden_at"
     t.integer  "flags_count",                             default: 0
+    t.datetime "ignored_flag_at"
     t.integer  "cached_votes_total",                      default: 0
     t.integer  "cached_votes_up",                         default: 0
     t.integer  "cached_votes_down",                       default: 0
-    t.datetime "ignored_flag_at"
     t.integer  "comments_count",                          default: 0
     t.datetime "confirmed_hide_at"
     t.integer  "cached_anonymous_votes_total",            default: 0
@@ -537,7 +537,6 @@ ActiveRecord::Schema.define(version: 20200713184213) do
     t.index ["cached_votes_total"], name: "index_debates_on_cached_votes_total", using: :btree
     t.index ["cached_votes_up"], name: "index_debates_on_cached_votes_up", using: :btree
     t.index ["confidence_score"], name: "index_debates_on_confidence_score", using: :btree
-    t.index ["deprecated_description"], name: "index_debates_on_deprecated_description", using: :btree
     t.index ["geozone_id"], name: "index_debates_on_geozone_id", using: :btree
     t.index ["hidden_at"], name: "index_debates_on_hidden_at", using: :btree
     t.index ["hot_score"], name: "index_debates_on_hot_score", using: :btree
@@ -963,8 +962,8 @@ ActiveRecord::Schema.define(version: 20200713184213) do
 
   create_table "notifications", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "notifiable_id"
     t.string   "notifiable_type"
+    t.integer  "notifiable_id"
     t.integer  "counter",         default: 1
     t.datetime "emailed_at"
     t.datetime "read_at"
@@ -1289,7 +1288,6 @@ ActiveRecord::Schema.define(version: 20200713184213) do
     t.index ["cached_votes_up"], name: "index_proposals_on_cached_votes_up", using: :btree
     t.index ["community_id"], name: "index_proposals_on_community_id", using: :btree
     t.index ["confidence_score"], name: "index_proposals_on_confidence_score", using: :btree
-    t.index ["deprecated_description"], name: "index_proposals_on_deprecated_description", using: :btree
     t.index ["geozone_id"], name: "index_proposals_on_geozone_id", using: :btree
     t.index ["hidden_at"], name: "index_proposals_on_hidden_at", using: :btree
     t.index ["hot_score"], name: "index_proposals_on_hot_score", using: :btree
@@ -1357,8 +1355,8 @@ ActiveRecord::Schema.define(version: 20200713184213) do
   end
 
   create_table "signature_sheets", force: :cascade do |t|
-    t.integer  "signable_id"
     t.string   "signable_type"
+    t.integer  "signable_id"
     t.text     "required_fields_to_verify"
     t.boolean  "processed",                 default: false
     t.integer  "author_id"
@@ -1429,10 +1427,10 @@ ActiveRecord::Schema.define(version: 20200713184213) do
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
-    t.integer  "taggable_id"
     t.string   "taggable_type"
-    t.integer  "tagger_id"
+    t.integer  "taggable_id"
     t.string   "tagger_type"
+    t.integer  "tagger_id"
     t.string   "context",       limit: 128
     t.datetime "created_at"
     t.index ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
@@ -1525,10 +1523,10 @@ ActiveRecord::Schema.define(version: 20200713184213) do
     t.boolean  "created_from_signature",                    default: false
     t.integer  "failed_email_digests_count",                default: 0
     t.text     "former_users_data_log",                     default: ""
-    t.integer  "created_by"
-    t.string   "postal_code",                    limit: 10
     t.integer  "balloted_heading_id"
+    t.integer  "created_by"
     t.boolean  "public_interests",                          default: false
+    t.string   "postal_code",                    limit: 10
     t.boolean  "recommended_debates",                       default: true
     t.boolean  "recommended_proposals",                     default: true
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
@@ -1598,10 +1596,10 @@ ActiveRecord::Schema.define(version: 20200713184213) do
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer  "votable_id"
     t.string   "votable_type"
-    t.integer  "voter_id"
+    t.integer  "votable_id"
     t.string   "voter_type"
+    t.integer  "voter_id"
     t.boolean  "vote_flag"
     t.string   "vote_scope"
     t.integer  "vote_weight"
