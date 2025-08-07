@@ -1,0 +1,1 @@
+(function(){"use strict";App.Flaggable={update:function(t,a){$("#"+t+" .js-flag-actions").html(a).foundation()}}}).call(this);

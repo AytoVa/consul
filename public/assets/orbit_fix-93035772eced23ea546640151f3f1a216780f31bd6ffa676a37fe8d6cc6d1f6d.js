@@ -1,0 +1,1 @@
+(function(){"use strict";App.OrbitFix={initialize:function(){$(".orbit").each(function(){App.OrbitFix.updateHeight(this)}),$(".orbit").on("slidechange.zf.orbit",function(){App.OrbitFix.updateHeight(this)})},updateHeight:function(i){var t=$(i).find(".orbit-slide.is-active").height();$(i).css("height",t+"px")}}}).call(this);

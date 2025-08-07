@@ -1,0 +1,1 @@
+(function(){"use strict";App.IeAlert={set_cookie_and_hide:function(e){e.preventDefault(),$.cookie("ie_alert_closed","true",{path:"/",expires:365}),$(".ie-callout").remove()},initialize:function(){$(".ie-callout-close-js").on("click",function(e){App.IeAlert.set_cookie_and_hide(e)})}}}).call(this);

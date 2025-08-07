@@ -1,0 +1,1 @@
+(function(){"use strict";App.CheckAllNone={initialize:function(){$("[data-check-all]").on("click",function(){var c;c=$(this).data("check-all"),$("[name='"+c+"']").prop("checked",!0)}),$("[data-check-none]").on("click",function(){var c;c=$(this).data("check-none"),$("[name='"+c+"']").prop("checked",!1)})}}}).call(this);

@@ -1,0 +1,1 @@
+(function(){"use strict";var t;t=function(t){var a;a={bindto:t,data:{x:"x",url:$(t).data("graph"),mimeType:"json"},axis:{x:{type:"timeseries",tick:{format:"%Y-%m-%d"}}}},c3.generate(a)},App.Stats={initialize:function(){$("[data-graph]").each(function(){t(this)})}}}).call(this);

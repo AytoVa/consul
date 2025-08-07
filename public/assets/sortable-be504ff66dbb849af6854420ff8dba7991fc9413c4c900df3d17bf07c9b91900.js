@@ -1,0 +1,1 @@
+(function(){"use strict";App.Sortable={initialize:function(){$(".sortable").sortable({update:function(){var t;t=$(this).sortable("toArray",{attribute:"data-answer-id"}),$.ajax({url:$(".sortable").data("js-url"),data:{ordered_list:t},type:"POST"})}})}}}).call(this);

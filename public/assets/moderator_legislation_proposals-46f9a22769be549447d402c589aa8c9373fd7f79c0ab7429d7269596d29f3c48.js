@@ -1,0 +1,1 @@
+(function(){"use strict";App.ModeratorLegislationProposals={add_class_faded:function(s){$("#"+s).addClass("faded"),$("#comments").addClass("faded")},hide_moderator_actions:function(s){$("#"+s+" .js-moderator-proposals-actions:first").hide()}}}).call(this);

@@ -1,0 +1,1 @@
+(function(){"use strict";App.CheckboxToggle={initialize:function(){$("[data-checkbox-toggle]").on("change",function(){var c;c=$($(this).data("checkbox-toggle")),$(this).is(":checked")?c.show():c.hide()})}}}).call(this);

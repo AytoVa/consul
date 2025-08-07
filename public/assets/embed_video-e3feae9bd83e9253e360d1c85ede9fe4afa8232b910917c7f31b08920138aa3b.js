@@ -1,0 +1,1 @@
+(function(){"use strict";App.EmbedVideo={initialize:function(){$("#js-embedded-video").each(function(){var e;e=$(this).data("video-code"),$("#js-embedded-video").html(e)})}}}).call(this);

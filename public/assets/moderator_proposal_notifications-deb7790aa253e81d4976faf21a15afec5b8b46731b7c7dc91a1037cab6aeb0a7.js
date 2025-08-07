@@ -1,0 +1,1 @@
+(function(){"use strict";App.ModeratorProposalNotifications={add_class_faded:function(o){$("#"+o).addClass("faded")},hide_moderator_actions:function(o){$("#"+o+" .js-moderator-proposal-notifications-actions:first").hide()}}}).call(this);

@@ -1,0 +1,1 @@
+(function(){"use strict";App.FixedBar={initialize:function(){$("[data-fixed-bar]").each(function(){var i,l;i=$(this),l=i.offset().top,$(window).on("scroll",function(){$(window).scrollTop()>l?(i.addClass("is-fixed"),$("#check-ballot").css({display:"inline-block"})):(i.removeClass("is-fixed"),$("#check-ballot").hide())})})}}}).call(this);

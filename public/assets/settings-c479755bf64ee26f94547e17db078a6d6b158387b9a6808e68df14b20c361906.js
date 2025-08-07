@@ -1,0 +1,1 @@
+(function(){"use strict";App.Settings={initialize:function(){$("#settings-tabs").on("change.zf.tabs",function(){var i;$("#tab-map-configuration:visible").length&&(null!==(i=L.DomUtil.get("admin-map"))&&(i._leaflet_id=null),App.Map.initialize())})}}}).call(this);

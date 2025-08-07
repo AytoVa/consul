@@ -1,0 +1,1 @@
+(function(){"use strict";App.I18n={set_pluralize:function(t,e){t.text(this.pluralize(t.data("texts"),e))},pluralize:function(t,e){return this.raw_text(t,e).replace("%{count}",e)},raw_text:function(t,e){switch(e){case 0:return t.zero;case 1:return t.one;default:return t.other}}}}).call(this);

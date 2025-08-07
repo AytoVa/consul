@@ -1,0 +1,1 @@
+(function(){"use strict";App.Questions={nestedQuestions:function(){$(".js-questions").on("cocoon:after-insert",function(n,s){App.Answers.initializeAnswers($(s).find(".js-answers"))})},initialize:function(){App.Questions.nestedQuestions()}}}).call(this);

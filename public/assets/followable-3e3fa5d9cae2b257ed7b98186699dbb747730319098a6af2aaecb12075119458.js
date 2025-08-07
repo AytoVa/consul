@@ -1,0 +1,1 @@
+(function(){"use strict";App.Followable={update:function(t,l,a){$("#"+t+" .js-follow").html(l),0<$("[data-alert]").length?$("[data-alert]").replaceWith(a):$("body").append(a)}}}).call(this);

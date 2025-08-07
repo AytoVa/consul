@@ -1,0 +1,1 @@
+(function(){"use strict";App.ModeratorDebates={add_class_faded:function(d){$("#"+d).addClass("faded"),$("#comments").addClass("faded")},hide_moderator_actions:function(d){$("#"+d+" .js-moderator-debate-actions:first").hide()}}}).call(this);

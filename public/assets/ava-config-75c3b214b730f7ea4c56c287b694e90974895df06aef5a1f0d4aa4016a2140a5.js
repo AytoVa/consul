@@ -1,0 +1,1 @@
+var ava_default_url="/presupuestosparticipativos";

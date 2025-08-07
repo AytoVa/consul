@@ -1,0 +1,1 @@
+(function(){"use strict";App.InvestmentReportAlert={initialize:function(){$("#js-investment-report-alert").on("click",function(){return this.checked&&$("#budget_investment_feasibility_unfeasible").is(":checked")?confirm(this.dataset.alert+"\n"+this.dataset.notFeasibleAlert):this.checked?confirm(this.dataset.alert):void 0})}}}).call(this);
