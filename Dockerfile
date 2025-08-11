@@ -77,7 +77,8 @@ RUN wget -N http://chromedriver.storage.googleapis.com/2.38/chromedriver_linux64
 
 # Copy entrypoint script
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && \
+    chmod +x /usr/local/bin/entrypoint.sh
 
 # Copy the Rails application
 COPY . .
