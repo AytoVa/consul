@@ -41,6 +41,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
     container_name: consul_app
     command: /var/www/consul/scripts/start-app.sh
     working_dir: /var/www/consul
@@ -53,7 +58,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: consul_development
       BUNDLE_PATH: /usr/local/bundle
-      SSH_AUTH_SOCK: /tmp/agent.sock
+      # SSH_AUTH_SOCK: /tmp/agent.sock
     depends_on:
       database:
         condition: service_healthy
@@ -65,7 +70,7 @@ services:
       - .:/var/www/consul:delegated
       - bundle_cache:/usr/local/bundle:delegated
       - node_modules:/var/www/consul/node_modules
-      - "$SSH_AUTH_SOCK:/tmp/agent.sock"
+      # - "$SSH_AUTH_SOCK:/tmp/agent.sock"
     networks:
       - consul_network
     stdin_open: true
