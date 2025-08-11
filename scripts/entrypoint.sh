@@ -24,8 +24,14 @@ wait_for_db() {
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
 
-  # Fix git ownership issues for bundler git sources
+  # Fix git ownership issues for bundler git sources (Windows Docker compatibility)
   git config --global --add safe.directory '*'
+  git config --global --add safe.directory /var/www/consul
+
+  # Additional fix for Windows Docker Desktop volume mounting
+  if [ -d /var/www/consul/.git ]; then
+    chown -R consul:consul /var/www/consul/.git 2>/dev/null || true
+  fi
 
   bundle install --jobs 4 --retry 3
 }
