@@ -47,7 +47,7 @@ services:
       - 8.8.8.8
       - 1.1.1.1
     container_name: consul_app
-    command: /var/www/consul/scripts/start-app.sh
+    command: bundle exec puma -C config/puma.rb
     working_dir: /var/www/consul
     environment:
       RAILS_ENV: development
