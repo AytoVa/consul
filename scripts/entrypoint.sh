@@ -88,9 +88,15 @@ setup_permissions() {
       chown -R "$USER_UID:$USER_GID" "$BUNDLE_PATH" 2> /dev/null || true
     fi
 
+    # Create and fix log directory permissions
+    mkdir -p /var/www/consul/log
+    touch /var/www/consul/log/development.log
+    touch /var/www/consul/log/delayed_job.log
+    chown -R "$USER_UID:$USER_GID" /var/www/consul/log 2> /dev/null || true
+    chmod -R 0664 /var/www/consul/log/*.log 2> /dev/null || true
+
     # Fix application permissions
     chown -R "$USER_UID:$USER_GID" /var/www/consul/tmp 2> /dev/null || true
-    chown -R "$USER_UID:$USER_GID" /var/www/consul/log 2> /dev/null || true
   fi
 }
 
@@ -104,6 +110,16 @@ setup_assets() {
 
 # Main execution
 main() {
+  # Fix git ownership issues immediately (Windows Docker compatibility)
+  git config --global --add safe.directory '*'
+  git config --global --add safe.directory /var/www/consul
+
+  # Create log files early (Windows Docker compatibility)
+  mkdir -p /var/www/consul/log
+  touch /var/www/consul/log/development.log
+  touch /var/www/consul/log/delayed_job.log
+  chmod 0666 /var/www/consul/log/*.log 2> /dev/null || true
+
   # Wait for database to be ready
   wait_for_db
 
