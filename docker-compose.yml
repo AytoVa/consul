@@ -86,7 +86,7 @@ services:
     working_dir: /var/www/consul
     environment:
       RAILS_ENV: development
-      DATABASE_URL: postgres://postgres:postgres@database:5432/consul_development
+      # DATABASE_URL: postgres://postgres:postgres@database:5432/consul_development
       REDIS_URL: redis://redis:6379/0
       POSTGRES_HOST: database
       POSTGRES_USER: postgres
