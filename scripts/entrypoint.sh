@@ -131,8 +131,10 @@ main() {
   # Ensure bundle dependencies are properly installed
   ensure_bundle
 
-  # Setup database
-  setup_database
+  # Setup database only if not skipped
+  if [ "$SKIP_DATABASE_SETUP" != "true" ]; then
+    setup_database
+  fi
 
   # Setup assets if needed
   setup_assets

@@ -93,11 +93,11 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: consul_development
       BUNDLE_PATH: /usr/local/bundle
+      # Skip database setup for worker
+      SKIP_DATABASE_SETUP: "true"
     depends_on:
-      database:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      app:
+        condition: service_started
     volumes:
       - .:/var/www/consul:delegated
       - bundle_cache:/usr/local/bundle:delegated
