@@ -1,6 +1,12 @@
 # Puma configuration for Rails 5.0.7.2 with Docker
 # This file configures Puma 4.3.3 for the Consul application
 
+# Ensure required directories exist (Windows Docker compatibility)
+require 'fileutils'
+FileUtils.mkdir_p('/var/www/consul/tmp/pids')
+FileUtils.mkdir_p('/var/www/consul/tmp/sockets')
+FileUtils.mkdir_p('/var/www/consul/log')
+
 # The directory to operate out of.
 directory '/var/www/consul'
 

@@ -103,9 +103,56 @@ setup_permissions() {
 # Function to precompile assets if needed
 setup_assets() {
   if [ "$RAILS_ENV" = "production" ] || [ "$PRECOMPILE_ASSETS" = "true" ]; then
-    echo "🎨 Precompiling assets..."
+    echo "Precompiling assets..."
     bundle exec rake assets:precompile
   fi
+}
+
+# Function to setup Puma directories and clean PID files (Windows Docker compatibility)
+setup_puma_directories() {
+  echo "Setting up Puma directories and cleaning PID files..."
+
+  # Create required directories for Puma
+  mkdir -p /var/www/consul/tmp/pids
+  mkdir -p /var/www/consul/tmp/sockets
+  mkdir -p /var/www/consul/log
+
+  # Remove any existing Puma-related files that might cause conflicts
+  if [ -f /var/www/consul/tmp/pids/server.pid ]; then
+    echo "Removing existing server PID file..."
+    rm -f /var/www/consul/tmp/pids/server.pid
+  fi
+
+  if [ -f /var/www/consul/tmp/pids/puma.pid ]; then
+    echo "Removing existing Puma PID file..."
+    rm -f /var/www/consul/tmp/pids/puma.pid
+  fi
+
+  if [ -f /var/www/consul/tmp/pids/puma.state ]; then
+    echo "Removing existing Puma state file..."
+    rm -f /var/www/consul/tmp/pids/puma.state
+  fi
+
+  if [ -f /var/www/consul/tmp/sockets/pumactl.sock ]; then
+    echo "Removing existing Puma control socket..."
+    rm -f /var/www/consul/tmp/sockets/pumactl.sock
+  fi
+
+  # Set proper permissions for consul user (if running in development)
+  if [ "$RAILS_ENV" = "development" ] && [ -f /var/www/consul/Gemfile ]; then
+    USER_UID=$(stat -c %u /var/www/consul/Gemfile 2>/dev/null || echo "1000")
+    USER_GID=$(stat -c %g /var/www/consul/Gemfile 2>/dev/null || echo "1000")
+
+    # Set ownership of Puma directories
+    chown -R "$USER_UID:$USER_GID" /var/www/consul/tmp 2>/dev/null || true
+    chown -R "$USER_UID:$USER_GID" /var/www/consul/log 2>/dev/null || true
+
+    # Directories are writable
+    chmod -R 755 /var/www/consul/tmp 2>/dev/null || true
+    chmod -R 755 /var/www/consul/log 2>/dev/null || true
+  fi
+
+  echo "Puma directories setup completed."
 }
 
 # Main execution
@@ -139,11 +186,8 @@ main() {
   # Setup assets if needed
   setup_assets
 
-  # Remove any existing server PID file
-  if [ -f tmp/pids/server.pid ]; then
-    echo "Removing existing server PID file..."
-    rm tmp/pids/server.pid
-  fi
+  # Setup Puma directories and clean PID files (after permission setup)
+  setup_puma_directories
 
   echo "Consul application is ready!"
 
