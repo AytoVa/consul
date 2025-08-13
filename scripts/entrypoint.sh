@@ -10,6 +10,10 @@ echo "Starting Consul Rails 5.0.7.2 application..."
 export RAILS_ENV=${RAILS_ENV:-development}
 export BUNDLE_PATH=${BUNDLE_PATH:-/usr/local/bundle}
 
+# Fix git ownership issues immediately
+  git config --global --add safe.directory '*'
+  git config --global --add safe.directory /var/www/consul
+
 # Function to wait for database
 wait_for_db() {
   echo "Waiting for PostgreSQL to be ready..."
@@ -23,10 +27,6 @@ wait_for_db() {
 # Function to ensure bundle is properly installed
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
-
-  # Fix git ownership issues for bundler git sources (Windows Docker compatibility)
-  git config --global --add safe.directory '*'
-  git config --global --add safe.directory /var/www/consul
 
   # Additional fix for Windows Docker Desktop volume mounting
   if [ -d /var/www/consul/.git ]; then
@@ -157,10 +157,6 @@ setup_puma_directories() {
 
 # Main execution
 main() {
-  # Fix git ownership issues immediately (Windows Docker compatibility)
-  git config --global --add safe.directory '*'
-  git config --global --add safe.directory /var/www/consul
-
   # Create log files early (Windows Docker compatibility)
   mkdir -p /var/www/consul/log
   touch /var/www/consul/log/development.log
