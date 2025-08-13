@@ -3,9 +3,15 @@
 
 # Ensure required directories exist (Windows Docker compatibility)
 require 'fileutils'
-FileUtils.mkdir_p('/var/www/consul/tmp/pids')
-FileUtils.mkdir_p('/var/www/consul/tmp/sockets')
-FileUtils.mkdir_p('/var/www/consul/log')
+begin
+  FileUtils.mkdir_p('/var/www/consul/tmp/pids')
+  FileUtils.mkdir_p('/var/www/consul/tmp/sockets')
+  FileUtils.mkdir_p('/var/www/consul/log')
+  puts "Puma: Required directories created successfully"
+rescue => e
+  puts "Puma: Warning - Could not create directories: #{e.message}"
+  # Continue anyway - the entrypoint script should have handled this
+end
 
 # The directory to operate out of.
 directory '/var/www/consul'

@@ -1,5 +1,6 @@
 #!/bin/bash
-set -e
+# Don't exit on errors initially
+set +e
 
 # Rails 5.0.7.2 Docker Entrypoint Script
 # Optimized for development environment with proper error handling
@@ -10,9 +11,38 @@ echo "Starting Consul Rails 5.0.7.2 application..."
 export RAILS_ENV=${RAILS_ENV:-development}
 export BUNDLE_PATH=${BUNDLE_PATH:-/usr/local/bundle}
 
-# Fix git ownership issues immediately
+# Function to fix git ownership issues comprehensively
+fix_git_ownership() {
+  echo "Fixing git ownership issues for Docker volume mounting..."
+
+  # Set git config for root user first
   git config --global --add safe.directory '*'
   git config --global --add safe.directory /var/www/consul
+
+  # If we have a Gemfile, get the host user ID and fix ownership
+  if [ -f /var/www/consul/Gemfile ]; then
+    HOST_UID=$(stat -c %u /var/www/consul/Gemfile 2>/dev/null || echo "1000")
+    HOST_GID=$(stat -c %g /var/www/consul/Gemfile 2>/dev/null || echo "1000")
+
+    echo "Host user ID: $HOST_UID, Group ID: $HOST_GID"
+
+    # Fix ownership of the entire application directory
+    echo "Setting ownership of application directory..."
+    chown -R "$HOST_UID:$HOST_GID" /var/www/consul 2>/dev/null || true
+
+    # Update consul user to match host user
+    echo "Updating consul user to match host user..."
+    usermod -u "$HOST_UID" consul 2>/dev/null || true
+    groupmod -g "$HOST_GID" consul 2>/dev/null || true
+    usermod -g "$HOST_GID" consul 2>/dev/null || true
+
+    # Set git config for consul user as well
+    sudo -u consul git config --global --add safe.directory '*' 2>/dev/null || true
+    sudo -u consul git config --global --add safe.directory /var/www/consul 2>/dev/null || true
+  fi
+
+  echo "Git ownership issues fixed."
+}
 
 # Function to wait for database
 wait_for_db() {
@@ -28,12 +58,8 @@ wait_for_db() {
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
 
-  # Additional fix for Windows Docker Desktop volume mounting
-  if [ -d /var/www/consul/.git ]; then
-    chown -R consul:consul /var/www/consul/.git 2>/dev/null || true
-  fi
-
-  bundle install --jobs 4 --retry 3
+  # Run bundle install as consul user to avoid permission issues
+  sudo -u consul bundle install --jobs 4 --retry 3
 }
 
 # Function to setup database
@@ -69,35 +95,27 @@ setup_database() {
   fi
 }
 
-# Function to handle user permissions (for development)
+# Function to handle additional permissions (for development in windows)
 setup_permissions() {
-  if [ -f /var/www/consul/Gemfile ]; then
-    USER_UID=$(stat -c %u /var/www/consul/Gemfile)
-    USER_GID=$(stat -c %g /var/www/consul/Gemfile)
+  echo "Setting up additional permissions..."
 
-    export USER_UID
-    export USER_GID
-
-    # Update consul user to match host user
-    usermod -u "$USER_UID" consul 2> /dev/null || true
-    groupmod -g "$USER_GID" consul 2> /dev/null || true
-    usermod -g "$USER_GID" consul 2> /dev/null || true
-
-    # Fix bundle permissions
-    if [ -d "$BUNDLE_PATH" ]; then
-      chown -R "$USER_UID:$USER_GID" "$BUNDLE_PATH" 2> /dev/null || true
-    fi
-
-    # Create and fix log directory permissions
-    mkdir -p /var/www/consul/log
-    touch /var/www/consul/log/development.log
-    touch /var/www/consul/log/delayed_job.log
-    chown -R "$USER_UID:$USER_GID" /var/www/consul/log 2> /dev/null || true
-    chmod -R 0664 /var/www/consul/log/*.log 2> /dev/null || true
-
-    # Fix application permissions
-    chown -R "$USER_UID:$USER_GID" /var/www/consul/tmp 2> /dev/null || true
+  # Fix bundle permissions
+  if [ -d "$BUNDLE_PATH" ]; then
+    echo "Fixing bundle permissions..."
+    chown -R consul:consul "$BUNDLE_PATH" 2>/dev/null || true
   fi
+
+  # Create and fix log directory permissions
+  mkdir -p /var/www/consul/log
+  touch /var/www/consul/log/development.log
+  touch /var/www/consul/log/delayed_job.log
+  chown -R consul:consul /var/www/consul/log 2>/dev/null || true
+  chmod -R 0664 /var/www/consul/log/*.log 2>/dev/null || true
+
+  # Fix application permissions
+  chown -R consul:consul /var/www/consul/tmp 2>/dev/null || true
+
+  echo "Additional permissions setup completed."
 }
 
 # Function to precompile assets if needed
@@ -138,25 +156,22 @@ setup_puma_directories() {
     rm -f /var/www/consul/tmp/sockets/pumactl.sock
   fi
 
-  # Set proper permissions for consul user (if running in development)
-  if [ "$RAILS_ENV" = "development" ] && [ -f /var/www/consul/Gemfile ]; then
-    USER_UID=$(stat -c %u /var/www/consul/Gemfile 2>/dev/null || echo "1000")
-    USER_GID=$(stat -c %g /var/www/consul/Gemfile 2>/dev/null || echo "1000")
+  # Set proper permissions for consul user
+  chown -R consul:consul /var/www/consul/tmp 2>/dev/null || true
+  chown -R consul:consul /var/www/consul/log 2>/dev/null || true
 
-    # Set ownership of Puma directories
-    chown -R "$USER_UID:$USER_GID" /var/www/consul/tmp 2>/dev/null || true
-    chown -R "$USER_UID:$USER_GID" /var/www/consul/log 2>/dev/null || true
-
-    # Directories are writable
-    chmod -R 755 /var/www/consul/tmp 2>/dev/null || true
-    chmod -R 755 /var/www/consul/log 2>/dev/null || true
-  fi
+  # Ensure directories are writable
+  chmod -R 755 /var/www/consul/tmp 2>/dev/null || true
+  chmod -R 755 /var/www/consul/log 2>/dev/null || true
 
   echo "Puma directories setup completed."
 }
 
 # Main execution
 main() {
+  # Fix git ownership issues first (critical for Docker volume mounting)
+  fix_git_ownership
+
   # Create log files early (Windows Docker compatibility)
   mkdir -p /var/www/consul/log
   touch /var/www/consul/log/development.log
@@ -166,7 +181,7 @@ main() {
   # Wait for database to be ready
   wait_for_db
 
-  # Setup permissions for development
+  # Setup additional permissions for development
   if [ "$RAILS_ENV" = "development" ]; then
     setup_permissions
   fi
@@ -188,11 +203,14 @@ main() {
   echo "Consul application is ready!"
 
   # Execute the main command
+  echo "Starting application with command: $@"
   if [ "$RAILS_ENV" = "development" ] && [ -f /var/www/consul/Gemfile ]; then
     # Run as consul user in development
+    echo "Running as consul user..."
     exec /usr/bin/sudo -EH -u consul "$@"
   else
     # Run directly in production
+    echo "Running as root user..."
     exec "$@"
   fi
 }
