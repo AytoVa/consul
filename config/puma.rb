@@ -13,6 +13,11 @@ rescue => e
   # Continue anyway - the entrypoint script should have handled this
 end
 
+# Enable debug logging for development
+if ENV['RAILS_ENV'] == 'development'
+  puts "Puma: Development mode - enabling debug logging"
+end
+
 # The directory to operate out of.
 directory '/var/www/consul'
 

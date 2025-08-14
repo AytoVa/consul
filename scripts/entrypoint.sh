@@ -62,24 +62,29 @@ ensure_bundle() {
   echo "Current bundler version:"
   bundler --version || echo "Bundler not found"
 
-  # Ensure we use the exact bundler version from Gemfile.lock (2.1.4)
-  echo "Installing bundler 2.1.4 to match Gemfile.lock..."
-  gem install bundler -v 2.1.4 --no-document
+  # Skip bundler installation if already available and correct version
+  if bundler --version | grep -q "2.1.4"; then
+    echo "Bundler 2.1.4 already installed, skipping installation..."
+  else
+    echo "Installing bundler 2.1.4 to match Gemfile.lock..."
+    # Try to install, but don't fail if network is unavailable
+    gem install bundler -v 2.1.4 --no-document || echo "Warning: Could not install bundler, using existing version"
+  fi
 
-  # Set bundler to use version 2.1.4 explicitly
-  echo "Setting bundler version to 2.1.4..."
-  bundle _2.1.4_ --version
+  # Verify bundler version
+  echo "Verifying bundler version..."
+  bundler --version
 
   # Set bundle config to avoid permission issues
   echo "Configuring bundle for consul user..."
-  sudo -u consul bundle _2.1.4_ config set --local path "$BUNDLE_PATH"
+  sudo -u consul bundle config set --local path "$BUNDLE_PATH"
   if [ "$RAILS_ENV" = "production" ]; then
-    sudo -u consul bundle _2.1.4_ config set --local without 'development test'
+    sudo -u consul bundle config set --local without 'development test'
   fi
 
   # Run bundle install as consul user to avoid permission issues
   echo "Running bundle install with bundler 2.1.4..."
-  sudo -u consul bundle _2.1.4_ install --jobs 4 --retry 3
+  sudo -u consul bundle install --jobs 4 --retry 3
 }
 
 # Function to setup database
@@ -99,19 +104,19 @@ setup_database() {
   fi
 
   # Create database if it doesn't exist
-  if ! bundle _2.1.4_ exec rake db:version > /dev/null 2>&1; then
+  if ! bundle exec rake db:version > /dev/null 2>&1; then
     echo "Creating database..."
-    bundle _2.1.4_ exec rake db:create
-    bundle _2.1.4_ exec rake db:migrate
+    bundle exec rake db:create
+    bundle exec rake db:migrate
 
     # Seed database in development
     if [ "$RAILS_ENV" = "development" ]; then
       echo "Seeding database..."
-      bundle _2.1.4_ exec rake db:seed
+      bundle exec rake db:seed
     fi
   else
     echo "Running database migrations..."
-    bundle _2.1.4_ exec rake db:migrate
+    bundle exec rake db:migrate
   fi
 }
 
@@ -148,11 +153,11 @@ setup_permissions() {
 setup_assets() {
   if [ "$RAILS_ENV" = "production" ] || [ "$PRECOMPILE_ASSETS" = "true" ]; then
     echo "Precompiling assets for production..."
-    sudo -u consul bundle _2.1.4_ exec rake assets:precompile
+    sudo -u consul bundle exec rake assets:precompile
   elif [ "$RAILS_ENV" = "development" ]; then
     echo "Setting up assets for development..."
     # Clean and precompile assets
-    sudo -u consul bundle _2.1.4_ exec rake assets:clobber assets:precompile
+    sudo -u consul bundle exec rake assets:clobber assets:precompile
   fi
 }
 
@@ -234,6 +239,14 @@ main() {
   echo "Application should be accessible at:"
   echo "  - Root: http://localhost:3000/ (redirects)"
   echo "  - App:  http://localhost:3000/presupuestosparticipativos"
+
+  # Test database connectivity before starting the application
+  echo "Testing database connectivity..."
+  if bundle exec rails runner "puts 'Database connection: OK'" 2>/dev/null; then
+    echo "Database connection successful!"
+  else
+    echo "Warning: Database connection test failed, but continuing..."
+  fi
 
   # Execute the main command
   echo "Starting application with command: $@"

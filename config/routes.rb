@@ -16,6 +16,9 @@ Rails.application.routes.draw do
 
   get "/", to: redirect(Rails.application.config.root_directory)
 
+  # Health check endpoint for debugging
+  get "/health", to: proc { [200, {}, ["OK"]] }
+
   scope RouteScoper.root do
     # Omniauth LDAP
     resources :ldap, only: [:new, :create]
