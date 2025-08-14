@@ -58,7 +58,15 @@ wait_for_db() {
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
 
+  # Set bundle config to avoid permission issues
+  echo "Configuring bundle for consul user..."
+  sudo -u consul bundle config set --local path "$BUNDLE_PATH"
+  if [ "$RAILS_ENV" = "production" ]; then
+    sudo -u consul bundle config set --local without 'development test'
+  fi
+
   # Run bundle install as consul user to avoid permission issues
+  echo "Running bundle install..."
   sudo -u consul bundle install --jobs 4 --retry 3
 }
 
@@ -99,11 +107,17 @@ setup_database() {
 setup_permissions() {
   echo "Setting up additional permissions..."
 
-  # Fix bundle permissions
+  # Fix bundle permissions and create bundle config directory
   if [ -d "$BUNDLE_PATH" ]; then
     echo "Fixing bundle permissions..."
     chown -R consul:consul "$BUNDLE_PATH" 2>/dev/null || true
   fi
+
+  # Create and fix bundle config directory permissions
+  echo "Setting up bundle config directory..."
+  mkdir -p /var/www/consul/.bundle
+  chown -R consul:consul /var/www/consul/.bundle 2>/dev/null || true
+  chmod -R 755 /var/www/consul/.bundle 2>/dev/null || true
 
   # Create and fix log directory permissions
   mkdir -p /var/www/consul/log
@@ -201,6 +215,9 @@ main() {
   setup_puma_directories
 
   echo "Consul application is ready!"
+  echo "Application should be accessible at:"
+  echo "  - Root: http://localhost:3000/ (redirects)"
+  echo "  - App:  http://localhost:3000/presupuestosparticipativos"
 
   # Execute the main command
   echo "Starting application with command: $@"
