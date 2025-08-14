@@ -58,6 +58,14 @@ wait_for_db() {
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
 
+  # Check bundler version
+  echo "Current bundler version:"
+  bundler --version
+
+  # Ensure we use the exact bundler version from Gemfile.lock (2.1.4)
+  echo "Installing bundler 2.1.4 to match Gemfile.lock..."
+  gem install bundler -v 2.1.4
+
   # Set bundle config to avoid permission issues
   echo "Configuring bundle for consul user..."
   sudo -u consul bundle config set --local path "$BUNDLE_PATH"
@@ -135,8 +143,12 @@ setup_permissions() {
 # Function to precompile assets if needed
 setup_assets() {
   if [ "$RAILS_ENV" = "production" ] || [ "$PRECOMPILE_ASSETS" = "true" ]; then
-    echo "Precompiling assets..."
-    bundle exec rake assets:precompile
+    echo "Precompiling assets for production..."
+    sudo -u consul bundle exec rake assets:precompile
+  elif [ "$RAILS_ENV" = "development" ]; then
+    echo "Setting up assets for development..."
+    # Clean and precompile assets
+    sudo -u consul bundle exec rake assets:clobber assets:precompile
   fi
 }
 

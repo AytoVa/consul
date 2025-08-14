@@ -34,7 +34,7 @@ RUN apt-get update -qq && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install specific Bundler version 2.1.4
+# Install specific Bundler version 2.1.4 (matches Gemfile.lock)
 RUN gem install bundler -v 2.1.4
 
 # Create consul user with proper permissions
