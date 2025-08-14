@@ -35,7 +35,8 @@ RUN apt-get update -qq && \
     rm -rf /var/lib/apt/lists/*
 
 # Install specific Bundler version 2.1.4 (matches Gemfile.lock)
-RUN gem install bundler -v 2.1.4
+RUN gem install bundler -v 2.1.4 --no-document && \
+    gem install bundler -v 1.17.3 --no-document
 
 # Create consul user with proper permissions
 RUN adduser --shell /bin/bash --disabled-password --gecos "" consul && \
@@ -58,7 +59,7 @@ COPY omniauth-ldap ./omniauth-ldap
 COPY omniauth-codigo ./omniauth-codigo
 
 # Install gems with bundler 2.1.4 (update to handle Rails version change and mimemagic issue)
-RUN bundle install --jobs $BUNDLE_JOBS --retry $BUNDLE_RETRY
+RUN bundle _2.1.4_ install --jobs $BUNDLE_JOBS --retry $BUNDLE_RETRY
 
 # Install Chromium and ChromeDriver for E2E integration tests
 RUN apt-get update -qq && \

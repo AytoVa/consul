@@ -58,24 +58,28 @@ wait_for_db() {
 ensure_bundle() {
   echo "Ensuring bundle dependencies are properly installed..."
 
-  # Check bundler version
+  # Check current bundler version
   echo "Current bundler version:"
-  bundler --version
+  bundler --version || echo "Bundler not found"
 
   # Ensure we use the exact bundler version from Gemfile.lock (2.1.4)
   echo "Installing bundler 2.1.4 to match Gemfile.lock..."
-  gem install bundler -v 2.1.4
+  gem install bundler -v 2.1.4 --no-document
+
+  # Set bundler to use version 2.1.4 explicitly
+  echo "Setting bundler version to 2.1.4..."
+  bundle _2.1.4_ --version
 
   # Set bundle config to avoid permission issues
   echo "Configuring bundle for consul user..."
-  sudo -u consul bundle config set --local path "$BUNDLE_PATH"
+  sudo -u consul bundle _2.1.4_ config set --local path "$BUNDLE_PATH"
   if [ "$RAILS_ENV" = "production" ]; then
-    sudo -u consul bundle config set --local without 'development test'
+    sudo -u consul bundle _2.1.4_ config set --local without 'development test'
   fi
 
   # Run bundle install as consul user to avoid permission issues
-  echo "Running bundle install..."
-  sudo -u consul bundle install --jobs 4 --retry 3
+  echo "Running bundle install with bundler 2.1.4..."
+  sudo -u consul bundle _2.1.4_ install --jobs 4 --retry 3
 }
 
 # Function to setup database
@@ -95,19 +99,19 @@ setup_database() {
   fi
 
   # Create database if it doesn't exist
-  if ! bundle exec rake db:version > /dev/null 2>&1; then
+  if ! bundle _2.1.4_ exec rake db:version > /dev/null 2>&1; then
     echo "Creating database..."
-    bundle exec rake db:create
-    bundle exec rake db:migrate
+    bundle _2.1.4_ exec rake db:create
+    bundle _2.1.4_ exec rake db:migrate
 
     # Seed database in development
     if [ "$RAILS_ENV" = "development" ]; then
       echo "Seeding database..."
-      bundle exec rake db:seed
+      bundle _2.1.4_ exec rake db:seed
     fi
   else
     echo "Running database migrations..."
-    bundle exec rake db:migrate
+    bundle _2.1.4_ exec rake db:migrate
   fi
 }
 
@@ -144,11 +148,11 @@ setup_permissions() {
 setup_assets() {
   if [ "$RAILS_ENV" = "production" ] || [ "$PRECOMPILE_ASSETS" = "true" ]; then
     echo "Precompiling assets for production..."
-    sudo -u consul bundle exec rake assets:precompile
+    sudo -u consul bundle _2.1.4_ exec rake assets:precompile
   elif [ "$RAILS_ENV" = "development" ]; then
     echo "Setting up assets for development..."
     # Clean and precompile assets
-    sudo -u consul bundle exec rake assets:clobber assets:precompile
+    sudo -u consul bundle _2.1.4_ exec rake assets:clobber assets:precompile
   fi
 }
 
