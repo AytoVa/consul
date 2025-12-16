@@ -3,7 +3,7 @@ class Users::PasswordsController < Devise::PasswordsController
     Rails.logger.info "=" * 80
     Rails.logger.info "PASSWORDS#update PERSONALIZADO RESET"
     
-    # Sobrescribir reset_password_by_token para skipear validaci�n de gender
+    # Sobrescribir reset_password_by_token para skipear validación de gender
     original_token = resource_params[:reset_password_token]
     reset_password_token = Devise.token_generator.digest(User, :reset_password_token, original_token)
     self.resource = User.find_or_initialize_with_error_by(:reset_password_token, reset_password_token)
@@ -12,11 +12,11 @@ class Users::PasswordsController < Devise::PasswordsController
     
     if resource.persisted?
       if resource.reset_password_period_valid?
-        # IMPORTANTE: Skipear validaci�n ANTES del reset_password
+        # IMPORTANTE: Skipear validación ANTES del reset_password
         resource.skip_gender_validation = true
         Rails.logger.info "skip_gender_validation asignado: #{resource.skip_gender_validation}"
         
-        # Ahora s� hacer el reset
+        # Ahora sí hacer el reset
         if resource_params[:password].present?
           resource.password = resource_params[:password]
           resource.password_confirmation = resource_params[:password_confirmation]
