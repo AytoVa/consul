@@ -4,14 +4,23 @@
       <%= t("shared.author_info.author_deleted") %>
   </span>
 <% else %>
-  <%= avatar_image(resource.author, seed: resource.author_id, size: 32, class: "author-photo") %>
   <span class="author">
+     <% if resource.author.public_nombre %>
+       <%= avatar_image(resource.author, seed: resource.author_id, size: 32, class: "author-photo") %>
       <%= link_to resource.author.name, user_path(resource.author) %>
+     <% else %>
+        Usuario anónimo
+     <% end %>
+     
   </span>
 
   <% if resource.respond_to?(:association_name) && resource.association_name.present? %>
     <span>
+    <% if resource.author.public_nombre %>
       <%= "(#{resource.association_name})" %>
+     <% else %>
+        Usuario anónimo
+     <% end %>    
     </span>
   <% end %>
 

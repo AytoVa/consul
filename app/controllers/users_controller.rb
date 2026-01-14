@@ -79,6 +79,10 @@ class UsersController < ApplicationController
       @user.public_interests || authorized_current_user?
     end
 
+    def valid_public_nombre?
+      @user.public_nombre || authorized_current_user?
+    end
+
     def author?(proposal)
       proposal.author_id == current_user.id if current_user
     end
