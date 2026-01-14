@@ -6,11 +6,7 @@
   <div class="row padding_top_bottom">
     <div class="top-bar">
 
-      <span data-responsive-toggle="responsive-menu" data-hide-for="medium" class="float-right">
-        <span class="menu-icon dark" data-toggle></span>
-        <%= t("application.menu") %>
-      </span>
-
+      
 
       <div class="top-bar-title">
         <%= link_to root_path, accesskey: "0" do %>
@@ -18,6 +14,12 @@
           <%= image_tag(image_path_for("logoaytowhite.png"), class: "float-left custom-logo-texto", alt: t("layouts.header.logo")) %>
         <% end %>
       </div>
+	  
+	  <span data-responsive-toggle="responsive-menu" data-hide-for="medium" class="float-right">
+        <span class="menu-icon dark" data-toggle></span>
+        <span class="show-for-large"><%= t("application.menu") %></span>
+      </span>
+
 	  
 	  <div class="hide-for-small-only small-12 medium-8 menuTitleHeader">
         <%= render "shared/top_links" %>
