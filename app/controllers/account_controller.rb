@@ -23,7 +23,7 @@ class AccountController < ApplicationController
 
     def account_params
       attributes = if @account.organization?
-                     [:phone_number, :email_on_comment, :email_on_comment_reply, :newsletter,
+                     [:phone_number, :email_on_comment, :email_on_comment_reply, :newsletter, :public_nombre,
                       organization_attributes: [:name, :responsible_name]]
                    else
                      [:username, :gender, :public_activity, :public_interests, :email_on_comment,

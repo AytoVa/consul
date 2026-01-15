@@ -5,7 +5,7 @@
   </span>
 <% else %>
   <span class="author">
-     <% if resource.author.public_nombre %>
+      <% if resource.author.public_nombre || (@current_user  && @current_user.id == resource.author.id) || (current_user.administrator?)%>
        <%= avatar_image(resource.author, seed: resource.author_id, size: 32, class: "author-photo") %>
       <%= link_to resource.author.name, user_path(resource.author) %>
      <% else %>
@@ -15,8 +15,9 @@
   </span>
 
   <% if resource.respond_to?(:association_name) && resource.association_name.present? %>
+    Nombre Organizacion: <%=resource.association_name%>
     <span>
-    <% if resource.author.public_nombre %>
+    <% if resource.author.public_nombre || (current_user  && current_user.id == resource.author.id) || (current_user.administrator?)%>
       <%= "(#{resource.association_name})" %>
      <% else %>
         Usuario anónimo
