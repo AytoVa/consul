@@ -36,6 +36,9 @@
               <%= link_to t("admin.administrators.administrator.delete"),
                           admin_administrator_path(administrator),
                           method: :delete,
+                          data: { confirm: administrator.user.budget_investments.any? ? 
+                                  "Este administrador tiene #{administrator.user.budget_investments.count} presupuesto(s) asociado(s). Si lo elimina, también se eliminarán dichos presupuestos. ¿Está seguro de querer eliminarlo?" : 
+                                  "¿Está seguro de eliminar este administrador?" },
                           class: "button hollow alert" %>
             <% else %>
               <%= link_to t("admin.administrators.administrator.add"),

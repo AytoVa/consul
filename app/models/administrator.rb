@@ -13,4 +13,14 @@ class Administrator < ApplicationRecord
   def description_or_name_and_email
     "#{description_or_name} (#{email})"
   end
+
+ # Elimina los budget_investments antes de eliminar el administrador
+  before_destroy :destroy_budget_investments
+
+  private
+
+  def destroy_budget_investments
+    Budget::Investment.where(author_id: user_id).destroy_all
+  end
+
 end
