@@ -30,14 +30,15 @@
           </td>
           <td>
             <% if administrator.persisted? %>
+              <% active_investments_count = administrator.user.budget_investments.where(hidden_at: nil).count %>   
               <%= link_to t("admin.actions.edit"),
                           edit_admin_administrator_path(administrator),
                           class: "button hollow" %>
               <%= link_to t("admin.administrators.administrator.delete"),
                           admin_administrator_path(administrator),
                           method: :delete,
-                          data: { confirm: administrator.user.budget_investments.any? ? 
-                                  "Este administrador tiene #{administrator.user.budget_investments.count} presupuesto(s) asociado(s). Si lo elimina, también se eliminarán dichos presupuestos. ¿Está seguro de querer eliminarlo?" : 
+                          data: { confirm: active_investments_count > 0 ? 
+                                  "Este administrador tiene #{active_investments_count} presupuesto(s) asociado(s). Si lo elimina, también se eliminarán dichos presupuestos. ¿Está seguro de querer eliminarlo?" : 
                                   "¿Está seguro de eliminar este administrador?" },
                           class: "button hollow alert" %>
             <% else %>
