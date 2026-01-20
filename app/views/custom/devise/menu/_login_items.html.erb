@@ -27,12 +27,14 @@
                   method: :post,
                   data: { turbo: false },
                   rel: "nofollow",
-                  class: "button" %>
+                  class: "button",
+                  style: "color: #ffffff !important;" %>
     <% else %>
       <%= link_to t("devise_views.menu.login_items.login"),
                   new_user_session_path, 
                   rel: "nofollow", 
-                  class: "button" %>
+                  class: "button",
+                  style: "color: #ffffff !important;" %>
     <% end %>
   </li> 
 <% end %>

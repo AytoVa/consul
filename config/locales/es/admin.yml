@@ -729,6 +729,8 @@ es:
         add: Añadir como Administrador
         delete: Borrar
         restricted_removal: "Lo sentimos, no puedes eliminarte a ti mismo de la lista"
+        has_budgets: "Este administrador tiene asociado algún Presupuesto, si lo elimina se eliminará también dicho presupuesto. ¿Está seguro de querer eliminarlo?"
+        deleted: "El administrador se ha eliminado correctamente"
       search:
         title: "Administradores: Búsqueda de usuarios"
       form:
