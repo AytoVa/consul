@@ -38,7 +38,7 @@
                           admin_administrator_path(administrator),
                           method: :delete,
                           data: { confirm: active_investments_count > 0 ? 
-                                  "Este administrador tiene #{active_investments_count} presupuesto(s) asociado(s). Si lo elimina, también se eliminarán dichos presupuestos. ¿Está seguro de querer eliminarlo?" : 
+                                  "Este administrador tiene #{active_investments_count} propuestas(s) asociada(s). Si lo elimina, también se eliminarán dichas propuestas. ¿Está seguro de querer eliminarlo?" : 
                                   "¿Está seguro de eliminar este administrador?" },
                           class: "button hollow alert" %>
             <% else %>
