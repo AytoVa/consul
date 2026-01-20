@@ -2,6 +2,7 @@
   <%= f.hidden_field :id %>
   <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.hidden_field :cached_attachment %>
+  <%= f.hidden_field :documentable_type, value: local_assigns[:documentable_type] if local_assigns[:documentable_type].present? %>
 
   <div class="small-12 column title">
     <%= f.text_field :title, placeholder: t("documents.form.title_placeholder") %>

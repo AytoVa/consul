@@ -76,6 +76,23 @@
   </div>
 
   <div class="row">
+    <div class="small-12 column">
+      <fieldset class="fieldset">
+        <legend>Informe de Viabilidad</legend>
+        <div class="documents small-12 column">
+          <% max_docs = 1 %>
+          <% viability_documents = @investment.documents.where(documentable_type: "Informe::Viabilidad") %>
+          <%= render "documents/nested_documents", 
+                    documentable: @investment, 
+                    f: f, 
+                    max_documents: max_docs,
+                    documentable_type: "Informe::Viabilidad",
+                    filtered_documents: viability_documents %>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div class="row">
     <div class="actions small-12 medium-4 column">
       <%= f.submit(class: "button expanded large", value: t("valuation.budget_investments.edit.save")) %>
     </div>

@@ -27,6 +27,16 @@ class Valuation::BudgetInvestmentsController < Valuation::BaseController
 
   def valuate
     if valid_price_params? && @investment.update(valuation_params)
+      # Corregir documentable_type después de guardar
+      @investment.documents.where(documentable_type: "Budget::Investment").each do |doc|
+        if params[:budget_investment][:documents_attributes]
+          doc_params = params[:budget_investment][:documents_attributes].values.find { |d| d[:id].to_i == doc.id || d[:cached_attachment].present? }
+          if doc_params && doc_params[:documentable_type].present?
+            doc.update_column(:documentable_type, doc_params[:documentable_type])
+          end
+        end
+      end
+      
       if @investment.unfeasible_email_pending?
         @investment.send_unfeasible_email
       end
@@ -100,7 +110,8 @@ class Valuation::BudgetInvestmentsController < Valuation::BaseController
     def valuation_params
       params.require(:budget_investment).permit(:price, :price_first_year, :price_explanation,
                                                 :feasibility, :unfeasibility_explanation,
-                                                :duration, :valuation_finished)
+                                                :duration, :valuation_finished,
+                                                documents_attributes: [:id, :attachment, :title, :documentable_type, :cached_attachment, :user_id, :_destroy])
     end
 
     def restrict_access
