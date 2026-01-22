@@ -108,10 +108,9 @@
       $(data.progressBar).find(".loading-bar").addClass(klass);
     },
     setTitleFromFile: function(data, title) {
-      if ($(data.titleField).val() === "") {
-        $(data.titleField).val(title);
-      }
-    },
+	  // Siempre actualizar el título con el nombre del nuevo archivo
+	  $(data.titleField).val(title);
+	},
     setInputErrors: function(data) {
       var errors;
       errors = "<small class='error'>" + data.jqXHR.responseJSON.errors + "</small>";

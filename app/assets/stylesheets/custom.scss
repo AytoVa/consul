@@ -493,7 +493,22 @@ header {
   #responsive-menu,
   .moverDerecha {
     margin-right: 0 !important;
+   margin-left: auto;
+   /*margin-right: unset;*/
+   background-color: white; 
+   /*width: 100%;*/
   }
+  
+  .top-bar-title{
+	padding-left: 1.5rem;
+  }
+  
+  .menu-icon.dark{
+	margin-right: 1.5rem;
+  }
+  
+
+  
   /* Anular TODOS los padres posibles */
   body,
   .top-bar,
@@ -504,8 +519,23 @@ header {
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 100% !important;   
   }
+  
+  
+  .top-bar .top-bar-left, .top-bar .top-bar-right{
+	background-color: white;
+  }
+  .top-bar ul.menu>li a, .top-bar .menu>li a{
+    padding-left: 1rem;
+  }
+  
+  .top-bar-right .button{
+	color: black;
+	background-color: white;
+    font-size: unset;
+  }
+
  
   .subnavigation a:hover,
   .subnavigation a:active,
@@ -531,6 +561,7 @@ header {
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+	text-decoration: none;
   }
   /* CRÍTICO: Anular el margin-left del ul */
   .subnavigation ul {
