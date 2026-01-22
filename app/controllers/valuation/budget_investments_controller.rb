@@ -25,31 +25,41 @@ class Valuation::BudgetInvestmentsController < Valuation::BaseController
                    end
   end
 
-  def valuate
-    if valid_price_params? && @investment.update(valuation_params)
-      # Corregir documentable_type después de guardar
-      @investment.documents.where(documentable_type: "Budget::Investment").each do |doc|
-        if params[:budget_investment][:documents_attributes]
-          doc_params = params[:budget_investment][:documents_attributes].values.find { |d| d[:id].to_i == doc.id || d[:cached_attachment].present? }
-          if doc_params && doc_params[:documentable_type].present?
-            doc.update_column(:documentable_type, doc_params[:documentable_type])
-          end
-        end
-      end
-      
+ def valuate
+    # Procesar documentos manualmente
+    if params[:budget_investment][:documents_attributes].present?
+      process_documents_manually
+      valuation_params_hash = valuation_params.to_h.except("documents_attributes")
+    else
+      valuation_params_hash = valuation_params.to_h
+    end
+    
+    if valid_price_params? && @investment.update(valuation_params_hash)
       if @investment.unfeasible_email_pending?
         @investment.send_unfeasible_email
       end
 
       Activity.log(current_user, :valuate, @investment)
       notice = t("valuation.budget_investments.notice.valuate")
-      redirect_to valuation_budget_budget_investment_path(@budget, @investment), notice: notice
+      # Agregar timestamp para forzar reload sin caché
+      redirect_to valuation_budget_budget_investment_path(@budget, @investment, t: Time.now.to_i), notice: notice
     else
       render action: :edit
     end
   end
 
   def show
+    # DEBUG
+    Rails.logger.info "==== SHOW METHOD DEBUG ===="
+    Rails.logger.info "Investment ID: #{@investment.id}"
+    Rails.logger.info "Total documents via association: #{@investment.documents.count}"
+    Rails.logger.info "Direct query Budget::Viabilidad: #{Document.where(documentable_id: @investment.id, documentable_type: 'Budget::Viabilidad').count}"
+    Rails.logger.info "All documents for this investment: #{Document.where(documentable_id: @investment.id).pluck(:id, :title, :documentable_type).inspect}"
+    
+    # Limpiar caché
+    ActiveRecord::Base.connection.clear_query_cache
+    
+    
     load_comments
   end
 
@@ -58,6 +68,48 @@ class Valuation::BudgetInvestmentsController < Valuation::BaseController
   end
 
   private
+
+    def process_documents_manually
+      params[:budget_investment][:documents_attributes].each do |key, doc_attrs|
+        if doc_attrs[:id].present?
+          # Documento existente
+          doc = Document.find_by(id: doc_attrs[:id], documentable_id: @investment.id)
+          next unless doc
+          
+          if doc_attrs[:_destroy] == "1"
+            # Eliminar documento
+            doc.destroy
+          else
+            # SIEMPRE actualizar el título primero (viene del formulario con el nombre correcto)
+            doc.title = doc_attrs[:title] if doc_attrs[:title].present?
+            doc.documentable_type = doc_attrs[:documentable_type] if doc_attrs[:documentable_type].present?
+            
+            # Luego actualizar el attachment si hay uno nuevo
+            if doc_attrs[:cached_attachment].present?
+              doc.cached_attachment = doc_attrs[:cached_attachment]
+              doc.set_attachment_from_cached_attachment
+            elsif doc_attrs[:attachment].present?
+              doc.attachment = doc_attrs[:attachment]
+            end
+            
+            doc.save
+          end
+        else
+          # Crear nuevo documento
+          next if doc_attrs[:_destroy] == "1"
+          
+          doc = Document.new(
+            attachment: doc_attrs[:attachment],
+            title: doc_attrs[:title],
+            user_id: doc_attrs[:user_id],
+            cached_attachment: doc_attrs[:cached_attachment],
+            documentable_type: doc_attrs[:documentable_type] || "Budget::Investment",
+            documentable_id: @investment.id
+          )
+          doc.save
+        end
+      end
+    end
 
     def load_comments
       @commentable = @investment

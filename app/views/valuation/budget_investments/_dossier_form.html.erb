@@ -81,13 +81,17 @@
         <legend>Informe de Viabilidad</legend>
         <div class="documents small-12 column">
           <% max_docs = 1 %>
-          <% viability_documents = @investment.documents.where(documentable_type: "Informe::Viabilidad") %>
+          <% viability_documents = Document.where(documentable_id: @investment.id, documentable_type: "Budget::Viabilidad") %>
+          
           <%= render "documents/nested_documents", 
                     documentable: @investment, 
                     f: f, 
                     max_documents: max_docs,
-                    documentable_type: "Informe::Viabilidad",
-                    filtered_documents: viability_documents %>
+                    documentable_type: "Budget::Viabilidad",
+                    filtered_documents: viability_documents,
+                    hide_note: true ,
+                    custom_note: viability_documentables_note,
+                    hide_max_notice: true %>
         </div>
       </fieldset>
     </div>

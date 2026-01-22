@@ -1,6 +1,10 @@
 <div class="documents-list">
   <%= f.label :documents, t("documents.form.title") %>
-  <p class="help-text"><%= documentables_note(documentable) %></p>
+  <% if local_assigns[:custom_note].present? %>
+    <p class="help-text"><%= local_assigns[:custom_note] %></p>
+  <% elsif local_assigns[:hide_note] != true %>
+    <p class="help-text"><%= documentables_note(documentable) %></p>
+  <% end %>
 
   <div id="nested-documents" data-max-documents-allowed="<%= local_assigns[:max_documents] || documentable.class.max_documents_allowed %>">
     <% documents_to_show = local_assigns[:filtered_documents] || documentable.documents %>
@@ -19,7 +23,9 @@
                                 association_insertion_method: "append"
                               } %>
 
-  <div id="max-documents-notice" class="max-documents-notice callout primary text-center <%= "hide" unless (local_assigns[:filtered_documents] || documentable.documents).count >= (local_assigns[:max_documents] || documentable.class.max_documents_allowed) %>">
-    <%= sanitize(t("documents.max_documents_allowed_reached")) %>
-  </div>
+  <% if local_assigns[:hide_max_notice] != true %>
+    <div id="max-documents-notice" class="max-documents-notice callout primary text-center <%= "hide" unless (local_assigns[:filtered_documents] || documentable.documents).count >= (local_assigns[:max_documents] || documentable.class.max_documents_allowed) %>">
+      <%= sanitize(t("documents.max_documents_allowed_reached")) %>
+    </div>
+  <% end %>
 </div>
