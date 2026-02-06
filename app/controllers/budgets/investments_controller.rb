@@ -191,13 +191,50 @@ module Budgets
         @investment_votes = current_user ? current_user.budget_investment_votes(investments) : {}
       end
 
-      def investment_params
+     def investment_params
         attributes = [:heading_id, :tag_list,
                       :organization_name, :location, :terms_of_service, :skip_map, :zona_mesa,
                       image_attributes: image_attributes,
                       documents_attributes: [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy],
                       map_location_attributes: [:latitude, :longitude, :zoom]]
-        params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
+        
+        permitted = params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
+        
+        # Limpiar documents_attributes que no tienen cambios reales
+        if permitted[:documents_attributes]
+          permitted[:documents_attributes].each do |key, doc_params|
+            # Primero limpiar cached_attachment vacío
+            doc_params.delete(:cached_attachment) if doc_params[:cached_attachment].blank?
+            
+            # Determinar si se va a destruir (puede venir como "1", "true", true, 1)
+            is_destroy = ["1", "true", true, 1].include?(doc_params[:_destroy])
+            
+            # Si el documento ya existe (tiene ID) Y NO se va a destruir
+            if doc_params[:id].present? && !is_destroy
+              existing_doc = Document.find_by(id: doc_params[:id])
+              
+              if existing_doc
+                # Verificar si hay cambios reales
+                has_changes = false
+                has_changes = true if doc_params[:title] && doc_params[:title] != existing_doc.title
+                has_changes = true if doc_params[:attachment].present?
+                has_changes = true if doc_params[:cached_attachment].present?
+                
+                # Si NO hay cambios, eliminar este documento de los parámetros
+                unless has_changes
+                  permitted[:documents_attributes].delete(key)
+                end
+              end
+            end
+          end
+        end
+        
+        # Limpiar image_attributes cached_attachment vacío también
+        if permitted[:image_attributes] && permitted[:image_attributes][:cached_attachment].blank?
+          permitted[:image_attributes].delete(:cached_attachment)
+        end
+        
+        permitted
       end
 
       def load_ballot

@@ -87,7 +87,7 @@ class Admin::BudgetInvestmentsController < Admin::BaseController
       @investments = @investments.page(params[:page]) unless request.format.csv?
     end
 
-    def budget_investment_params
+   def budget_investment_params
       attributes = [:external_url, :heading_id, :administrator_id, :tag_list,
                     :valuation_tag_list, :incompatible, :visible_to_valuators, :selected,
                     :milestone_tag_list,
@@ -95,7 +95,57 @@ class Admin::BudgetInvestmentsController < Admin::BaseController
                     image_attributes: image_attributes,
                     documents_attributes: [:id, :title, :attachment, :cached_attachment, :user_id, :_destroy],
                     map_location_attributes: [:latitude, :longitude, :zoom], valuator_ids: [], valuator_group_ids: []]
-      params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
+      
+      permitted = params.require(:budget_investment).permit(attributes, translation_params(Budget::Investment))
+      
+      # LOG ESPECÍFICO PARA DOCUMENTOS
+      Rails.logger.info "--- PROCESANDO DOCUMENTOS ---"
+      Rails.logger.info "documents_attributes RAW: #{permitted[:documents_attributes].inspect}"
+      
+      # Limpiar documents_attributes que no tienen cambios reales
+      if permitted[:documents_attributes]
+        permitted[:documents_attributes].each do |key, doc_params|
+          Rails.logger.info "  Procesando documento key=#{key}: #{doc_params.inspect}"
+          Rails.logger.info "    _destroy = #{doc_params[:_destroy].inspect}"
+          
+          # Primero limpiar cached_attachment vacío
+          doc_params.delete(:cached_attachment) if doc_params[:cached_attachment].blank?
+          
+          # Determinar si se va a destruir (puede venir como "1", "true", true, 1)
+          is_destroy = ["1", "true", true, 1].include?(doc_params[:_destroy])
+          
+          # Si el documento ya existe (tiene ID) Y NO se va a destruir
+          if doc_params[:id].present? && !is_destroy
+            existing_doc = Document.find_by(id: doc_params[:id])
+            
+            if existing_doc
+              # Verificar si hay cambios reales
+              has_changes = false
+              has_changes = true if doc_params[:title] && doc_params[:title] != existing_doc.title
+              has_changes = true if doc_params[:attachment].present?
+              has_changes = true if doc_params[:cached_attachment].present?
+              
+              # Si NO hay cambios, eliminar este documento de los parámetros
+              unless has_changes
+                Rails.logger.info "    -> Sin cambios, ELIMINANDO de params"
+                permitted[:documents_attributes].delete(key)
+              end
+            end
+          elsif is_destroy
+            Rails.logger.info "    -> MARCADO PARA DESTRUIR (mantener en params)"
+          end
+        end
+      end
+      
+      Rails.logger.info "documents_attributes FINAL: #{permitted[:documents_attributes].inspect}"
+      Rails.logger.info "="*50
+      
+      # Limpiar image_attributes cached_attachment vacío
+      if permitted[:image_attributes] && permitted[:image_attributes][:cached_attachment].blank?
+        permitted[:image_attributes].delete(:cached_attachment)
+      end
+      
+      permitted
     end
 
     def load_budget

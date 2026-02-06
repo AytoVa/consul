@@ -1,23 +1,31 @@
 <div class="documents-list">
   <%= f.label :documents, t("documents.form.title") %>
-  <p class="help-text"><%= documentables_note(documentable) %></p>
+  <% if local_assigns[:custom_note].present? %>
+    <p class="help-text"><%= local_assigns[:custom_note] %></p>
+  <% elsif local_assigns[:hide_note] != true %>
+    <p class="help-text"><%= documentables_note(documentable) %></p>
+  <% end %>
 
-  <div id="nested-documents" data-max-documents-allowed="<%= documentable.class.max_documents_allowed %>">
-    <%= f.fields_for :documents do |documents_builder| %>
-      <%= render "documents/document_fields", f: documents_builder %>
+  <div id="nested-documents" data-max-documents-allowed="<%= local_assigns[:max_documents] || documentable.class.max_documents_allowed %>">
+    <% documents_to_show = local_assigns[:filtered_documents] || documentable.documents %>
+    <%= f.fields_for :documents, documents_to_show do |documents_builder| %>
+      <%= render "documents/document_fields", f: documents_builder, documentable_type: local_assigns[:documentable_type] %>
     <% end %>
   </div>
 
   <%= link_to_add_association t("documents.form.add_new_document"), f, :documents,
                               partial: "documents/document_fields",
                               id: "new_document_link",
-                              class: "button hollow  #{"hide" if documentable.documents.count >= documentable.class.max_documents_allowed}",
+                              class: "button hollow #{"hide" if (local_assigns[:filtered_documents] || documentable.documents).count >= (local_assigns[:max_documents] || documentable.class.max_documents_allowed)}",
+                              render_options: { locals: { documentable_type: local_assigns[:documentable_type] } },
                               data: {
                                 association_insertion_node: "#nested-documents",
                                 association_insertion_method: "append"
                               } %>
 
-  <div id="max-documents-notice" class="max-documents-notice callout primary text-center <%= "hide" unless max_documents_allowed?(documentable) %>">
-    <%= sanitize(t("documents.max_documents_allowed_reached")) %>
-  </div>
+  <% if local_assigns[:hide_max_notice] != true %>
+    <div id="max-documents-notice" class="max-documents-notice callout primary text-center <%= "hide" unless (local_assigns[:filtered_documents] || documentable.documents).count >= (local_assigns[:max_documents] || documentable.class.max_documents_allowed) %>">
+      <%= sanitize(t("documents.max_documents_allowed_reached")) %>
+    </div>
+  <% end %>
 </div>

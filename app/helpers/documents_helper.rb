@@ -1,6 +1,7 @@
 module DocumentsHelper
   def document_attachment_file_name(document)
-    document.attachment_file_name
+    # Siempre preferir el título sobre el attachment_file_name
+    document.title.presence || document.attachment_file_name.presence || ""
   end
 
   def document_errors_on_attachment(document)

@@ -34,6 +34,8 @@ class Admin::SiteCustomization::DocumentsController < Admin::SiteCustomization::
       document.title = document.attachment_file_name
       document.user = current_user
       document.admin = true
+      document.documentable_type = "Admin"  # <- Agregar
+      document.documentable_id = 0          # <- Agregar
       document
     end
 end
