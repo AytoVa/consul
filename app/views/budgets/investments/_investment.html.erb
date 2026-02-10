@@ -1,3 +1,4 @@
+<% lock_reason = local_assigns.fetch(:lock_reason, @lock_reason) %>
 <div id="<%= dom_id(investment) %>" class="budget-investment clear">
   <div class="panel <%= ("with-image" if feature?(:allow_images) && investment.image.present?) %>">
 
@@ -57,16 +58,19 @@
       <% unless investment.unfeasible? %>
 
         <% if investment.should_show_votes? %>
+         1
           <div id="<%= dom_id(investment) %>_votes"
                class="small-12 medium-3 column text-center"
                <%= "data-equalizer-watch" if feature?(:allow_images) && investment.image.present? %>>
                <%= render "/budgets/investments/votes",
                  investment: investment,
                  investment_votes: investment_votes,
+                 lock_reason: lock_reason,
                  vote_url: namespaced_budget_investment_vote_path(investment, value: "yes")
                %>
           </div>
         <% elsif investment.should_show_vote_count? %>
+        2
           <div id="<%= dom_id(investment) %>_votes"
                class="small-12 medium-3 column text-center"
                <%= "data-equalizer-watch" if feature?(:allow_images) && investment.image.present? %>>
@@ -78,6 +82,7 @@
             </div>
           </div>
        <% elsif investment.should_show_ballots? && !management_controller? && !current_user.locked_votes %>
+       3
           <div id="<%= dom_id(investment) %>_ballot"
                 class="small-12 medium-3 column text-center"
                 <%= "data-equalizer-watch" if feature?(:allow_images) && investment.image.present? %>>
@@ -88,6 +93,7 @@
                 %>
           </div>
         <% elsif investment.should_show_price? %>
+        4
           <div id="<%= dom_id(investment) %>_price"
                class="supports small-12 medium-3 column text-center"
                <%= "data-equalizer-watch" if feature?(:allow_images) && investment.image.present? %>>
@@ -98,6 +104,7 @@
             </div>
           </div>
         <% else %>
+        5
           <div <%= "data-equalizer-watch" if feature?(:allow_images) && investment.image.present? %>></div>
         <% end %>
 

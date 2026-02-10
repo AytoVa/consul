@@ -43,28 +43,77 @@ module Budgets
     respond_to :html, :js
 
     def index
-	    if (current_user)
-			if (current_user.document_number)
-				@locked_user = Budget::LockedUser.where(document_number: current_user.document_number, document_type: current_user.document_type, budget_id: @budget.id)
-				@already_locked = @locked_user.present?
-			else
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '1', budget_id: @budget.id)
-				@already_locked_1 = @locked_user.present?
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '2', budget_id: @budget.id)
-				@already_locked_2 = @locked_user.present?
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '3', budget_id: @budget.id)
-				@already_locked_3 = @locked_user.present?
-				
-				@already_locked = @already_locked_1 || @already_locked_2 || @already_locked_3
-			end
-		 else
-			@already_locked = false
-	   end
+      @lock_reason = nil  # 👈 Inicializar SIEMPRE
+      
+      if current_user
+        if current_user.document_number
+          Rails.logger.info "Verificando usuario en PADRON"
+          response = in_census
+          
+          if response.present?
+            if response.estado == "0" || response.estado == "2"
+              Rails.logger.info "Usuario NO empadronado (estado 0 o 2)"
+              @lock_reason = :not_registered
+              lock_user_all_types
+              
+            elsif response.date_of_birth != current_user.date_of_birth.to_date
+              Rails.logger.info "Fecha de nacimiento NO coincide"
+              @lock_reason = :birth_date_mismatch
+              lock_user_all_types
+              
+            elsif response.postal_code != current_user.postal_code
+              Rails.logger.info "Código postal NO coincide"
+              @lock_reason = :postal_code_mismatch  # 👈 ASIGNAR SIEMPRE
+              lock_user_all_types
+              
+            else
+              Rails.logger.info "Usuario verificado correctamente"
+              # Verificar si ya estaba bloqueado antes
+              @locked_user = Budget::LockedUser.where(
+                document_number: current_user.document_number,
+                document_type: current_user.document_type,
+                budget_id: @budget.id
+              )
+              @already_locked = @locked_user.present?
+              @lock_reason = nil  # 👈 Usuario OK, sin bloqueo
+            end
+          else
+            Rails.logger.info "Usuario NO existe en PADRON"
+            @lock_reason = :not_in_census
+            lock_user_all_types
+          end
+        else
+          Rails.logger.info "Usuario sin document_number"
+          @lock_reason = :no_document
+          lock_user_all_types
+        end
+        
+        # 👇 VERIFICAR SI YA ESTÁ BLOQUEADO (aunque no tengamos response)
+        if @lock_reason.nil?
+         Rails.logger.info "VERIFICAR SI YA ESTÁ BLOQUEADO: #{@lock_reason.inspect}"
+         Rails.logger.info "current_user.username: #{current_user.username}"  
+          existing_lock = Budget::LockedUser.where(
+            document_number: current_user.document_number,
+            document_type: ['1', '2', '3'],
+            budget_id: @budget.id
+          ).first
+          Rails.logger.info "existing_lock: #{existing_lock.inspect}"
+          if existing_lock
+            # Usuario ya está bloqueado, determinar el motivo
+            @lock_reason = :user_locked  # Motivo genérico si no sabemos cuál es
+            Rails.logger.info "Usuario encontrado bloqueado previamente"
+          end
+        end
+      else
+        @already_locked = false
+      end
+      
+      Rails.logger.info "LOCK_REASON FINAL: #{@lock_reason.inspect}"  # 👈 LOG PARA DEBUG
+      
       @investments = investments.page(params[:page]).per(PER_PAGE).for_render
-
       @investment_ids = @investments.pluck(:id)
       @investments_map_coordinates = MapLocation.where(investment: investments).map(&:json_data)
-
+      
       load_investment_votes(@investments)
       @tag_cloud = tag_cloud
       @remote_translations = detect_remote_translations(@investments)
@@ -79,14 +128,7 @@ module Budgets
 				@locked_user = Budget::LockedUser.where(document_number: current_user.document_number, document_type: current_user.document_type, budget_id: @budget.id)
 				@already_locked = @locked_user.present?
 			else
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '1', budget_id: @budget.id)
-				@already_locked_1 = @locked_user.present?
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '2', budget_id: @budget.id)
-				@already_locked_2 = @locked_user.present?
-				@locked_user = Budget::LockedUser.where(document_number: current_user.username, document_type: '3', budget_id: @budget.id)
-				@already_locked_3 = @locked_user.present?
-				
-				@already_locked = @already_locked_1 || @already_locked_2 || @already_locked_3
+				 lock_user_all_types
 			end
 		else
 			@already_locked = false
@@ -178,6 +220,29 @@ module Budgets
     end
 
     private
+      # Método auxiliar para comprobar si existe en el censo
+      def in_census        
+          response = CensusCaller.new.call(current_user.document_type, current_user.document_number, current_user.date_of_birth, current_user.postal_code)
+          
+          if response.valid?
+            @census_api_response = response
+            return response  # 👈 Devuelve el response directamente
+          end       
+        
+        nil  # Si ninguno fue válido, devuelve nil
+      end
+
+      # Método auxiliar para bloquear al usuario en los 3 tipos
+      def lock_user_all_types
+        ['1', '2', '3'].each do |doc_type|
+          Budget::LockedUser.find_or_create_by(
+            document_number: current_user.username,
+            document_type: doc_type,
+            budget_id: @budget.id
+          )
+        end
+        @already_locked = true
+      end
 
       def resource_model
         Budget::Investment

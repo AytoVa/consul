@@ -264,10 +264,21 @@ class Budget
       update!(unfeasible_email_sent_at: Time.current)
     end
 
-    def reason_for_not_being_selectable_by(user)
-      return permission_problem(user) if permission_problem?(user)
+    def reason_for_not_being_selectable_by(user, lock_reason = nil)
+      if lock_reason.present? && user_locked_in_budget?(user)
+        return lock_reason
+      end
+      
+      # Verificar bloqueo genérico
+      if user_locked_in_budget?(user)
+        return :user_locked
+      end
+      
+      # Si ya votó, permitir que pueda dejar de votar
+      return nil if user && user.voted_for?(self)
+      
+      return :permission_problem if permission_problem?(user)
       return :different_heading_assigned unless valid_heading?(user)
-
       return :no_selecting_allowed unless budget.selecting?
     end
 
@@ -415,6 +426,24 @@ class Budget
       def searchable_translations_definitions
         { title       => "A",
           description => "D" }
+      end
+
+      def user_locked_in_budget?(user)
+        return false unless user
+        
+        if user.document_number.present?
+          Budget::LockedUser.exists?(
+            document_number: user.document_number,
+            document_type: user.document_type,
+            budget_id: budget.id
+          )
+        else
+          Budget::LockedUser.exists?(
+            document_number: user.username,
+            document_type: ['1', '2', '3'],
+            budget_id: budget.id
+          )
+        end
       end
   end
 end

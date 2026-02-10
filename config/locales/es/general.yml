@@ -875,6 +875,10 @@ es:
       organization: Las organizaciones no pueden votar.
       unfeasible: No se pueden votar propuestas inviables.
       not_voting_allowed: El periodo de votación está cerrado.
+      not_censo: No concuerda tu información con los datos en el Padrón. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983 426 201.
+      not_registered: No figuran tus datos en el Padrón. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983 426 201.
+      differnt_date_censo: El Padrón no pudo verificar tu información. La fecha de nacimiento no es la misma. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983 426 201.
+      differnt_cp_censo: El Padrón no pudo verificar tu información. El Código Postal no es el mismo. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983 426 201.
       different_heading_assigned:
         one: "Sólo puedes apoyar proyectos de gasto de %{count} distrito. Ya has apoyado en %{supported_headings}."
         other: "Sólo puedes apoyar proyectos de gasto de %{count} distritos. Ya has apoyado en %{supported_headings}."

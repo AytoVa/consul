@@ -1,65 +1,186 @@
-<% reason = investment.reason_for_not_being_selectable_by(current_user) %>
-<% voting_allowed = true unless reason.presence == :not_voting_allowed %>
+<% lock_reason_local = local_assigns.fetch(:lock_reason, @lock_reason) %>
 <% user_voted_for = voted_for?(investment_votes, investment) %>
+
+<% voting_allowed = true %>
 
 <div class="supports js-participation">
 
-  <span class="total-supports <%= "no-button" unless voting_allowed || user_voted_for %>">
-    <%= t("budgets.investments.investment.supports", count: investment.total_votes) %>
-  </span>
-
   <div class="in-favor js-in-favor">
     <% if user_voted_for %>
-      <div class="supported callout success">
+      <!-- Usuario YA votó -->
+      <span class="total-supports">
+        <%= t("budgets.investments.investment.supports", count: investment.total_votes) %>
+      </span>
+      
+      <div class="supported callout warning">
         <%= t("budgets.investments.investment.already_supported") %>
-
-        <%= link_to vote_budget_investment_path(investment.budget, investment),
-            class: "button alert small expanded",
-            title: t("budgets.investments.investment.remove_support"),
-            method: :delete,
-            remote: true do %>
+        
+        <% if lock_reason_local.present? %>
+          <!-- 🔒 Usuario BLOQUEADO - NO permitir dejar de votar -->
+          <div class="alert-box alert margin-top">
+            <strong>⚠️ No puedes modificar tu voto</strong><br>
+            <small>
+              <% case lock_reason_local %>
+              <% when :postal_code_mismatch %>
+                Tu código postal (<%= current_user.postal_code %>) no coincide con el padrón municipal.
+              <% when :not_registered %>
+                No estás empadronado en el municipio (estado 0 o 2).
+              <% when :birth_date_mismatch %>
+                Tu fecha de nacimiento no coincide con el padrón municipal.
+              <% when :not_in_census %>
+                No se encontraron tus datos en el censo.
+              <% when :no_document %>
+                <%= sanitize(t("votes.budget_investments.not_verified",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% else %>
+                Tu cuenta está bloqueada para votar en este presupuesto.
+              <% end %>
+            </small>
+          </div>
+        <% else %>
+          <!-- ✅ Usuario NO bloqueado - permitir dejar de votar -->
+          <%= link_to vote_budget_investment_path(investment.budget, investment),
+              class: "button alert small expanded",
+              method: :delete,
+              remote: true,
+              data: { confirm: "¿Estás seguro de que quieres retirar tu apoyo?" } do %>
             <%= t("budgets.investments.investment.remove_support") %>
+          <% end %>
         <% end %>
       </div>
-    <% elsif investment.should_show_votes? %>
-      <%= link_to vote_budget_investment_path(investment.budget, investment),
-          class: "button button-support small expanded",
-          title: t("budgets.investments.investment.support_title"),
-          method: :post,
-          remote: (display_support_alert?(investment) ? false : true),
-          data: (display_support_alert?(investment) ? {
-            confirm: t("budgets.investments.investment.confirm_group", count: investment.group.max_votable_headings) } : nil),
-          "aria-hidden" => css_for_aria_hidden(reason) do %>
-        <%= t("budgets.investments.investment.give_support") %>
+      
+    <% elsif voting_allowed && investment.should_show_votes? %>
+      <!-- ✅ Mostrar botón de votar -->
+      
+      <% if !current_user %>
+        <!-- 🔐 USUARIO NO LOGUEADO -->
+        <div class="vote-blocked-container">
+          <div class="vote-blocked-default">
+            <span class="total-supports">
+              <%= t("budgets.investments.investment.supports", count: investment.total_votes) %>
+            </span>
+            
+            <%= link_to "#",
+                class: "button button-support small expanded",
+                onclick: "event.preventDefault(); return false;" do %>
+              <%= t("budgets.investments.investment.give_support") %>
+            <% end %>
+          </div>
+          
+          <div class="callout warning small vote-blocked-message">
+            <small>
+              <%= sanitize(t("votes.budget_investments.not_logged_in",
+                    count: investment.group.max_votable_headings,
+                    verify_account: link_to_verify_account,
+                    signin: link_to_signin,
+                    signup: link_to_signup,
+                    supported_headings: ""
+                  )) %>
+            </small>
+          </div>
+        </div>
+        
+      <% elsif lock_reason_local.present? %>
+        <!-- 🔒 USUARIO BLOQUEADO -->
+        <div class="vote-blocked-container">
+          <div class="vote-blocked-default">
+            <span class="total-supports">
+              <%= t("budgets.investments.investment.supports", count: investment.total_votes) %>
+            </span>
+            
+            <%= link_to "#",
+                class: "button button-support small expanded vote-blocked-btn",
+                onclick: "event.preventDefault(); return false;" do %>
+              <%= t("budgets.investments.investment.give_support") %>
+            <% end %>
+          </div>
+          
+          <div class="callout warning small vote-blocked-message">
+            <small>
+              <% case lock_reason_local %>
+              <% when :postal_code_mismatch %>
+                <%= sanitize(t("votes.budget_investments.differnt_cp_censo",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% when :not_registered %>
+                <%= sanitize(t("votes.budget_investments.not_registered",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% when :birth_date_mismatch %>
+                <%= sanitize(t("votes.budget_investments.differnt_date_censo",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% when :not_in_census %>
+                <%= sanitize(t("votes.budget_investments.not_censo",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% when :no_document %>
+                <%= sanitize(t("votes.budget_investments.not_verified",
+                      count: investment.group.max_votable_headings,
+                      verify_account: link_to_verify_account,
+                      signin: link_to_signin,
+                      signup: link_to_signup,
+                      supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
+                    )) %>
+              <% else %>
+                <strong>⚠️</strong> Tu cuenta está bloqueada para votar.
+              <% end %>
+            </small>
+          </div>
+        </div>
+        
+      <% else %>
+        <!-- ✅ Voto normal - usuario NO bloqueado -->
+        <span class="total-supports">
+          <%= t("budgets.investments.investment.supports", count: investment.total_votes) %>
+        </span>
+        
+        <%= link_to vote_budget_investment_path(investment.budget, investment),
+            class: "button button-support small expanded",
+            method: :post,
+            remote: true do %>
+          <%= t("budgets.investments.investment.give_support") %>
+        <% end %>
       <% end %>
+      
     <% end %>
   </div>
-
-  <% if reason.present? && !user_voted_for %>
-    <div class="js-participation-not-allowed participation-not-allowed" style="display:none" aria-hidden="false">
-      <p>
-        <small>
-          <%= sanitize(t("votes.budget_investments.#{reason}",
-                count: investment.group.max_votable_headings,
-                verify_account: link_to_verify_account,
-                signin: link_to_signin,
-                signup: link_to_signup,
-                supported_headings: (current_user && current_user.headings_voted_within_group(investment.group).map(&:name).sort.to_sentence)
-               )) %>
-        </small>
-      </p>
-    </div>
-  <% end %>
-
-  <% if user_voted_for && setting["twitter_handle"] %>
-    <div class="share-supported">
-      <%= render "shared/social_share",
-        title: investment.title,
-        image_url: image_absolute_url(investment.image, :thumb),
-        url: budget_investment_url(investment.budget, investment),
-        description: investment.title,
-        mobile: investment.title
-      %>
-    </div>
-  <% end %>
 </div>
+
+<style>
+  .vote-blocked-container .vote-blocked-default {
+    display: block;
+  }
+  .vote-blocked-container .vote-blocked-message {
+    display: none;
+    margin: 0;
+  }
+  
+  .vote-blocked-container:hover .vote-blocked-default {
+    display: none;
+  }
+  .vote-blocked-container:hover .vote-blocked-message {
+    display: block;
+  }
+</style>

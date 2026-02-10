@@ -77,13 +77,15 @@
                      investment: investment,
                      investment_ids: @investment_ids,
                      investment_votes: @investment_votes,
-                     ballot: @ballot %>
+                     ballot: @ballot,
+                     lock_reason: @lock_reason %>
         <% end %>
       <% else %>
 
         <% @investments.each do |investment| %>
           <%= render "/budgets/investments/investment_minimal",
-                     investment: investment %>
+                     investment: investment,
+                     lock_reason: @lock_reason %>
         <% end %>
       <% end %>
 

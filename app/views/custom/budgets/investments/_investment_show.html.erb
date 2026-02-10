@@ -1,4 +1,5 @@
 <% provide :social_media_meta_tags do %>
+<% lock_reason = local_assigns.fetch(:lock_reason, @lock_reason) %>
 <%= render "shared/social_media_meta_tags",
             social_url: budget_investments_path(investment),
             social_title: investment.title,
@@ -34,6 +35,7 @@
                 <%= render "/budgets/investments/votes",
                   investment: investment,
                   investment_votes: investment_votes,
+                  lock_reason: lock_reason,
                   vote_url: vote_budget_investment_path(investment.budget, investment, value: "yes")
                 %>
               </div>
