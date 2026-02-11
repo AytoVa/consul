@@ -16,24 +16,6 @@
     <%= @residence.errors[:estado].first %>
   </div>
 
-<% elsif @residence.errors[:error_date].present? %>
-
-  <div id="error_explanation" data-alert class="callout alert" data-closable>
-    <button class="close-button" aria-label="<%= t("application.close") %>" type="button" data-close>
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <%= @residence.errors[:error_date].first %>
-  </div>
-
-<% elsif @residence.errors[:error_cp].present? %>
-
-  <div id="error_explanation" data-alert class="callout alert" data-closable>
-    <button class="close-button" aria-label="<%= t("application.close") %>" type="button" data-close>
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <%= @residence.errors[:error_cp].first %>
-  </div>
-
 <% else %>
   <%= render "shared/errors",
              resource: @residence,
