@@ -20,8 +20,23 @@ class Verification::Residence
   end
 
   def save
-    return false unless valid? && @census_data.valid?
+       
+    Rails.logger.info "--- se comprueba si el padrón devuelve un usuario---"
+    if !valid? || !@census_data.valid?
+      Rails.logger.info "--- El padrón no devuelve respuesta válida --"
+      errors.add(:estado, I18n.t("verification.residence.new.error_verifying_census"))
+      return false
+    end
 
+    Rails.logger.info "--- Se comprueba estado ---"     
+    Rails.logger.info "--- El padrón devuelve el estado #{@census_data.estado} --"
+    if @census_data.estado.in?([0, 2, "0", "2"])
+      Rails.logger.info "--- El padrón devuelve el estado #{@census_data.estado} --"
+      errors.add(:estado, I18n.t("verification.residence.new.error_verifying_estado"))
+      return false
+    end
+
+    
     user.take_votes_if_erased_document(document_number, document_type)
 
     user.update(document_number:       document_number,

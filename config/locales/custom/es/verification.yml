@@ -16,7 +16,8 @@ es:
         document_type_label: Tipo de documento
         error_not_allowed_age: No tienes la edad mínima para participar
         error_not_allowed_postal_code: Para verificarte debes estar empadronado.
-        error_verifying_census: El Padrón no pudo verificar tu información. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983 426 201.
+        error_verifying_census: No concuerda tu información con los datos en el Padrón. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983426201.
+        error_verifying_estado: El Padrón no pudo comprobar tu información. Por favor, confirma que tus datos de empadronamiento sean correctos llamando al 010 o al 983426201.
         error_verifying_census_offices: oficina de Atención al ciudadano
         form_errors: evitaron verificar tu residencia
         postal_code: Código postal
