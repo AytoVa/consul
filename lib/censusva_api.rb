@@ -20,6 +20,22 @@ class CensusvaApi
       @data.at_css("fechaNacimiento").content.try(&:to_date)
     end
 
+    def estado
+      elemento = @data.at_css("estado")
+      elemento&.content
+    end
+
+    def nombre_estado
+      elemento = @data.at_css("nombreEstado")
+      return nil unless elemento&.content.present?
+      
+      begin
+        Base64.decode64(elemento.content)
+      rescue
+        elemento.content
+      end
+    end
+    
     def postal_code
       Base64.decode64(@data.at_css("codigoPostal").content)
     end

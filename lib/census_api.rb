@@ -18,6 +18,11 @@ class CensusApi
       data[:datos_habitante][:item].present?
     end
 
+    def estado
+      data[:datos_vivienda][:item][:estado]
+      
+    end
+
     def date_of_birth
       str = data[:datos_habitante][:item][:fecha_nacimiento_string]
       day, month, year = str.match(/(\d\d?)\D(\d\d?)\D(\d\d\d?\d?)/)[1..3]
