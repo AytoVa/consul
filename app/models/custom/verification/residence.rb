@@ -20,7 +20,45 @@ class Verification::Residence
   end
 
   def save
-    return false unless valid? && @census_data.valid?
+    Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{date_of_birth}   ---" 
+    Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{postal_code}   ---" 
+    
+    Rails.logger.info "--- se comprueba si el padrón devuelve un usuario---"
+    if !valid? || !@census_data.valid?
+      Rails.logger.info "--- El padrón no devuelve respuesta válida --"
+      errors.add(:estado, I18n.t("verification.residence.new.error_verifying_census"))
+      return false
+    end
+
+    Rails.logger.info "--- Se comprueba estado ---"     
+    Rails.logger.info "--- El padrón devuelve el estado #{@census_data.estado} --"
+    if @census_data.estado.in?([0, 2, "0", "2"])
+      Rails.logger.info "--- El padrón devuelve el estado #{@census_data.estado} --"
+      errors.add(:estado, I18n.t("verification.residence.new.error_verifying_estado"))
+      return false
+    end
+
+    Rails.logger.info "--- Se comprueba el codigo postal  ---"   
+      
+    if @census_data.postal_code != postal_code
+      Rails.logger.info "--- El padrón devuelve un CPostal disitinto al del usuario --"
+      Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{@census_data.postal_code}   ---" 
+      Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{postal_code}   ---" 
+      errors.add(:error_cp, I18n.t("verification.residence.new.error_verifying_data"))
+      return false
+    end
+
+    
+    Rails.logger.info "--- Se comprueba la fecha de nacimiento  ---"    
+    if @census_data.date_of_birth != date_of_birth
+      Rails.logger.info "--- El padrón devuelve una fecha de naciemiento disitinta al del usuario --"
+      Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{@census_data.date_of_birth}   ---" 
+      Rails.logger.info "--- Se comprueba la fecha de nacimiento censo: #{date_of_birth}   ---" 
+      errors.add(:error_date, I18n.t("verification.residence.new.error_verifying_data"))
+      return false
+    end
+
+    
 
     user.take_votes_if_erased_document(document_number, document_type)
 
