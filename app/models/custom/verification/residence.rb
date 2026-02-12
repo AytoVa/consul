@@ -14,7 +14,6 @@ class Verification::Residence
 
     unless residency_valid?
       errors.add(:residence_in_valladolid, false)
-      Rails.logger.info "--- ENTRA --"
       store_failed_attempt
       Lock.increase_tries(user)
     end
