@@ -14,6 +14,7 @@ class Verification::Residence
 
     unless residency_valid?
       errors.add(:residence_in_valladolid, false)
+      Rails.logger.info "--- ENTRA --"
       store_failed_attempt
       Lock.increase_tries(user)
     end
@@ -21,12 +22,17 @@ class Verification::Residence
 
   def save
        
-    Rails.logger.info "--- se comprueba si el padrón devuelve un usuario---"
-    if !valid? || !@census_data.valid?
+    Rails.logger.info "--- se los datos del usuario---"
+    if !valid?         
+      return false
+    end
+    
+    if !@census_data.valid?
       Rails.logger.info "--- El padrón no devuelve respuesta válida --"
       errors.add(:estado, I18n.t("verification.residence.new.error_verifying_census"))
       return false
     end
+
 
     Rails.logger.info "--- Se comprueba estado ---"     
     Rails.logger.info "--- El padrón devuelve el estado #{@census_data.estado} --"
