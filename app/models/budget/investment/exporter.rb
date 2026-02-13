@@ -60,7 +60,7 @@ class Budget::Investment::Exporter
         investment.selected? ? I18n.t("shared.yes") : I18n.t("shared.no"),
 		investment.winner? ? I18n.t("shared.yes") : I18n.t("shared.no"),
         investment.visible_to_valuators? ? I18n.t("shared.yes") : I18n.t("shared.no"),
-        investment.author.username
+        investment.author.present? ? investment.author.username : "-"
       ]
     end
 
