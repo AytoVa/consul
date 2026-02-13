@@ -15,18 +15,19 @@ class Consultation::CodesController < Consultation::BaseController
     if document_type.present? && document_number.present? && postal_code.present? && date_of_birth.present? && terms_of_service == "1"
       @census_api_response = CensusvaApi.new.call(residence_params[:document_type], document_number)
 
-      Rails.logger.info "--- Se comprueba estado ---"     
-      Rails.logger.info "--- El padrón devuelve el estado #{@census_api_response.estado} --"
-      if @census_api_response.estado.in?([0, 2, "0", "2"])
-        Rails.logger.info "--- El padrón devuelve el estado #{@census_api_response.estado} --"
-        @error = t("verification.residence.new.error_verifying_estado")
-
-      elsif postal_code.start_with?("47") && @census_api_response.valid? && @census_api_response.postal_code == postal_code && @census_api_response.date_of_birth == date_of_birth
-        @codigo = Codigo.find_by(clave: document_number)&.valor
-
-        @error = t("codigos.errors.not_found") if @codigo.blank?
+      if !postal_code.start_with?("47") 
+        @error = t("verification.residence.ad.error_verifying_ad_cp") 
+      elsif  !@census_api_response.valid?         
+        @error = t("verification.residence.ad.error_verifying_ad_response")   
+      elsif @census_api_response.estado.in?([0, 2, "0", "2"])
+        @error = t("verification.residence.ad.error_verifying_ad_estado")       
+      elsif @census_api_response.postal_code != postal_code
+        @error = t("verification.residence.ad.error_verifying_ad_cp_distint")
+      elsif @census_api_response.date_of_birth != date_of_birth
+           @error = t("verification.residence.ad.error_verifying_ad_db_distint") 
       else
-        @error = t("codigos.errors.census")
+        @codigo = Codigo.find_by(clave: document_number)&.valor 
+        @error = t("codigos.errors.not_found") if @codigo.blank?     
       end
     else
       @error = t("codigos.errors.form")
