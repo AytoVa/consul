@@ -15,7 +15,13 @@ class Consultation::CodesController < Consultation::BaseController
     if document_type.present? && document_number.present? && postal_code.present? && date_of_birth.present? && terms_of_service == "1"
       @census_api_response = CensusvaApi.new.call(residence_params[:document_type], document_number)
 
-      if postal_code.start_with?("47") && @census_api_response.valid? && @census_api_response.postal_code == postal_code && @census_api_response.date_of_birth == date_of_birth
+      Rails.logger.info "--- Se comprueba estado ---"     
+      Rails.logger.info "--- El padrón devuelve el estado #{@census_api_response.estado} --"
+      if @census_api_response.estado.in?([0, 2, "0", "2"])
+        Rails.logger.info "--- El padrón devuelve el estado #{@census_api_response.estado} --"
+        @error = t("verification.residence.new.error_verifying_estado")
+
+      elsif postal_code.start_with?("47") && @census_api_response.valid? && @census_api_response.postal_code == postal_code && @census_api_response.date_of_birth == date_of_birth
         @codigo = Codigo.find_by(clave: document_number)&.valor
 
         @error = t("codigos.errors.not_found") if @codigo.blank?
