@@ -2,6 +2,7 @@ require_dependency Rails.root.join("app", "controllers", "verification", "reside
 
 class Verification::ResidenceController < ApplicationController
   def new
+     Rails.logger.info "--- new custom ---"
     @residence = Verification::Residence.new
     @residence.document_type = current_user.document_type
     @residence.date_of_birth = current_user.date_of_birth
@@ -9,6 +10,7 @@ class Verification::ResidenceController < ApplicationController
   end
 
   def create
+     Rails.logger.info "--- create  custom---"
     @residence = Verification::Residence.new(residence_params.merge(user: current_user))
     if @residence.save
       current_user.update(verified_at: Time.now)

@@ -29,6 +29,12 @@ module DocumentablesHelper
                              max_file_size: max_file_size(documentable.class)
   end
 
+  def viability_documentables_note
+    t "documents.form.note", max_documents_allowed: 1,
+                            accepted_content_types: documentable_humanized_accepted_content_types(Budget::Viabilidad),
+                            max_file_size: max_file_size(Budget::Viabilidad)
+  end
+
   def max_documents_allowed?(documentable)
     documentable.documents.count >= documentable.class.max_documents_allowed
   end

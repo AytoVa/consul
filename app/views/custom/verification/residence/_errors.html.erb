@@ -7,6 +7,15 @@
     <%= t("verification.residence.new.error_verifying_census") %>
   </div>
 
+<% elsif @residence.errors[:estado].present? %>
+
+  <div id="error_explanation" data-alert class="callout alert" data-closable>
+    <button class="close-button" aria-label="<%= t("application.close") %>" type="button" data-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= @residence.errors[:estado].first %>
+  </div>
+
 <% else %>
   <%= render "shared/errors",
              resource: @residence,
