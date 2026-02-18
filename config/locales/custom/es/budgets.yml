@@ -28,7 +28,8 @@ es:
     index:
       map: Propuestas de proyectos localizables geográficamente
       investment_proyects: Ver lista completa de propuestas de proyectos de inversión
-      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión inviables
+      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión no admitidas
+      no_unfeasible_investment_proyects: No se ha marcado ninguna propuesta de proyectos de inversión como "inviable".
       not_selected_investment_proyects: Ver lista de propuestas de proyectos de inversión no seleccionados para la votación final
       section_footer:
         description: Con los presupuestos participativos la ciudadanía decide a qué proyectos va destinada una parte del presupuesto.
