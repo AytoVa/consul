@@ -42,6 +42,7 @@ es:
         orders:
           random: Aleatorias
           confidence_score: Mejor valoradas
+        viables: No se ha encontrado ninguna propuesta de proyecto para los filtros indicados
         search_results:
           one: " que contiene <strong>'%{search_term}'</strong> en todas las zonas"
           other: " que contienen <strong>'%{search_term}'</strong> en todas las zonas"
