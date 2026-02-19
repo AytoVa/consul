@@ -10,7 +10,7 @@ class Verification::ResidenceController < ApplicationController
   end
 
   def create
-     Rails.logger.info "--- create  custom---"
+     Rails.logger.info "--- create  custommm---"
     @residence = Verification::Residence.new(residence_params.merge(user: current_user))
     if @residence.save
       current_user.update(verified_at: Time.now)
@@ -18,5 +18,26 @@ class Verification::ResidenceController < ApplicationController
     else
       render :new
     end
+
+  rescue ArgumentError => e
+    Rails.logger.info "--- no es una fecha valida ---"
+    Rails.logger.info "--- Error capturado: #{e.message} ---"
+    if e.message.include?("invalid date")
+      @residence = Verification::Residence.new
+      @residence.document_type = residence_params[:document_type]
+      @residence.document_number = residence_params[:document_number]
+      @residence.postal_code = residence_params[:postal_code]
+      @residence.terms_of_service = residence_params[:terms_of_service]
+      
+      # NO asignar date_of_birth porque es inválida
+      
+      # Agregar el error manualmente
+      @residence.errors.add(:date_of_birth, t("verification.residence.create.date.error"))
+      
+      render :new
+    else
+      raise e
+    end
   end
+
 end

@@ -44,6 +44,8 @@ es:
       create:
         flash:
           success: Residencia verificada
+        date:
+          error: No es una fecha válida 
       new:
         accept_terms_text: Acepto %{terms_url} al Padrón
         accept_terms_text_title: Acepto los términos de acceso al Padrón
