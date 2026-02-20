@@ -11,10 +11,10 @@ class Consultation::CodesController < Consultation::BaseController
     terms_of_service = residence_params[:terms_of_service]
 
     @error = nil
-
+    Rails.logger.info "--- antes del if census---" 
     if document_type.present? && document_number.present? && postal_code.present? && date_of_birth.present? && terms_of_service == "1"
       @census_api_response = CensusvaApi.new.call(residence_params[:document_type], document_number)
-
+        
       if !postal_code.start_with?("47") 
         @error = t("verification.residence.ad.error_verifying_ad_cp") 
       elsif  !@census_api_response.valid?         
@@ -30,10 +30,16 @@ class Consultation::CodesController < Consultation::BaseController
         @error = t("codigos.errors.not_found") if @codigo.blank?     
       end
     else
-      @error = t("codigos.errors.form")
+      Rails.logger.info "--- date_of_birth: #{date_of_birth.inspect} ---"
+      if date_of_birth.nil?
+        @error = t("verification.residence.ad.error_verifying_ad_date") 
+      else
+        @error = t("codigos.errors.form")
+      end
     end
-
+    Rails.logger.info "--- antes de error:---" 
     if @error.present?
+      Rails.logger.info "--- dentro de error:---" 
       redirect_to consultation_codes_path(params: residence_params), flash: { error: @error }
     end
   end
