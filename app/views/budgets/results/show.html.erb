@@ -64,9 +64,18 @@
       <%= link_to budget_path(@budget) do %>
         <small><%= t("budgets.results.investment_proyects") %></small>
       <% end %><br>
-      <%= link_to budget_path(@budget, filter: "unfeasible") do %>
-        <small><%= t("budgets.results.unfeasible_investment_proyects") %></small>
-      <% end %><br>
+       <% if current_budget.investments.unfeasible.any? %>
+          <li>
+            <%= link_to budget_path(@budget, filter: "unfeasible") do %>
+		        <small><%= t("budgets.results.unfeasible_investment_proyects") %></small>
+		    <% end %>
+          </li>
+        <% else %>
+          <li>
+                <small><%= t("budgets.index.no_unfeasible_investment_proyects") %></small>
+          </li>
+      <% end %>
+      <br>
       <%= link_to budget_path(@budget, filter: "unselected") do %>
         <small><%= t("budgets.results.not_selected_investment_proyects") %></small>
       <% end %>

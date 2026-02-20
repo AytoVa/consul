@@ -71,13 +71,16 @@
       <% end %>
 
       <% if investments_default_view? %>
-
-        <% @investments.each do |investment| %>
-          <%= render "/budgets/investments/investment",
-                     investment: investment,
-                     investment_ids: @investment_ids,
-                     investment_votes: @investment_votes,
-                     ballot: @ballot %>
+        <% if @investments.any? %>         
+          <% @investments.each do |investment| %>
+            <%= render "/budgets/investments/investment",
+                      investment: investment,
+                      investment_ids: @investment_ids,
+                      investment_votes: @investment_votes,
+                      ballot: @ballot %>
+          <% end %>
+        <% else %>
+          <h6><%= t("budgets.investments.index.viables") %></h6>  
         <% end %>
       <% else %>
 
