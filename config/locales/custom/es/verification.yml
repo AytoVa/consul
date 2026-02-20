@@ -31,3 +31,4 @@ es:
         error_verifying_ad_response: No se ha encontrado en el padrón o ha habido un error (vuelva a intentarlo más tarde).
         error_verifying_ad_cp_distint: El código postal no coincide con el del padrón.
         error_verifying_ad_db_distint: La fecha de nacimiento no coincide con la del padrón.
+        error_verifying_ad_date: La fecha de nacimiento no es válida.

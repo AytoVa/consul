@@ -67,7 +67,7 @@
           <li class="inline-block">
             <%= link_to current_path_with_query_params(order: "random", page: 1),
                         class: "is-active" do %>
-              <h2><%= t("budgets.investments.index.orders.random") %></h2>
+              <h2><%= t("budgets.investments.index.orders.random") %></h2>              
             <% end %>
           </li>
         </ul>
@@ -76,16 +76,18 @@
       <% end %>
 
       <% if investments_default_view? %>
-
-        <% @investments.each do |investment| %>
-          <%= render "/budgets/investments/investment",
-                     investment: investment,
-                     investment_ids: @investment_ids,
-                     investment_votes: @investment_votes,
-                     ballot: @ballot %>
+       <% if @investments.any? %>         
+          <% @investments.each do |investment| %>
+            <%= render "/budgets/investments/investment",
+                      investment: investment,
+                      investment_ids: @investment_ids,
+                      investment_votes: @investment_votes,
+                      ballot: @ballot %>
+          <% end %>
+        <% else %>
+          <h6><%= t("budgets.investments.index.viables") %></h6>  
         <% end %>
       <% else %>
-
         <% @investments.each do |investment| %>
           <%= render "/budgets/investments/investment_minimal",
                      investment: investment %>
