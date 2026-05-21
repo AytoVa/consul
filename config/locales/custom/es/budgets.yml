@@ -95,7 +95,7 @@ es:
       incompatibles: Incompatibles
       investment_title: Título de la propuesta de proyecto de inversión
       investment_proyects: Ver lista completa de propuestas de proyectos de inversión
-      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión inviables
+      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión inviables/o inadmitidas/ o agrupadas
       not_selected_investment_proyects: Ver lista de propuestas de proyectos de inversión no seleccionadas para la votación final
     executions:
       page_title: "%{budget} - Seguimiento de proyectos"
