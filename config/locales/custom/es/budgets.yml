@@ -46,7 +46,7 @@ es:
         search_results:
           one: " que contiene <strong>'%{search_term}'</strong> en todas las zonas"
           other: " que contienen <strong>'%{search_term}'</strong> en todas las zonas"
-        unfeasible_text: "Las propuestas presentadas deben cumplir una serie de criterios (legalidad, concreción, ser competencia del Ayuntamiento, no superar el tope del presupuesto;  %{link}) para ser declaradas viables y llegar hasta la fase de votación final. Todas las propuestas que no cumplen estos criterios son marcadas como inviables  /o inadmitida / o agrupadas y publicadas en la siguiente lista, junto con su informe."
+        unfeasible_text: "Las propuestas presentadas deben cumplir una serie de criterios (legalidad, concreción, ser competencia del Ayuntamiento, no superar el tope del presupuesto;  %{link}) para ser declaradas viables y llegar hasta la fase de votación final. Todas las propuestas que no cumplen estos criterios son marcadas como inviables/ o inadmitida/ o agrupadas y publicadas en la siguiente lista, junto con su informe."
         unfeasible_text_link: "ver definiciones aquí"
         unselected_text: "En este listado se publican las propuestas que no han alcanzado la puntuación suficiente en la fase de priorización de propuestas"
         unselected: "Propuestas de inversión con ámbito"
