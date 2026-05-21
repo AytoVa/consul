@@ -11,12 +11,12 @@ es:
       reasons_for_not_balloting:
         user_locked: "Ya has votado presencialmente"
         not_verified: Las propuestas de proyectos de inversión sólo pueden ser apoyados por usuarios verificados, %{verify_account}.
-        not_selected: No se pueden votar propuestas inviables.
+        not_selected: No se pueden votar propuestas inviables /o inadmitidas/ o agrupadas.
         different_heading_assigned: "Ya has votado propuestas de otra partida: %{heading_link}"
     groups:
       show:
-        unfeasible_title: Propuestas de proyectos de inversión inviables
-        unfeasible: Ver propuestas inviables
+        unfeasible_title: Propuestas de proyectos de inversión inviables /o inadmitidas/ o agrupadas
+        unfeasible: Ver propuestas inviables /o inadmitidas/ o agrupadas
         unselected_title: Prouestas no seleccionadas para la votación final
         unselected: Ver los prouestas no seleccionadas para la votación final
     phase:
@@ -46,11 +46,11 @@ es:
         search_results:
           one: " que contiene <strong>'%{search_term}'</strong> en todas las zonas"
           other: " que contienen <strong>'%{search_term}'</strong> en todas las zonas"
-        unfeasible_text: "Las propuestas presentadas deben cumplir una serie de criterios (legalidad, concreción, ser competencia del Ayuntamiento, no superar el tope del presupuesto; %{link}) para ser declaradas viables y llegar hasta la fase de votación final. Todas las propuestas que no cumplen estos criterios son marcadas como inviables y publicadas en la siguiente lista, junto con su informe de inviabilidad."
+        unfeasible_text: "Las propuestas presentadas deben cumplir una serie de criterios (legalidad, concreción, ser competencia del Ayuntamiento, no superar el tope del presupuesto;  %{link}) para ser declaradas viables y llegar hasta la fase de votación final. Todas las propuestas que no cumplen estos criterios son marcadas como inviables  /o inadmitida / o agrupadas y publicadas en la siguiente lista, junto con su informe."
         unfeasible_text_link: "ver definiciones aquí"
         unselected_text: "En este listado se publican las propuestas que no han alcanzado la puntuación suficiente en la fase de priorización de propuestas"
         unselected: "Propuestas de inversión con ámbito"
-        unfeasible: Propuestas de proyectos de inversión no viables
+        unfeasible: Propuestas de proyectos de inversión inviables /o inadmitidas/ o agrupadas
         by_heading: "Propuestas de proyectos de inversión con ámbito: %{heading}"
         search_form:
           placeholder: Buscar propuestas de proyectos de inversión...
@@ -63,15 +63,15 @@ es:
           verified_only: "Para crear una nueva propuesta de proyecto de inversión %{verify}."
           create: "Crear propuesta de proyecto de inversión"
           not_logged_in: "Para crear una nueva propuesta de proyecto de inversión debes %{sign_in} o %{sign_up}."
-          feasible: Ver las propuestas viables
-          unfeasible: Ver las propuestas inviables
+          feasible: Ver las propuestas viables/o inadmitidas/ o agrupadas
+          unfeasible: Ver las propuestas inviables/o inadmitidas/ o agrupadas
           my_count: "Ya ha creado el máximo de propuestas de proyectos de inversión, si quiere cambiarlo vaya a %{link_my_count}."
       share:
         message: "He presentado la propuesta de proyecto de inversión %{title} en %{handle}. ¡Presenta una propuesta tú también!"
       show:
         code: "Código de propuesta de proyecto de inversión: <strong>%{code}</strong>"
         title: Propuesta de proyecto de inversión
-        project_unfeasible: "Esta propuesta de proyecto de inversión <strong>ha sido marcada como inviable</strong> y no pasará a la fase de votación."
+        project_unfeasible: "Esta propuesta de proyecto de inversión <strong>ha sido marcada como inviable/o inadmitida / o agrupada</strong> y no pasará a la fase de votación."
         project_selected: "Esta propuesta de proyecto de inversión <strong>ha sido seleccionada</strong> para la fase de votación."
         project_winner: "Propuesta de proyecto de inversión ganador"
         project_not_selected: "Esta propuesta de proyecto de inversión <strong>no ha sido seleccionada</strong> para la fase de votación."
@@ -85,8 +85,8 @@ es:
       header:
         different_heading_assigned: "Ya apoyaste propuestas de otra sección del presupuesto: %{heading_link}"
     show:
-      unfeasible_title: Propuesta de proyecto de inversión inviables
-      unfeasible: Ver las propuestas inviables
+      unfeasible_title: Propuesta de proyecto de inversión inviables /o inadmitidas/ o agrupadas
+      unfeasible: Ver las propuestas inviables/o inadmitidas/ o agrupadas
       unselected_title: Propuestas no seleccionadas para la votación final
       unselected: Ver las propuestas no seleccionadas para la votación final
     results:
@@ -95,7 +95,7 @@ es:
       incompatibles: Incompatibles
       investment_title: Título de la propuesta de proyecto de inversión
       investment_proyects: Ver lista completa de propuestas de proyectos de inversión
-      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión inviables
+      unfeasible_investment_proyects: Ver lista de propuestas de proyectos de inversión inviables /o inadmitidas/ o agrupadas
       not_selected_investment_proyects: Ver lista de propuestas de proyectos de inversión no seleccionadas para la votación final
     executions:
       page_title: "%{budget} - Seguimiento de proyectos"
