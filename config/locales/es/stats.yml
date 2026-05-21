@@ -21,7 +21,7 @@ es:
       page_title: "%{budget} - Estadísticas de participación"
       total_investments: "Total proyectos de gasto"
       total_selected_investments: "Proyectos en la fase final"
-      total_unfeasible_investments: "Proyectos inviables /o inadmitidas/ o agrupadas"
+      total_unfeasible_investments: "Proyectos inviables/ o inadmitidas/ o agrupadas"
       by_phase: "Participantes por fases"
       by_heading: "Participantes por distritos y fase"
       total: "Total"
