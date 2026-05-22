@@ -514,7 +514,7 @@ ast:
     budget_investments:
       not_logged_in: Precises %{signin} o %{signup} pa siguir.
       organization: Les organizaciones nun puen votar
-      unfeasible: No se pueden votar propuestas inviables.
+      unfeasible: No se pueden votar propuestas inadmitidas / o agrupadas / o inviables .
       not_voting_allowed: El periodo de votación está cerrado.
   welcome:
     feed:

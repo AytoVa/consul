@@ -17,7 +17,7 @@ es:
         not_logged_in: Necesitas %{signin} o %{signup} para continuar.
         not_verified: Los proyectos de gasto sólo pueden ser apoyados por usuarios verificados, %{verify_account}.
         organization: Las organizaciones no pueden votar.
-        not_selected: No se pueden votar proyectos inviables/ o inadmitidas/ o agrupadas.
+        not_selected: No se pueden votar proyectos inadmitidas / o agrupadas / o inviables.
         not_enough_money: "Ya has asignado el presupuesto disponible.<br><small>Recuerda que puedes %{change_ballot} en cualquier momento</small>"
         no_ballots_allowed: El periodo de votación está cerrado.
         different_heading_assigned: "Ya has votado proyectos de otra partida: %{heading_link}"
@@ -26,8 +26,8 @@ es:
     groups:
       show:
         title: Selecciona una opción
-        unfeasible_title: Proyectos de gasto inviables/ o inadmitidas/ o agrupadas
-        unfeasible: Ver proyectos inviables/ o inadmitidas/ o agrupadas
+        unfeasible_title: Proyectos de gasto inadmitidas / o agrupadas / o inviables
+        unfeasible: Ver proyectos inadmitidas / o agrupadas / o inviables
         unselected_title: Proyectos no seleccionados para la votación final
         unselected: Ver los proyectos no seleccionados para la votación final
     phase:
@@ -102,7 +102,7 @@ es:
           ballot_not_logged_in: "Para votar debes %{sign_in}."
           by_feasibility: Por viabilidad
           feasible: Ver los proyectos viables
-          unfeasible: Ver los proyectos inviables/ o inadmitidas/ o agrupadas
+          unfeasible: Ver los proyectos inadmitidas / o agrupadas / o inviables
           my_count: "Ya ha creado el máximo de propuestas de proyectos de inversión, si quiere cambiarlo vaya a %{link_my_count}."
           link_my_count: Mi contenido
           message_error_my_count: "No tienes permiso para acceder a esta página."
@@ -161,8 +161,8 @@ es:
     show:
       group: Grupo
       phase: Fase actual
-      unfeasible_title: Proyectos de gasto inviables/ o inadmitidas/ o agrupadas
-      unfeasible: Ver los proyectos inviables/ o inadmitidas/ o agrupadas
+      unfeasible_title: Proyectos de gasto inadmitidas / o agrupadas / o inviables
+      unfeasible: Ver los proyectos inadmitidas / o agrupadas / o inviables
       unselected_title: Proyectos no seleccionados para la votación final
       unselected: Ver los proyectos no seleccionados para la votación final
       see_results: Ver resultados
@@ -181,7 +181,7 @@ es:
       incompatibles: Incompatibles
       investment_title: Título del proyecto de gasto
       investment_proyects: Ver lista completa de proyectos de gasto
-      unfeasible_investment_proyects: Ver lista de proyectos de gasto inviables/ o inadmitidas/ o agrupadas
+      unfeasible_investment_proyects: Ver lista de proyectos de gasto inadmitidas / o agrupadas / o inviables
       not_selected_investment_proyects: Ver lista de proyectos de gasto no seleccionados para la votación final
     executions:
       link: "Seguimiento"
