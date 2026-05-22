@@ -873,7 +873,7 @@ es:
       not_logged_in: Necesitas %{signin} para continuar.
       not_verified: Los proyectos de gasto sólo pueden ser apoyadas por usuarios verificados, %{verify_account}.
       organization: Las organizaciones no pueden votar.
-      unfeasible: No se pueden votar propuestas inviables.
+      unfeasible: No se pueden votar propuestas inadmitidas / o agrupadas / o inviables.
       not_voting_allowed: El periodo de votación está cerrado.
       different_heading_assigned:
         one: "Sólo puedes apoyar proyectos de gasto de %{count} distrito. Ya has apoyado en %{supported_headings}."

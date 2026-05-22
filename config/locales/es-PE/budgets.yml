@@ -56,7 +56,7 @@ es-PE:
         map_remove_marker: "Eliminar el marcador"
       index:
         title: Presupuestos participativos
-        unfeasible: Propuestas de inversión no viables
+        unfeasible: Propuestas de inversión inadmitidas / o agrupadas / o inviables
         by_heading: "Propuestas de inversión con ámbito: %{heading}"
         search_form:
           button: Buscar
