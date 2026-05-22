@@ -71,7 +71,7 @@ es:
       show:
         code: "Código de propuesta de proyecto de inversión: <strong>%{code}</strong>"
         title: Propuesta de proyecto de inversión
-        project_unfeasible: "Esta propuesta de proyecto de inversión <strong>ha sido marcada como inviable/o inadmitida / o agrupada</strong> y no pasará a la fase de votación."
+        project_unfeasible: "Esta propuesta de proyecto de inversión <strong>ha sido marcada como inviable/ o inadmitida/ o agrupada</strong> y no pasará a la fase de votación."
         project_selected: "Esta propuesta de proyecto de inversión <strong>ha sido seleccionada</strong> para la fase de votación."
         project_winner: "Propuesta de proyecto de inversión ganador"
         project_not_selected: "Esta propuesta de proyecto de inversión <strong>no ha sido seleccionada</strong> para la fase de votación."
