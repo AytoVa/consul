@@ -74,7 +74,7 @@ es:
         project_unfeasible: "Esta propuesta de proyecto de inversión <strong>ha sido marcada como inadmitida / o agrupada / o inviable</strong> y no pasará a la fase de votación."
         project_selected: "Esta propuesta de proyecto de inversión <strong>ha sido seleccionada</strong> para la fase de votación."
         project_winner: "Propuesta de proyecto de inversión ganador"
-        project_not_selected: "Esta propuesta de proyecto de inversión <strong>no ha sido seleccionada</strong> para la fase de votación."
+        project_not_selected: "Esta propuesta de proyecto de inversión <strong>no ha sido seleccionada</strong> para la fase de votación. No ha alcanzado la puntuación suficiente en la fase de priorización de propuestas."
       investment:
         already_added: Ya has añadido esta propuesta de proyecto de inversión
         already_supported: Ya has apoyado esta propuesta de proyecto de inversión. ¡Compártela!
