@@ -35,7 +35,15 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       end
 
       identity = Identity.first_or_create_from_oauth(auth)
-      @user = current_user || identity.user || User.first_or_initialize_for_oauth(auth)
+
+      # Para el proveedor 'codigo', NO usamos current_user: el codigo identifica
+      # univocamente al usuario y no debe heredar una sesion previa en el navegador.
+      # Para otros proveedores (ldap, etc.) se mantiene el comportamiento original.
+      if provider.to_s == 'codigo'
+        @user = identity.user || User.first_or_initialize_for_oauth(auth)
+      else
+        @user = current_user || identity.user || User.first_or_initialize_for_oauth(auth)
+      end
 
       if provider.to_s == 'codigo'
         auth.info.verified = true
