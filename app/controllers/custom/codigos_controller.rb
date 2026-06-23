@@ -23,9 +23,16 @@ class CodigosController < ApplicationController
     render json: { "error" => "no encontrado" }.to_json
   end
 
-  def new; end
+  def new
+    # Si ya hay una sesión activa, cerrarla para que el nuevo código
+    # no quede asociado al usuario anterior que tenía el navegador abierto
+    sign_out current_user if user_signed_in?
+  end
 
   def create
+    # Protección adicional: si al hacer POST todavía hay sesión activa, cerrarla
+    sign_out current_user if user_signed_in?
+
     valor_sha1 = Digest::SHA1.hexdigest(request["valor"])
     redirect_to controller: "users/omniauth_callbacks",
                 action: "codigo",
